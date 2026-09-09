@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import {
   CalendarDays,
   Check,
@@ -546,6 +546,15 @@ function HomeView({
   onCalendar: () => void;
   onSubscribe: () => void;
 }) {
+  const latestRail = useRef<HTMLDivElement>(null);
+
+  const scrollLatest = (direction: -1 | 1) => {
+    latestRail.current?.scrollBy({
+      left: direction * latestRail.current.clientWidth,
+      behavior: 'smooth',
+    });
+  };
+
   return (
     <main className="mx-auto max-w-7xl px-4 py-10 lg:px-8">
       <p className="text-sm font-semibold tracking-widest text-muted-foreground">
@@ -614,21 +623,47 @@ function HomeView({
           </button>
         </aside>
       </div>
-      <div className="mt-12 flex items-end justify-between border-b border-foreground pb-3">
+      <div className="mt-12 flex items-end justify-between gap-4 border-b border-foreground pb-3">
         <h2 className="text-2xl font-semibold">最新情報</h2>
-        <span className="text-sm text-muted-foreground">
-          已依來源可信度排序
-        </span>
+        <div className="flex items-center gap-2">
+          <span className="hidden text-sm text-muted-foreground sm:inline">
+            今日 {articles.length} 則・已依來源可信度排序
+          </span>
+          <button
+            type="button"
+            onClick={() => scrollLatest(-1)}
+            aria-label="查看上一組最新情報"
+            className="grid size-9 place-items-center rounded-full border border-border transition hover:bg-secondary"
+          >
+            <ChevronLeft className="size-4" />
+          </button>
+          <button
+            type="button"
+            onClick={() => scrollLatest(1)}
+            aria-label="查看下一組最新情報"
+            className="grid size-9 place-items-center rounded-full border border-border transition hover:bg-secondary"
+          >
+            <ChevronRight className="size-4" />
+          </button>
+        </div>
       </div>
-      <div className="grid gap-x-6 sm:grid-cols-2 lg:grid-cols-3">
-        {articles.slice(0, 3).map((article, index) => (
+      <div
+        ref={latestRail}
+        className="flex snap-x snap-mandatory gap-6 overflow-x-auto scroll-smooth [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+      >
+        {articles.map((article) => (
           <button
             key={article.id}
             onClick={() => onArticle(article)}
-            className="group border-b border-border py-6 text-left"
+            className="group shrink-0 basis-[88%] snap-start border-b border-border py-6 text-left sm:basis-[calc((100%-1.5rem)/2)] lg:basis-[calc((100%-3rem)/3)]"
           >
-            <div className="mb-5 grid h-36 place-items-center bg-secondary font-serif text-4xl text-muted-foreground">
-              {String(index + 1).padStart(2, '0')}
+            <div className="mb-5 aspect-[16/9] overflow-hidden bg-secondary">
+              <img
+                src={article.image}
+                alt={article.imageAlt}
+                loading="lazy"
+                className="h-full w-full object-cover grayscale transition duration-500 group-hover:scale-[1.02] group-hover:grayscale-0"
+              />
             </div>
             <span className="text-sm font-semibold text-muted-foreground">
               {article.category}・{article.sources.length} 個來源

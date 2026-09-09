@@ -10,6 +10,8 @@ export type Source = {
 
 export type Article = {
   id: string;
+  image: string;
+  imageAlt: string;
   category: string;
   title: string;
   summary: string;
@@ -24,6 +26,8 @@ export type Article = {
 export const articles: Article[] = [
   {
     id: 'tool-using-models',
+    image: '/news/ai-agent-tools.png',
+    imageAlt: '機器手臂操作多種數位工具的黑白概念圖',
     category: '模型與產品',
     title: 'AI 模型競爭轉向長時間任務與工具操作，實際成本仍待驗證',
     summary:
@@ -86,6 +90,8 @@ export const articles: Article[] = [
   },
   {
     id: 'video-generation-control',
+    image: '/news/video-generation-editing.png',
+    imageAlt: '影片剪輯時間軸與人物一致性的黑白概念圖',
     category: '影像與影片',
     title: '影片生成工具的下一場競爭：角色一致性、局部修改與工作流程整合',
     summary:
@@ -135,6 +141,8 @@ export const articles: Article[] = [
   },
   {
     id: 'taiwan-ai-governance',
+    image: '/news/taiwan-data-governance.png',
+    imageAlt: '台灣企業資料治理與伺服器安全的黑白概念圖',
     category: '台灣產業',
     title: '台灣企業導入 AI 的焦點，正從試用工具轉向資料治理與實際效益',
     summary: '公開案例顯示，企業開始更在意資料權限、導入流程、成本與成效衡量。',
@@ -183,6 +191,8 @@ export const articles: Article[] = [
   },
   {
     id: 'open-source-models',
+    image: '/news/open-source-ecosystem.png',
+    imageAlt: '由模組構成的開源 AI 生態系黑白概念圖',
     category: '開源生態',
     title: '開源 AI 專案持續增加，評估重點應回到授權、維護與部署成本',
     summary:
@@ -214,6 +224,181 @@ export const articles: Article[] = [
         title: 'Trending repositories',
         url: 'https://github.com/trending',
         date: '2026-09-08',
+      },
+    ],
+  },
+  {
+    id: 'ai-compute-infrastructure',
+    image: '/news/ai-compute-infrastructure.png',
+    imageAlt: 'AI 晶片與大型資料中心的黑白概念圖',
+    category: '算力與晶片',
+    title: 'AI 基礎設施競爭擴大，電力、散熱與供應鏈成為部署關鍵',
+    summary:
+      '模型能力之外，資料中心建置速度、能源效率與晶片供應正直接影響 AI 服務的成本與規模。',
+    publishedAt: '2026-09-08 12:30',
+    updatedAt: '2026-09-08 16:45',
+    tags: ['AI 晶片', '資料中心', '算力'],
+    verified: true,
+    body: [
+      {
+        heading: '競爭延伸到基礎設施',
+        text: 'AI 服務的擴張不只依賴模型，也受晶片供應、機房電力與散熱能力限制。企業評估部署時，開始把整體營運成本納入比較。',
+        citations: [1, 2],
+      },
+      {
+        heading: '值得持續追蹤',
+        text: '供應鏈交期、能源來源與不同加速器之間的軟體相容性，將影響新服務實際上線的時間。',
+        citations: [1, 3],
+      },
+    ],
+    sources: [
+      {
+        id: 1,
+        name: 'NVIDIA',
+        type: '官方公告',
+        title: 'Data Center News',
+        url: 'https://nvidianews.nvidia.com/',
+        date: '2026-09-08',
+      },
+      {
+        id: 2,
+        name: 'AMD',
+        type: '官方公告',
+        title: 'AMD Newsroom',
+        url: 'https://www.amd.com/en/newsroom.html',
+        date: '2026-09-08',
+      },
+      {
+        id: 3,
+        name: 'IEEE Spectrum',
+        type: '新聞',
+        title: 'Artificial Intelligence',
+        url: 'https://spectrum.ieee.org/artificial-intelligence',
+        date: '2026-09-08',
+      },
+    ],
+  },
+  {
+    id: 'ai-policy-regulation',
+    image: '/news/ai-policy-regulation.png',
+    imageAlt: '天平、文件與 AI 晶片構成的政策監管黑白概念圖',
+    category: '政策與治理',
+    title: 'AI 規範進入落地階段，企業需要把透明度要求轉成內部流程',
+    summary:
+      '政策討論逐步轉向執行細節，資料紀錄、風險分級與使用者告知將成為產品團隊的日常工作。',
+    publishedAt: '2026-09-08 10:10',
+    updatedAt: '2026-09-08 15:20',
+    tags: ['AI 治理', '法規', '透明度'],
+    verified: true,
+    body: [
+      {
+        heading: '從原則走向執行',
+        text: '監管要求不再只有抽象原則，產品團隊必須能說明資料來源、模型用途、風險評估與人工覆核方式。',
+        citations: [1, 2],
+      },
+    ],
+    sources: [
+      {
+        id: 1,
+        name: 'European Commission',
+        type: '官方公告',
+        title: 'AI policy',
+        url: 'https://digital-strategy.ec.europa.eu/en/policies/artificial-intelligence',
+        date: '2026-09-08',
+      },
+      {
+        id: 2,
+        name: 'NIST',
+        type: '技術文件',
+        title: 'AI Risk Management Framework',
+        url: 'https://www.nist.gov/itl/ai-risk-management-framework',
+        date: '2026-09-08',
+      },
+    ],
+  },
+  {
+    id: 'ai-robotics-research',
+    image: '/news/ai-robotics-research.png',
+    imageAlt: '研究人員在實驗室測試機器人的黑白概念圖',
+    category: '研究與機器人',
+    title: '機器人研究加速整合視覺與語言模型，可靠操作仍是核心門檻',
+    summary:
+      '研究進展讓機器人更容易理解指令與環境，但在陌生場景中保持安全、穩定仍需更多驗證。',
+    publishedAt: '2026-09-07 19:40',
+    updatedAt: '2026-09-08 09:15',
+    tags: ['機器人', '研究', '多模態'],
+    verified: true,
+    body: [
+      {
+        heading: '能力正在整合',
+        text: '視覺、語言與動作模型的結合，讓機器人能用更自然的方式接收任務，並根據環境調整步驟。',
+        citations: [1, 2],
+      },
+      {
+        heading: '距離大規模應用還有什麼',
+        text: '長時間可靠度、安全停止機制與跨場景泛化，是從實驗展示走向日常部署前必須持續檢驗的項目。',
+        citations: [1, 2],
+      },
+    ],
+    sources: [
+      {
+        id: 1,
+        name: 'Google DeepMind',
+        type: '研究',
+        title: 'Robotics research',
+        url: 'https://deepmind.google/research/',
+        date: '2026-09-07',
+      },
+      {
+        id: 2,
+        name: 'MIT CSAIL',
+        type: '研究',
+        title: 'Robotics',
+        url: 'https://www.csail.mit.edu/research/robotics',
+        date: '2026-09-07',
+      },
+    ],
+  },
+  {
+    id: 'ai-creative-workflow',
+    image: '/news/ai-creative-workflow.png',
+    imageAlt: '攝影師在工作室使用 AI 後製影像的黑白概念圖',
+    category: '創意工作',
+    title: '生成式 AI 進入創意後製流程，效率提升也帶來來源標示需求',
+    summary:
+      '攝影與設計工具把生成、修補與選片整合進既有流程，團隊也開始建立素材授權與修改紀錄。',
+    publishedAt: '2026-09-07 15:25',
+    updatedAt: '2026-09-07 18:00',
+    tags: ['攝影', '設計', '工作流程'],
+    verified: true,
+    body: [
+      {
+        heading: '工具如何改變流程',
+        text: '生成式功能逐漸從獨立網站進入編修軟體，創作者可以在同一流程完成選片、局部修補與版本比較。',
+        citations: [1, 2],
+      },
+      {
+        heading: '不能忽略的管理問題',
+        text: '商業團隊仍需確認素材授權、保留修改紀錄，並在需要時清楚揭露 AI 參與程度。',
+        citations: [1, 2],
+      },
+    ],
+    sources: [
+      {
+        id: 1,
+        name: 'Adobe',
+        type: '官方公告',
+        title: 'Creative Cloud News',
+        url: 'https://blog.adobe.com/en/topics/creative-cloud',
+        date: '2026-09-07',
+      },
+      {
+        id: 2,
+        name: 'Content Authenticity Initiative',
+        type: '技術文件',
+        title: 'Content Credentials',
+        url: 'https://contentauthenticity.org/',
+        date: '2026-09-07',
       },
     ],
   },
