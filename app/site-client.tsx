@@ -662,7 +662,7 @@ function HomeView({
                 src={article.image}
                 alt={article.imageAlt}
                 loading="lazy"
-                className="h-full w-full object-cover grayscale transition duration-500 group-hover:scale-[1.02] group-hover:grayscale-0"
+                className="h-full w-full object-cover transition duration-500 group-hover:scale-[1.02]"
               />
             </div>
             <span className="text-sm font-semibold text-muted-foreground">
