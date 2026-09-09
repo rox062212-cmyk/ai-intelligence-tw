@@ -1,0 +1,2 @@
+CREATE INDEX `idx_comments_article_created` ON `comments` (`article_id`,`created_at`);--> statement-breakpoint
+CREATE UNIQUE INDEX `idx_saved_user_article` ON `saved_articles` (`user_id`,`article_id`);
