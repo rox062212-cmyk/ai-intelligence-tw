@@ -44,6 +44,8 @@ export default function SiteClient({ user }: { user: ChatGPTUser | null }) {
   const [theme, setTheme] = useState<Theme>('system');
   const [email, setEmail] = useState(user?.email ?? '');
   const [keywords, setKeywords] = useState('');
+  const [sendTime, setSendTime] = useState('10:00');
+  const [timeZone, setTimeZone] = useState('Asia/Taipei');
   const [subscribeState, setSubscribeState] = useState<
     'idle' | 'loading' | 'done' | 'error'
   >('idle');
@@ -66,6 +68,8 @@ export default function SiteClient({ user }: { user: ChatGPTUser | null }) {
   useEffect(() => {
     const saved = localStorage.getItem('ai-info-theme') as Theme | null;
     if (saved) setTheme(saved);
+    const browserZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    if (browserZone) setTimeZone(browserZone);
   }, []);
 
   useEffect(() => {
@@ -195,6 +199,8 @@ export default function SiteClient({ user }: { user: ChatGPTUser | null }) {
         headers: { 'content-type': 'application/json' },
         body: JSON.stringify({
           email,
+          sendTime,
+          timeZone,
           keywords: keywords
             .split(',')
             .map((item) => item.trim())
@@ -446,13 +452,14 @@ export default function SiteClient({ user }: { user: ChatGPTUser | null }) {
               </span>
               <h3 className="text-xl font-semibold">已收到訂閱申請</h3>
               <p className="mt-2 text-muted-foreground">
-                正式寄信服務連線後，系統會寄出驗證信。
+                已保存每日 {sendTime}（{timeZone}
+                ）的寄送偏好。正式寄信服務連線後，系統會寄出驗證信。
               </p>
             </div>
           ) : (
             <form onSubmit={subscribe} className="space-y-5">
               <p className="text-muted-foreground">
-                每日早上 10:00，將當日 AI 重點寄到你的信箱。
+                選擇你希望每天收到 AI 重點的時間。
               </p>
               <label className="block">
                 <span className="mb-2 block text-sm font-semibold">Email</span>
@@ -465,6 +472,36 @@ export default function SiteClient({ user }: { user: ChatGPTUser | null }) {
                   placeholder="name@example.com"
                 />
               </label>
+              <div className="grid gap-4 sm:grid-cols-2">
+                <label className="block">
+                  <span className="mb-2 block text-sm font-semibold">
+                    寄送時間
+                  </span>
+                  <input
+                    required
+                    type="time"
+                    value={sendTime}
+                    onChange={(event) => setSendTime(event.target.value)}
+                    className="h-11 w-full rounded-lg border border-input bg-transparent px-3"
+                  />
+                </label>
+                <label className="block">
+                  <span className="mb-2 block text-sm font-semibold">時區</span>
+                  <select
+                    value={timeZone}
+                    onChange={(event) => setTimeZone(event.target.value)}
+                    className="h-11 w-full rounded-lg border border-input bg-background px-3"
+                  >
+                    <option value="Asia/Taipei">台北</option>
+                    <option value="Asia/Tokyo">東京</option>
+                    <option value="Asia/Hong_Kong">香港</option>
+                    <option value="Asia/Singapore">新加坡</option>
+                    <option value="America/Los_Angeles">洛杉磯</option>
+                    <option value="America/New_York">紐約</option>
+                    <option value="Europe/London">倫敦</option>
+                  </select>
+                </label>
+              </div>
               <label className="block">
                 <span className="mb-2 block text-sm font-semibold">
                   關鍵字偏好（選填）
@@ -608,7 +645,7 @@ function HomeView({
       <section className="mt-14 flex flex-col items-start justify-between gap-6 border-y border-border py-8 sm:flex-row sm:items-center">
         <div>
           <h2 className="text-2xl font-semibold">
-            每天早上 10:00，直接收到重點
+            在你指定的時間，直接收到每日重點
           </h2>
           <p className="mt-2 text-muted-foreground">
             可設定關鍵字與領域；正式寄送前需要驗證 Email。

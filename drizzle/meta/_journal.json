@@ -15,6 +15,13 @@
       "when": 1788934590251,
       "tag": "0001_greedy_wasp",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1788948018791,
+      "tag": "0002_exotic_lifeguard",
+      "breakpoints": true
     }
   ]
 }

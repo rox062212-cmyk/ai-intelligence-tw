@@ -10,6 +10,8 @@ export const subscriptions = sqliteTable('subscriptions', {
   id: integer('id').primaryKey({ autoIncrement: true }),
   email: text('email').notNull().unique(),
   keywords: text('keywords').notNull().default('[]'),
+  sendTime: text('send_time').notNull().default('10:00'),
+  timeZone: text('time_zone').notNull().default('Asia/Taipei'),
   status: text('status').notNull().default('pending'),
   verificationToken: text('verification_token').notNull(),
   createdAt: text('created_at').notNull(),
