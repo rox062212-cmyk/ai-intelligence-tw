@@ -374,7 +374,6 @@ export default function SiteClient({ user }: { user: ChatGPTUser | null }) {
       {view === 'search' && (
         <SearchView
           query={query}
-          setQuery={setQuery}
           categories={categories}
           category={category}
           setCategory={setCategory}
@@ -953,7 +952,6 @@ function CalendarView({
 
 function SearchView({
   query,
-  setQuery,
   categories,
   category,
   setCategory,
@@ -961,7 +959,6 @@ function SearchView({
   onArticle,
 }: {
   query: string;
-  setQuery: (value: string) => void;
   categories: string[];
   category: string;
   setCategory: (value: string) => void;
@@ -973,17 +970,7 @@ function SearchView({
       <h1 className="font-serif text-4xl font-medium sm:text-5xl">
         搜尋所有 AI 情報
       </h1>
-      <div className="relative mt-7">
-        <Search className="absolute left-4 top-1/2 size-5 -translate-y-1/2 text-muted-foreground" />
-        <input
-          autoFocus
-          value={query}
-          onChange={(event) => setQuery(event.target.value)}
-          className="h-14 w-full rounded-full border border-input bg-transparent pl-12 pr-5 text-lg outline-none focus:ring-2 focus:ring-ring"
-          placeholder="輸入模型、公司、領域或關鍵字"
-        />
-      </div>
-      <div className="mt-6 flex flex-wrap gap-2">
+      <div className="mt-7 flex flex-wrap gap-2">
         {categories.map((item) => (
           <button
             key={item}
