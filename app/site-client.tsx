@@ -18,6 +18,7 @@ import type { ChatGPTUser } from './chatgpt-auth';
 import {
   articles,
   calendarEvents,
+  dailyBriefing,
   dailyPoints,
   type Article,
 } from '@/lib/content';
@@ -361,15 +362,7 @@ export default function SiteClient({ user }: { user: ChatGPTUser | null }) {
           onSubscribe={() => setSubscribeOpen(true)}
         />
       )}
-      {view === 'daily' && (
-        <DailyView
-          onArticle={(id) =>
-            openArticle(
-              articles.find((article) => article.id === id) ?? articles[0],
-            )
-          }
-        />
-      )}
+      {view === 'daily' && <DailyView />}
       {view === 'calendar' && (
         <CalendarView
           filters={eventTypes}
@@ -701,43 +694,101 @@ function HomeView({
   );
 }
 
-function DailyView({ onArticle }: { onArticle: (id: string) => void }) {
+function DailyView() {
   return (
-    <main className="mx-auto max-w-4xl px-4 py-12 lg:px-8">
-      <p className="text-sm font-semibold tracking-widest text-muted-foreground">
-        每日更新・最後整理 09:20
-      </p>
-      <h1 className="mt-4 font-serif text-4xl font-medium tracking-tight sm:text-5xl">
-        每日 AI 重點｜2026 年 9 月 10 日
-      </h1>
-      <p className="mt-5 text-xl leading-9 text-muted-foreground">
-        今天的核心不是又多了一個模型，而是 AI
-        產品正從「回答問題」走向「完成工作」。
-      </p>
-      <div className="mt-10 border-t border-foreground">
-        {dailyPoints.map((point, index) => (
-          <article
-            key={point.title}
-            className="grid gap-4 border-b border-border py-8 sm:grid-cols-[4rem_1fr]"
-          >
-            <span className="font-serif text-3xl text-muted-foreground">
-              {String(index + 1).padStart(2, '0')}
-            </span>
-            <div>
-              <h2 className="text-2xl font-semibold">{point.title}</h2>
-              <p className="mt-3 text-lg leading-8 text-muted-foreground">
-                {point.text}
-              </p>
-              <button
-                onClick={() => onArticle(point.articleId)}
-                className="mt-4 font-semibold underline underline-offset-4"
+    <main className="mx-auto max-w-5xl px-4 py-12 lg:px-8 lg:py-16">
+      <article className="mx-auto max-w-3xl">
+        <p className="text-sm font-semibold tracking-widest text-muted-foreground">
+          每日更新・最後整理 {dailyBriefing.updatedAt}・約{' '}
+          {dailyBriefing.readingMinutes} 分鐘閱讀
+        </p>
+        <h1 className="mt-4 font-serif text-4xl font-medium leading-tight tracking-tight sm:text-6xl">
+          {dailyBriefing.title}
+        </h1>
+        <p className="mt-4 text-sm font-semibold tracking-wide text-muted-foreground">
+          每日 AI 重點｜{dailyBriefing.date}
+        </p>
+        <p className="mt-7 text-xl leading-9 text-muted-foreground sm:text-2xl sm:leading-10">
+          {dailyBriefing.summary}
+        </p>
+
+        <p className="mt-10 border-y border-foreground py-8 text-lg leading-9">
+          {dailyBriefing.lead}
+        </p>
+
+        <div className="mt-12 space-y-14">
+          {dailyBriefing.sections.map((section) => (
+            <section key={section.heading}>
+              <h2 className="font-serif text-3xl font-medium leading-tight">
+                {section.heading}
+              </h2>
+              <div className="mt-5 space-y-5">
+                {section.paragraphs.map((paragraph) => (
+                  <p
+                    key={paragraph.text}
+                    className="text-lg leading-9 text-muted-foreground"
+                  >
+                    {paragraph.text}{' '}
+                    {paragraph.citations.map((citation) => (
+                      <a
+                        key={citation}
+                        href={`#daily-source-${citation}`}
+                        className="font-semibold text-foreground underline decoration-border underline-offset-4"
+                        aria-label={`前往來源 ${citation}`}
+                      >
+                        [{citation}]
+                      </a>
+                    ))}
+                  </p>
+                ))}
+              </div>
+            </section>
+          ))}
+        </div>
+
+        <section className="mt-14 border-l-4 border-foreground bg-secondary p-6 sm:p-8">
+          <p className="text-sm font-semibold tracking-widest text-muted-foreground">
+            今日結論
+          </p>
+          <p className="mt-3 text-xl font-medium leading-9">
+            {dailyBriefing.conclusion}
+          </p>
+        </section>
+
+        <section className="mt-14 border-t border-foreground pt-8">
+          <h2 className="text-2xl font-semibold">本文來源</h2>
+          <p className="mt-2 text-muted-foreground">
+            本文綜合下列公開資料撰寫；點擊可直接閱讀原文。
+          </p>
+          <ol className="mt-6 space-y-4">
+            {dailyBriefing.sources.map((source) => (
+              <li
+                id={`daily-source-${source.id}`}
+                key={source.id}
+                className="grid gap-2 border-b border-border pb-4 sm:grid-cols-[2rem_1fr_auto] sm:items-start"
               >
-                查看情報與來源 →
-              </button>
-            </div>
-          </article>
-        ))}
-      </div>
+                <span className="font-serif text-xl text-muted-foreground">
+                  {String(source.id).padStart(2, '0')}
+                </span>
+                <span>
+                  <strong className="block">{source.title}</strong>
+                  <small className="text-muted-foreground">
+                    {source.name}・{source.type}
+                  </small>
+                </span>
+                <a
+                  href={source.url}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center gap-1 font-semibold underline underline-offset-4"
+                >
+                  閱讀原文 <ExternalLink className="size-4" />
+                </a>
+              </li>
+            ))}
+          </ol>
+        </section>
+      </article>
     </main>
   );
 }
