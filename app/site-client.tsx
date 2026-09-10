@@ -610,7 +610,7 @@ function HomeView({
               className="border-b border-border py-5 last:border-0"
             >
               <div className="text-sm text-muted-foreground">
-                {event.date.slice(5).replace('-', '/')}・{event.status}
+                {event.date.slice(5).replace('-', '/')}
               </div>
               <strong className="mt-1 block">{event.title}</strong>
               <span className="mt-1 block text-sm text-muted-foreground">
@@ -772,6 +772,20 @@ function CalendarView({
     );
   };
 
+  const typeStyles: Record<string, string> = {
+    活動: 'border-violet-500 bg-violet-50 text-violet-950 dark:bg-violet-950/55 dark:text-violet-100',
+    研究: 'border-sky-500 bg-sky-50 text-sky-950 dark:bg-sky-950/55 dark:text-sky-100',
+    產業: 'border-amber-500 bg-amber-50 text-amber-950 dark:bg-amber-950/55 dark:text-amber-100',
+    教育: 'border-emerald-500 bg-emerald-50 text-emerald-950 dark:bg-emerald-950/55 dark:text-emerald-100',
+    政策: 'border-rose-500 bg-rose-50 text-rose-950 dark:bg-rose-950/55 dark:text-rose-100',
+    競賽: 'border-fuchsia-500 bg-fuchsia-50 text-fuchsia-950 dark:bg-fuchsia-950/55 dark:text-fuchsia-100',
+    模型: 'border-indigo-500 bg-indigo-50 text-indigo-950 dark:bg-indigo-950/55 dark:text-indigo-100',
+    產品更新: 'border-teal-500 bg-teal-50 text-teal-950 dark:bg-teal-950/55 dark:text-teal-100',
+    停止服務: 'border-orange-500 bg-orange-50 text-orange-950 dark:bg-orange-950/55 dark:text-orange-100',
+  };
+  const fallbackStyle =
+    'border-slate-500 bg-slate-100 text-slate-950 dark:bg-slate-800 dark:text-slate-100';
+
   return (
     <main className="mx-auto max-w-7xl px-4 py-12 lg:px-8">
       <div className="flex flex-col justify-between gap-5 sm:flex-row sm:items-end">
@@ -847,12 +861,17 @@ function CalendarView({
                       href={event.source}
                       target="_blank"
                       rel="noreferrer"
-                      className="mt-2 block rounded-lg bg-secondary p-2 text-xs leading-5"
+                      className={`mt-2 block rounded-lg border-l-4 p-2 text-xs leading-5 transition hover:brightness-95 dark:hover:brightness-110 ${typeStyles[event.type] ?? fallbackStyle}`}
                     >
                       <strong className="block">{event.title}</strong>
-                      <span className="text-muted-foreground">
-                        {event.status}・{event.type}
+                      <span className="opacity-70">
+                        {event.type}・{event.format}
                       </span>
+                      {event.status !== '已確認' && (
+                        <span className="mt-1 block font-semibold">
+                          {event.status === '預計' ? '○ 預計' : '△ 傳聞'}
+                        </span>
+                      )}
                     </a>
                   ))}
                 </div>
@@ -861,10 +880,21 @@ function CalendarView({
           </div>
         </div>
       </div>
-      <div className="mt-6 flex flex-wrap gap-5 text-sm text-muted-foreground">
+      <div className="mt-6 flex flex-wrap gap-x-5 gap-y-3 text-sm text-muted-foreground">
+        {Object.entries(typeStyles)
+          .filter(([type]) => filters.includes(type))
+          .map(([type, styles]) => (
+            <span key={type} className="flex items-center gap-2">
+              <i
+                aria-hidden="true"
+                className={`size-3 rounded-sm border-l-4 ${styles}`}
+              />
+              {type}
+            </span>
+          ))}
         <span>● 已確認：官方公布明確日期</span>
-        <span>○ 預計：只有大概時間</span>
-        <span>△ 傳聞：尚未獲官方證實</span>
+        <span>○ 預計：官方僅公布時間範圍</span>
+        <span>△ 傳聞：至少兩個可信來源支持，尚未官宣</span>
       </div>
     </main>
   );
