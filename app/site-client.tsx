@@ -753,7 +753,25 @@ function CalendarView({
   setFilter: (value: string) => void;
   events: typeof calendarEvents;
 }) {
-  const days = Array.from({ length: 30 }, (_, i) => i + 1);
+  const [visibleMonth, setVisibleMonth] = useState('2026-09');
+  const [year, month] = visibleMonth.split('-').map(Number);
+  const dayCount = new Date(Date.UTC(year, month, 0)).getUTCDate();
+  const leadingBlanks =
+    (new Date(Date.UTC(year, month - 1, 1)).getUTCDay() + 6) % 7;
+  const days = Array.from({ length: dayCount }, (_, i) => i + 1);
+  const monthLabel = new Intl.DateTimeFormat('zh-TW', {
+    year: 'numeric',
+    month: 'long',
+    timeZone: 'UTC',
+  }).format(new Date(Date.UTC(year, month - 1, 1)));
+
+  const moveMonth = (offset: number) => {
+    const next = new Date(Date.UTC(year, month - 1 + offset, 1));
+    setVisibleMonth(
+      `${next.getUTCFullYear()}-${String(next.getUTCMonth() + 1).padStart(2, '0')}`,
+    );
+  };
+
   return (
     <main className="mx-auto max-w-7xl px-4 py-12 lg:px-8">
       <div className="flex flex-col justify-between gap-5 sm:flex-row sm:items-end">
@@ -770,13 +788,15 @@ function CalendarView({
         </div>
         <div className="flex items-center gap-3">
           <button
+            onClick={() => moveMonth(-1)}
             className="grid size-10 place-items-center rounded-full border border-border"
             aria-label="上個月"
           >
             <ChevronLeft />
           </button>
-          <strong>2026 年 9 月</strong>
+          <strong className="min-w-28 text-center">{monthLabel}</strong>
           <button
+            onClick={() => moveMonth(1)}
             className="grid size-10 place-items-center rounded-full border border-border"
             aria-label="下個月"
           >
@@ -805,8 +825,15 @@ function CalendarView({
             ))}
           </div>
           <div className="grid grid-cols-7">
+            {Array.from({ length: leadingBlanks }, (_, index) => (
+              <div
+                key={`blank-${index}`}
+                aria-hidden="true"
+                className="min-h-32 border-b border-r border-border bg-secondary/20"
+              />
+            ))}
             {days.map((day) => {
-              const date = `2026-09-${String(day).padStart(2, '0')}`;
+              const date = `${visibleMonth}-${String(day).padStart(2, '0')}`;
               const dayEvents = events.filter((event) => event.date === date);
               return (
                 <div
