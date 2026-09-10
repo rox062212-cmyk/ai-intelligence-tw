@@ -68,10 +68,7 @@
       "indexes": {
         "idx_comments_article_created": {
           "name": "idx_comments_article_created",
-          "columns": [
-            "article_id",
-            "created_at"
-          ],
+          "columns": ["article_id", "created_at"],
           "isUnique": false
         }
       },
@@ -115,10 +112,7 @@
       "indexes": {
         "idx_saved_user_article": {
           "name": "idx_saved_user_article",
-          "columns": [
-            "user_id",
-            "article_id"
-          ],
+          "columns": ["user_id", "article_id"],
           "isUnique": true
         }
       },
@@ -201,9 +195,7 @@
       "indexes": {
         "subscriptions_email_unique": {
           "name": "subscriptions_email_unique",
-          "columns": [
-            "email"
-          ],
+          "columns": ["email"],
           "isUnique": true
         }
       },

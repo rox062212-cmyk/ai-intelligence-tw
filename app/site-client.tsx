@@ -547,6 +547,9 @@ function HomeView({
   onSubscribe: () => void;
 }) {
   const latestRail = useRef<HTMLDivElement>(null);
+  const sourceCount = new Set(
+    articles.flatMap((article) => article.sources.map((source) => source.url)),
+  ).size;
 
   const scrollLatest = (direction: -1 | 1) => {
     latestRail.current?.scrollBy({
@@ -558,7 +561,7 @@ function HomeView({
   return (
     <main className="mx-auto max-w-7xl px-4 py-10 lg:px-8">
       <p className="text-sm font-semibold tracking-widest text-muted-foreground">
-        2026 年 9 月 9 日・今日情報已更新
+        2026 年 9 月 10 日・今日情報已更新
       </p>
       <h1 className="mt-4 max-w-4xl font-serif text-4xl font-medium leading-tight tracking-tight sm:text-5xl">
         今天的 AI 發生了什麼，十分鐘讀懂真正重要的變化
@@ -571,7 +574,7 @@ function HomeView({
           <div className="flex items-center justify-between">
             <h2 className="text-2xl font-semibold">每日 AI 重點</h2>
             <span className="text-sm text-muted-foreground">
-              整合 42 個來源
+              整合 {sourceCount} 個來源
             </span>
           </div>
           <ol className="mt-5 space-y-4">
@@ -705,7 +708,7 @@ function DailyView({ onArticle }: { onArticle: (id: string) => void }) {
         每日更新・最後整理 09:20
       </p>
       <h1 className="mt-4 font-serif text-4xl font-medium tracking-tight sm:text-5xl">
-        每日 AI 重點｜2026 年 9 月 9 日
+        每日 AI 重點｜2026 年 9 月 10 日
       </h1>
       <p className="mt-5 text-xl leading-9 text-muted-foreground">
         今天的核心不是又多了一個模型，而是 AI
