@@ -556,10 +556,10 @@ function HomeView({
         2026 年 9 月 10 日・今日情報已更新
       </p>
       <h1 className="mt-4 max-w-4xl font-serif text-4xl font-medium leading-tight tracking-tight sm:text-5xl">
-        今天的 AI 發生了什麼，十分鐘讀懂真正重要的變化
+        掌握 AI 現況，也查得到每一次重要變化
       </h1>
       <p className="mt-4 max-w-3xl text-lg leading-8 text-muted-foreground">
-        多來源蒐集、交叉查證與重新整理。每項結論都能回到原始資料。
+        每日整理最新 AI 情報，並持續保存可搜尋的歷史紀錄；每項結論都能回到原始資料。
       </p>
       <div className="mt-10 grid gap-5 lg:grid-cols-[1.7fr_0.8fr]">
         <section className="rounded-2xl border border-border border-t-4 border-t-foreground bg-card p-6 sm:p-8">
