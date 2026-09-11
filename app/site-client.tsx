@@ -811,7 +811,19 @@ function CalendarView({
   setFilter: (value: string) => void;
   events: typeof calendarEvents;
 }) {
-  const [visibleMonth, setVisibleMonth] = useState('2026-09');
+  const taipeiDateParts = new Intl.DateTimeFormat('en', {
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    timeZone: 'Asia/Taipei',
+  })
+    .formatToParts(new Date())
+    .reduce<Record<string, string>>((parts, part) => {
+      if (part.type !== 'literal') parts[part.type] = part.value;
+      return parts;
+    }, {});
+  const todayDate = `${taipeiDateParts.year}-${taipeiDateParts.month}-${taipeiDateParts.day}`;
+  const [visibleMonth, setVisibleMonth] = useState(todayDate.slice(0, 7));
   const [year, month] = visibleMonth.split('-').map(Number);
   const dayCount = new Date(Date.UTC(year, month, 0)).getUTCDate();
   const leadingBlanks =
@@ -906,13 +918,25 @@ function CalendarView({
             ))}
             {days.map((day) => {
               const date = `${visibleMonth}-${String(day).padStart(2, '0')}`;
+              const isToday = date === todayDate;
               const dayEvents = events.filter((event) => event.date === date);
               return (
                 <div
                   key={day}
-                  className="min-h-32 border-b border-r border-border p-2"
+                  className={`min-h-32 border-b border-r border-border p-2 ${isToday ? 'relative z-10 bg-secondary/50 ring-2 ring-inset ring-foreground' : ''}`}
                 >
-                  <span className="text-sm text-muted-foreground">{day}</span>
+                  <div className="flex items-center justify-between gap-2">
+                    <span
+                      className={`grid size-8 place-items-center rounded-full text-sm font-semibold ${isToday ? 'bg-foreground text-background' : 'text-muted-foreground'}`}
+                    >
+                      {day}
+                    </span>
+                    {isToday && (
+                      <span className="rounded-full border border-foreground px-2 py-0.5 text-xs font-bold">
+                        今天
+                      </span>
+                    )}
+                  </div>
                   {dayEvents.map((event) => (
                     <a
                       key={event.id}
