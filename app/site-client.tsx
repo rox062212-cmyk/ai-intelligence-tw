@@ -538,6 +538,12 @@ function HomeView({
   onSubscribe: () => void;
 }) {
   const latestRail = useRef<HTMLDivElement>(null);
+  const todayLabel = new Intl.DateTimeFormat('zh-TW', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+    timeZone: 'Asia/Taipei',
+  }).format(new Date());
   const sourceCount = new Set(
     articles.flatMap((article) => article.sources.map((source) => source.url)),
   ).size;
@@ -551,8 +557,11 @@ function HomeView({
 
   return (
     <main className="mx-auto max-w-7xl px-4 py-10 lg:px-8">
-      <p className="text-sm font-semibold tracking-widest text-muted-foreground">
-        2026 年 9 月 10 日・今日情報已更新
+      <p
+        suppressHydrationWarning
+        className="text-sm font-semibold tracking-widest text-muted-foreground"
+      >
+        {todayLabel}・每日持續更新
       </p>
       <h1 className="mt-4 max-w-4xl font-serif text-4xl font-medium leading-tight tracking-tight sm:text-5xl">
         掌握 AI 現況，也查得到每一次重要變化
