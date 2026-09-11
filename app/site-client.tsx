@@ -846,7 +846,7 @@ function CalendarView({
             AI 日曆
           </h1>
           <p className="mt-3 text-muted-foreground">
-            傳聞不會被當成正式日期，所有行程均附原始來源。
+            收錄已確認、預計與可信傳聞，每筆行程均標示狀態並附上原始來源。
           </p>
         </div>
         <div className="flex items-center gap-3">
@@ -916,11 +916,13 @@ function CalendarView({
                       <span className="opacity-70">
                         {event.type}・{event.format}
                       </span>
-                      {event.status !== '已確認' && (
-                        <span className="mt-1 block font-semibold">
-                          {event.status === '預計' ? '○ 預計' : '△ 傳聞'}
-                        </span>
-                      )}
+                      <span className="mt-1 block font-semibold">
+                        {event.status === '已確認'
+                          ? '● 已確認'
+                          : event.status === '預計'
+                            ? '○ 預計'
+                            : '△ 傳聞'}
+                      </span>
                     </a>
                   ))}
                 </div>
