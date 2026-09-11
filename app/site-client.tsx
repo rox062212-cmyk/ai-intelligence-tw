@@ -925,18 +925,11 @@ function CalendarView({
                   key={day}
                   className={`min-h-32 border-b border-r border-border p-2 ${isToday ? 'relative z-10 bg-secondary/50 ring-2 ring-inset ring-foreground' : ''}`}
                 >
-                  <div className="flex items-center justify-between gap-2">
-                    <span
-                      className={`grid size-8 place-items-center rounded-full text-sm font-semibold ${isToday ? 'bg-foreground text-background' : 'text-muted-foreground'}`}
-                    >
-                      {day}
-                    </span>
-                    {isToday && (
-                      <span className="rounded-full border border-foreground px-2 py-0.5 text-xs font-bold">
-                        今天
-                      </span>
-                    )}
-                  </div>
+                  <span
+                    className={`grid size-8 place-items-center rounded-full text-sm font-semibold ${isToday ? 'bg-foreground text-background' : 'text-muted-foreground'}`}
+                  >
+                    {day}
+                  </span>
                   {dayEvents.map((event) => (
                     <a
                       key={event.id}
