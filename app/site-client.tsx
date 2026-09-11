@@ -19,7 +19,6 @@ import {
   articles,
   calendarEvents,
   dailyBriefing,
-  dailyPoints,
   type Article,
 } from '@/lib/content';
 
@@ -544,10 +543,6 @@ function HomeView({
     day: 'numeric',
     timeZone: 'Asia/Taipei',
   }).format(new Date());
-  const sourceCount = new Set(
-    articles.flatMap((article) => article.sources.map((source) => source.url)),
-  ).size;
-
   const scrollLatest = (direction: -1 | 1) => {
     latestRail.current?.scrollBy({
       left: direction * latestRail.current.clientWidth,
@@ -574,24 +569,15 @@ function HomeView({
           <div className="flex items-center justify-between">
             <h2 className="text-2xl font-semibold">每日 AI 重點</h2>
             <span className="text-sm text-muted-foreground">
-              整合 {sourceCount} 個來源
+              整合 {dailyBriefing.sources.length} 個來源
             </span>
           </div>
-          <ol className="mt-5 space-y-4">
-            {dailyPoints.map((point, index) => (
-              <li key={point.title} className="grid grid-cols-[2rem_1fr] gap-2">
-                <span className="font-serif text-xl text-muted-foreground">
-                  {String(index + 1).padStart(2, '0')}
-                </span>
-                <div>
-                  <strong>{point.title}</strong>
-                  <p className="mt-1 leading-7 text-muted-foreground">
-                    {point.text}
-                  </p>
-                </div>
-              </li>
-            ))}
-          </ol>
+          <h3 className="mt-6 max-w-2xl font-serif text-3xl font-medium leading-tight">
+            {dailyBriefing.title}
+          </h3>
+          <p className="mt-3 max-w-2xl text-lg leading-8 text-muted-foreground">
+            五分鐘掌握今天 AI 產業的重要變化、實際影響與後續觀察。
+          </p>
           <button
             onClick={onDaily}
             className="mt-6 font-semibold underline underline-offset-4"
