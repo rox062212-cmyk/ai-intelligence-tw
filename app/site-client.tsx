@@ -29,7 +29,6 @@ type Comment = { id: number; author: string; body: string; createdAt: string };
 
 const nav: { id: View; label: string }[] = [
   { id: 'home', label: '首頁' },
-  { id: 'daily', label: '每日 AI 重點' },
   { id: 'calendar', label: 'AI 日曆' },
 ];
 
