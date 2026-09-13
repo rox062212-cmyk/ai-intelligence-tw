@@ -703,6 +703,16 @@ export const calendarEvents = [
     format: '實體',
     source: 'https://www.nvidia.com/en-us/events/mobile-world-congress/',
   },
+  {
+    id: 20,
+    date: '2026-09-15',
+    title: 'OpenAI Codex 社群聚會（台中）',
+    type: '活動',
+    company: 'OpenAI Developers Community',
+    status: '已確認',
+    format: '實體',
+    source: 'https://developers.openai.com/community/meetups?city=Taichung',
+  },
 ];
 
 export const dailyPoints = [
