@@ -713,6 +713,39 @@ export const calendarEvents = [
     format: '實體',
     source: 'https://developers.openai.com/community/meetups?city=Taichung',
   },
+  {
+    id: 21,
+    date: '2026-09-13',
+    title: 'Azure Computer Vision API v1.0–v3.1 停止支援',
+    type: '停止服務',
+    company: 'Microsoft Azure',
+    status: '已確認',
+    format: '線上',
+    source:
+      'https://learn.microsoft.com/en-us/lifecycle/end-of-support/end-of-support-2026',
+  },
+  {
+    id: 22,
+    date: '2026-09-13',
+    title: 'Microsoft Foundry IQ Serverless 開始計費',
+    type: '產品更新',
+    company: 'Microsoft Foundry',
+    status: '已確認',
+    format: '線上',
+    source:
+      'https://devblogs.microsoft.com/foundry/build-smarter-agents-faster-with-foundry-iq/',
+  },
+  {
+    id: 23,
+    date: '2026-10-01',
+    title: 'Azure Anomaly Detector、Metrics Advisor 與 Personalizer 退役',
+    type: '停止服務',
+    company: 'Microsoft Azure',
+    status: '已確認',
+    format: '線上',
+    source:
+      'https://learn.microsoft.com/en-us/lifecycle/end-of-support/end-of-support-2026',
+  },
 ];
 
 export const dailyPoints = [
