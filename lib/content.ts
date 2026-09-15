@@ -534,7 +534,7 @@ export const calendarEvents = [
   {
     id: 26,
     date: '2026-04-24',
-    title: 'Google 四月 Gemini Drop 上線',
+    title: 'Google 四月 Gemini 功能更新（Gemini Drop）上線',
     type: '產品更新',
     company: 'Google',
     status: '已確認',
@@ -556,7 +556,7 @@ export const calendarEvents = [
   {
     id: 28,
     date: '2026-05-28',
-    title: 'Anthropic 完成 650 億美元 Series H 融資',
+    title: 'Anthropic 完成 650 億美元 H 輪融資（Series H）',
     type: '產業',
     company: 'Anthropic',
     status: '已確認',
@@ -637,7 +637,7 @@ export const calendarEvents = [
   {
     id: 1,
     date: '2026-09-09',
-    title: 'EASA Artificial Intelligence Days 2026',
+    title: 'EASA 2026 人工智慧日（AI Days）',
     type: '政策',
     company: 'EASA',
     status: '已確認',
@@ -648,7 +648,7 @@ export const calendarEvents = [
   {
     id: 2,
     date: '2026-09-10',
-    title: 'IEEE CIFEr 2026 金融工程與經濟計算智慧研討會',
+    title: 'IEEE 2026 金融工程與經濟計算智慧研討會（CIFEr）',
     type: '研究',
     company: 'IEEE',
     status: '已確認',
@@ -658,7 +658,7 @@ export const calendarEvents = [
   {
     id: 3,
     date: '2026-09-10',
-    title: 'ITU AI/ML Challenge：網路流量應用推論',
+    title: 'ITU 人工智慧與機器學習挑戰賽（AI/ML Challenge）：網路流量應用推論',
     type: '競賽',
     company: 'ITU AI for Good',
     status: '已確認',
@@ -668,7 +668,7 @@ export const calendarEvents = [
   {
     id: 4,
     date: '2026-09-14',
-    title: 'AI Readiness Hackathon — Saudi Arabia',
+    title: '沙烏地阿拉伯人工智慧整備黑客松（AI Readiness Hackathon）',
     type: '競賽',
     company: 'ITU AI for Good',
     status: '已確認',
@@ -678,7 +678,7 @@ export const calendarEvents = [
   {
     id: 5,
     date: '2026-09-15',
-    title: 'AI Infra Summit 2026',
+    title: '2026 人工智慧基礎設施高峰會（AI Infra Summit）',
     type: '產業',
     company: 'NVIDIA Events',
     status: '已確認',
@@ -688,7 +688,7 @@ export const calendarEvents = [
   {
     id: 6,
     date: '2026-09-15',
-    title: 'IEEE International Conference on Development and Learning',
+    title: 'IEEE 發展與學習國際研討會（ICDL）',
     type: '研究',
     company: 'IEEE',
     status: '已確認',
@@ -698,7 +698,7 @@ export const calendarEvents = [
   {
     id: 7,
     date: '2026-09-15',
-    title: 'Machine Learning for ICT Infrastructure Detection',
+    title: '運用機器學習偵測資通訊基礎設施（Machine Learning for ICT Infrastructure Detection）',
     type: '研究',
     company: 'ITU AI for Good',
     status: '已確認',
@@ -708,7 +708,7 @@ export const calendarEvents = [
   {
     id: 8,
     date: '2026-09-16',
-    title: 'CLAIR：Conference on Leadership & AI in Research',
+    title: 'CLAIR 研究領導力與人工智慧研討會',
     type: '研究',
     company: 'CLAIR',
     status: '已確認',
@@ -718,7 +718,7 @@ export const calendarEvents = [
   {
     id: 9,
     date: '2026-09-19',
-    title: 'Google AI Educator Series 線上學習活動',
+    title: 'Google 人工智慧教育工作者系列（AI Educator Series）線上活動',
     type: '教育',
     company: 'Google',
     status: '已確認',
@@ -729,7 +729,7 @@ export const calendarEvents = [
   {
     id: 10,
     date: '2026-09-21',
-    title: 'International Artificial Intelligence Symposium 2026',
+    title: '2026 國際人工智慧研討會（International AI Symposium）',
     type: '研究',
     company: 'ICAS',
     status: '已確認',
@@ -739,7 +739,7 @@ export const calendarEvents = [
   {
     id: 11,
     date: '2026-09-22',
-    title: 'NVIDIA AI Day Singapore',
+    title: 'NVIDIA 新加坡人工智慧日（AI Day Singapore）',
     type: '產業',
     company: 'NVIDIA',
     status: '已確認',
@@ -749,7 +749,7 @@ export const calendarEvents = [
   {
     id: 12,
     date: '2026-09-22',
-    title: 'Open World Embodied Intelligence',
+    title: '開放世界具身智慧（Open World Embodied Intelligence）',
     type: '研究',
     company: 'ITU AI for Good',
     status: '已確認',
@@ -759,7 +759,7 @@ export const calendarEvents = [
   {
     id: 13,
     date: '2026-10-01',
-    title: 'IEEE Tech Summit：Ethical AI',
+    title: 'IEEE 科技高峰會：合乎倫理的人工智慧（Ethical AI）',
     type: '政策',
     company: 'IEEE',
     status: '已確認',
@@ -769,7 +769,7 @@ export const calendarEvents = [
   {
     id: 14,
     date: '2026-10-04',
-    title: 'IEEE Systems, Man, and Cybernetics Conference',
+    title: 'IEEE 系統、人類與控制論研討會（SMC Conference）',
     type: '研究',
     company: 'IEEE',
     status: '已確認',
@@ -779,7 +779,7 @@ export const calendarEvents = [
   {
     id: 15,
     date: '2026-11-09',
-    title: 'NVIDIA AI Day Seoul',
+    title: 'NVIDIA 首爾人工智慧日（AI Day Seoul）',
     type: '產業',
     company: 'NVIDIA',
     status: '已確認',
@@ -789,7 +789,7 @@ export const calendarEvents = [
   {
     id: 16,
     date: '2026-12-06',
-    title: 'NeurIPS 2026 與 NVIDIA AI 研究展示',
+    title: 'NeurIPS 2026 與 NVIDIA 人工智慧研究展示',
     type: '研究',
     company: 'NeurIPS／NVIDIA',
     status: '已確認',
@@ -799,7 +799,7 @@ export const calendarEvents = [
   {
     id: 17,
     date: '2026-12-13',
-    title: 'IEEE Quantum Artificial Intelligence Conference',
+    title: 'IEEE 量子人工智慧研討會（Quantum AI Conference）',
     type: '研究',
     company: 'IEEE',
     status: '已確認',
@@ -819,7 +819,7 @@ export const calendarEvents = [
   {
     id: 19,
     date: '2027-03-01',
-    title: 'Mobile World Congress Barcelona 2027',
+    title: '2027 巴塞隆納世界行動通訊大會（MWC Barcelona）',
     type: '產業',
     company: 'MWC／NVIDIA',
     status: '已確認',
@@ -831,7 +831,7 @@ export const calendarEvents = [
     date: '2026-09-15',
     title: 'OpenAI Codex 社群聚會（台中）',
     type: '活動',
-    company: 'OpenAI Developers Community',
+    company: 'OpenAI 開發者社群',
     status: '已確認',
     format: '實體',
     source: 'https://developers.openai.com/community/meetups?city=Taichung',
@@ -839,7 +839,7 @@ export const calendarEvents = [
   {
     id: 21,
     date: '2026-09-13',
-    title: 'Azure Computer Vision API v1.0–v3.1 停止支援',
+    title: 'Azure 電腦視覺介面（Computer Vision API）v1.0–v3.1 停止支援',
     type: '停止服務',
     company: 'Microsoft Azure',
     status: '已確認',
@@ -850,7 +850,7 @@ export const calendarEvents = [
   {
     id: 22,
     date: '2026-09-13',
-    title: 'Microsoft Foundry IQ Serverless 開始計費',
+    title: 'Microsoft Foundry IQ 無伺服器服務（Serverless）開始計費',
     type: '產品更新',
     company: 'Microsoft Foundry',
     status: '已確認',
