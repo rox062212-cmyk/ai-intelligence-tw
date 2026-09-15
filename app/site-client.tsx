@@ -12,6 +12,8 @@ import {
   MessageCircle,
   Search,
   Settings,
+  ShieldCheck,
+  Trash2,
   X,
 } from 'lucide-react';
 import type { ChatGPTUser } from './chatgpt-auth';
@@ -22,17 +24,43 @@ import {
   type Article,
 } from '@/lib/content';
 
-type View = 'home' | 'daily' | 'calendar' | 'search' | 'article';
+type View = 'home' | 'daily' | 'calendar' | 'search' | 'article' | 'admin';
 type Theme = 'system' | 'light' | 'dark';
 type Comment = { id: number; author: string; body: string; createdAt: string };
+type AdminSubscription = {
+  id: number;
+  email: string;
+  keywords: string;
+  status: string;
+  sendTime: string;
+  timeZone: string;
+  createdAt: string;
+  updatedAt: string;
+};
+type AdminComment = {
+  id: number;
+  articleId: string;
+  authorName: string;
+  authorEmail: string;
+  body: string;
+  status: string;
+  createdAt: string;
+};
 
 const nav: { id: View; label: string }[] = [
   { id: 'home', label: '首頁' },
   { id: 'calendar', label: 'AI 日曆' },
 ];
 
-export default function SiteClient({ user }: { user: ChatGPTUser | null }) {
-  const [view, setView] = useState<View>('home');
+export default function SiteClient({
+  user,
+  initialView = 'home',
+}: {
+  user: ChatGPTUser | null;
+  initialView?: View;
+}) {
+  const isAdmin = user?.email.toLowerCase() === 'rox062212@gmail.com';
+  const [view, setView] = useState<View>(initialView);
   const [selected, setSelected] = useState<Article>(articles[0]);
   const [query, setQuery] = useState('');
   const [category, setCategory] = useState('全部');
@@ -271,6 +299,14 @@ export default function SiteClient({ user }: { user: ChatGPTUser | null }) {
                 {item.label}
               </button>
             ))}
+            {isAdmin && (
+              <button
+                onClick={() => { window.location.href = '/admin'; }}
+                className={`whitespace-nowrap rounded-full px-3 py-2 text-sm ${view === 'admin' ? 'bg-secondary font-semibold' : 'text-muted-foreground hover:text-foreground'}`}
+              >
+                管理後台
+              </button>
+            )}
           </nav>
           <form
             onSubmit={(event) => {
@@ -341,6 +377,14 @@ export default function SiteClient({ user }: { user: ChatGPTUser | null }) {
                   {item.label}
                 </button>
               ))}
+              {isAdmin && (
+                <button
+                  onClick={() => { window.location.href = '/admin'; }}
+                  className="border-b border-border py-3 text-left"
+                >
+                  管理後台
+                </button>
+              )}
               <button
                 onClick={() => setSubscribeOpen(true)}
                 className="py-3 text-left"
@@ -390,6 +434,7 @@ export default function SiteClient({ user }: { user: ChatGPTUser | null }) {
           onBack={() => go('home')}
         />
       )}
+      {view === 'admin' && isAdmin && <AdminView adminEmail={user.email} />}
 
       <footer className="mt-16 border-t border-border">
         <div className="mx-auto flex max-w-7xl flex-col justify-between gap-4 px-4 py-8 text-sm text-muted-foreground sm:flex-row lg:px-8">
@@ -1177,6 +1222,173 @@ function ArticleView({
           </div>
         </aside>
       </div>
+    </main>
+  );
+}
+
+function AdminView({ adminEmail }: { adminEmail: string }) {
+  const [subscriptions, setSubscriptions] = useState<AdminSubscription[]>([]);
+  const [adminComments, setAdminComments] = useState<AdminComment[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
+  const [tab, setTab] = useState<'subscriptions' | 'comments'>('subscriptions');
+
+  const load = async () => {
+    setLoading(true);
+    setError('');
+    try {
+      const [subscriptionResponse, commentResponse] = await Promise.all([
+        fetch('/api/admin/subscriptions'),
+        fetch('/api/admin/comments'),
+      ]);
+      if (!subscriptionResponse.ok || !commentResponse.ok) throw new Error('load');
+      const subscriptionData = (await subscriptionResponse.json()) as {
+        rows: AdminSubscription[];
+      };
+      const commentData = (await commentResponse.json()) as {
+        rows: AdminComment[];
+      };
+      setSubscriptions(subscriptionData.rows);
+      setAdminComments(commentData.rows);
+    } catch {
+      setError('無法載入後台資料，請重新登入後再試。');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    void load();
+  }, []);
+
+  const updateSubscription = async (id: number, status: string) => {
+    const response = await fetch('/api/admin/subscriptions', {
+      method: 'PATCH',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ id, status }),
+    });
+    if (response.ok)
+      setSubscriptions((items) =>
+        items.map((item) => (item.id === id ? { ...item, status } : item)),
+      );
+  };
+
+  const deleteSubscription = async (item: AdminSubscription) => {
+    if (!window.confirm(`確定要刪除 ${item.email} 的訂閱嗎？`)) return;
+    const response = await fetch(`/api/admin/subscriptions?id=${item.id}`, {
+      method: 'DELETE',
+    });
+    if (response.ok)
+      setSubscriptions((items) => items.filter((row) => row.id !== item.id));
+  };
+
+  const updateComment = async (id: number, status: string) => {
+    const response = await fetch('/api/admin/comments', {
+      method: 'PATCH',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ id, status }),
+    });
+    if (response.ok)
+      setAdminComments((items) =>
+        items.map((item) => (item.id === id ? { ...item, status } : item)),
+      );
+  };
+
+  const deleteComment = async (item: AdminComment) => {
+    if (!window.confirm(`確定要永久刪除 ${item.authorName} 的留言嗎？`)) return;
+    const response = await fetch(`/api/admin/comments?id=${item.id}`, {
+      method: 'DELETE',
+    });
+    if (response.ok)
+      setAdminComments((items) => items.filter((row) => row.id !== item.id));
+  };
+
+  const activeCount = subscriptions.filter((item) => item.status === 'active').length;
+  const pendingCount = subscriptions.filter((item) => item.status === 'pending').length;
+  const hiddenCount = adminComments.filter((item) => item.status === 'hidden').length;
+
+  return (
+    <main className="mx-auto max-w-7xl px-4 py-10 lg:px-8">
+      <div className="flex flex-col justify-between gap-4 border-b border-foreground pb-6 sm:flex-row sm:items-end">
+        <div>
+          <div className="flex items-center gap-2 text-sm font-semibold tracking-widest text-muted-foreground">
+            <ShieldCheck className="size-4" /> 最高管理權限
+          </div>
+          <h1 className="mt-3 font-serif text-4xl font-medium sm:text-5xl">管理後台</h1>
+          <p className="mt-3 text-muted-foreground">目前登入：{adminEmail}</p>
+        </div>
+        <button onClick={() => void load()} className="rounded-full border border-border px-4 py-2 text-sm font-semibold">
+          重新整理
+        </button>
+      </div>
+
+      <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        {[
+          ['全部訂閱', subscriptions.length],
+          ['已啟用', activeCount],
+          ['等待驗證', pendingCount],
+          ['已隱藏留言', hiddenCount],
+        ].map(([label, value]) => (
+          <div key={label} className="rounded-2xl border border-border bg-card p-5">
+            <div className="text-sm text-muted-foreground">{label}</div>
+            <strong className="mt-2 block text-3xl">{value}</strong>
+          </div>
+        ))}
+      </div>
+
+      <div className="mt-8 flex gap-2 border-b border-border">
+        <button onClick={() => setTab('subscriptions')} className={`px-4 py-3 font-semibold ${tab === 'subscriptions' ? 'border-b-2 border-foreground' : 'text-muted-foreground'}`}>
+          訂閱者管理
+        </button>
+        <button onClick={() => setTab('comments')} className={`px-4 py-3 font-semibold ${tab === 'comments' ? 'border-b-2 border-foreground' : 'text-muted-foreground'}`}>
+          留言管理
+        </button>
+      </div>
+
+      {loading && <p className="py-12 text-muted-foreground">正在載入後台資料…</p>}
+      {error && <p className="py-12 text-destructive">{error}</p>}
+
+      {!loading && !error && tab === 'subscriptions' && (
+        <div className="mt-6 overflow-x-auto rounded-2xl border border-border bg-card">
+          <table className="w-full min-w-[900px] text-left text-sm">
+            <thead className="border-b border-border text-muted-foreground">
+              <tr><th className="p-4">Email</th><th className="p-4">狀態</th><th className="p-4">每日寄送</th><th className="p-4">關鍵字</th><th className="p-4">更新時間</th><th className="p-4">操作</th></tr>
+            </thead>
+            <tbody>
+              {subscriptions.map((item) => (
+                <tr key={item.id} className="border-b border-border last:border-0">
+                  <td className="p-4 font-semibold">{item.email}</td>
+                  <td className="p-4"><span className="rounded-full bg-secondary px-3 py-1">{item.status === 'active' ? '已啟用' : item.status === 'paused' ? '已停用' : '等待驗證'}</span></td>
+                  <td className="p-4">{item.sendTime}<span className="ml-2 text-muted-foreground">{item.timeZone}</span></td>
+                  <td className="max-w-52 truncate p-4 text-muted-foreground">{JSON.parse(item.keywords || '[]').join('、') || '全部'}</td>
+                  <td className="p-4 text-muted-foreground">{new Date(item.updatedAt).toLocaleString('zh-TW')}</td>
+                  <td className="p-4"><div className="flex gap-2">
+                    <button onClick={() => void updateSubscription(item.id, item.status === 'active' ? 'paused' : 'active')} className="rounded-full border border-border px-3 py-1.5 font-semibold">{item.status === 'active' ? '停用' : '啟用'}</button>
+                    <button onClick={() => void deleteSubscription(item)} className="grid size-8 place-items-center rounded-full border border-border text-destructive" aria-label={`刪除 ${item.email}`}><Trash2 className="size-4" /></button>
+                  </div></td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
+
+      {!loading && !error && tab === 'comments' && (
+        <div className="mt-6 space-y-3">
+          {adminComments.length === 0 && <p className="py-8 text-muted-foreground">目前沒有留言。</p>}
+          {adminComments.map((item) => (
+            <article key={item.id} className="rounded-2xl border border-border bg-card p-5">
+              <div className="flex flex-col justify-between gap-4 sm:flex-row">
+                <div><strong>{item.authorName}</strong><span className="ml-2 text-sm text-muted-foreground">{item.authorEmail}</span><p className="mt-3 leading-7">{item.body}</p><p className="mt-2 text-xs text-muted-foreground">文章：{item.articleId}・{new Date(item.createdAt).toLocaleString('zh-TW')}</p></div>
+                <div className="flex shrink-0 gap-2">
+                  <button onClick={() => void updateComment(item.id, item.status === 'published' ? 'hidden' : 'published')} className="rounded-full border border-border px-3 py-1.5 text-sm font-semibold">{item.status === 'published' ? '隱藏' : '公開'}</button>
+                  <button onClick={() => void deleteComment(item)} className="grid size-9 place-items-center rounded-full border border-border text-destructive" aria-label="刪除留言"><Trash2 className="size-4" /></button>
+                </div>
+              </div>
+            </article>
+          ))}
+        </div>
+      )}
     </main>
   );
 }
