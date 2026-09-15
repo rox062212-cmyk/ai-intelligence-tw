@@ -29,6 +29,61 @@ export type Article = {
 
 export const articles: Article[] = [
   {
+    id: 'us-ai-regulation-political-gap-2026-09-15', image: '/news/ai-policy-regulation.png', imageAlt: 'AI 政策、國會與科技產業的彩色概念圖', category: '政策與治理',
+    title: '美國科技領袖加強呼籲 AI 監管，但聯邦政治回應仍明顯分歧',
+    summary: 'AP 報導指出，多位 AI 公司領袖要求加強監督，但白宮與國會對監管速度和方式仍缺乏共識。',
+    publishedAt: '2026-09-15 12:01', updatedAt: '2026-09-15 15:25', tags: ['AI 監管','美國國會','政策'], verified: true,
+    evidenceLevel: '可信報導', evidenceNote: '由具編輯制度與記者署名的 AP 採訪報導；政治人物與業界立場可核對，但政策尚未形成。',
+    body: [
+      { heading: '發生了什麼', text: 'AP 報導，多位科技領袖近期要求政府更積極處理先進 AI 風險，但美國行政部門與國會對監管方向仍存在明顯落差。', citations: [1] },
+      { heading: '為什麼重要', text: '產業一方面推進模型能力，另一方面要求建立外部規則，顯示安全治理正從公司內部承諾進入政治協商。', citations: [1] },
+      { heading: '仍待確認', text: '目前是立場與議程競爭，尚不能視為具體法案即將通過；需繼續觀察國會提案、聽證與行政措施。', citations: [1] },
+    ],
+    sources: [{ id: 1, name: 'Associated Press', type: '新聞', title: 'Tech CEOs call for AI regulation. Trump and Congress are not rushing to act', url: 'https://apnews.com/article/ai-regulation-trump-congress-tech-politics-d2d1bac8e8666c681937665596a4f603', date: '2026-09-15', reliability: '可信媒體', reliabilityNote: 'AP 有記者署名、採訪內容與編輯制度；政策結果仍須等待官方程序。' }],
+  },
+  {
+    id: 'microsoft-student-ai-privacy-2026-09-15', image: '/news/taiwan-data-governance.png', imageAlt: '校園、學生資料與 AI 隱私保護的彩色概念圖', category: '教育與隱私',
+    title: 'Microsoft 承諾限制學生資料用於 AI 訓練，校園工具開始面對更高隱私門檻',
+    summary: 'AP 報導 Microsoft 與教師工會建立具約束力的校園 AI 隱私標準，包含第三方稽核、透明揭露與限制資料用途。',
+    publishedAt: '2026-09-15 12:02', updatedAt: '2026-09-15 15:25', tags: ['Microsoft','教育 AI','學生隱私'], verified: true,
+    evidenceLevel: '多方證實', evidenceNote: 'AP 報導援引 Microsoft、AFT 與公開協議；核心條款可回到協議與公司說法核對。',
+    body: [
+      { heading: '協議的核心', text: '依 AP 報導，Microsoft 承諾除狹窄安全例外外，不使用學生或教育工作者資料訓練 AI，也不得將資料用於廣告、出售或一般產品開發。', citations: [1] },
+      { heading: '對學校的影響', text: '協議要求第三方稽核與面向家庭的清楚說明，代表學校採用 AI 工具時不能只比較功能，也必須審查資料流向與供應商責任。', citations: [1] },
+      { heading: '限制', text: '這套標準目前主要適用 Microsoft 的相關校園合約，能否成為跨產業標準仍取決於其他大型供應商是否跟進。', citations: [1] },
+    ],
+    sources: [{ id: 1, name: 'Associated Press', type: '新聞', title: 'Microsoft commits to sweeping AI privacy rules for students', url: 'https://apnews.com/article/ai-school-student-data-privacy-microsoft-google-89b040631d635e0d8673f1e9aa9a6e28', date: '2026-09-15', reliability: '可信媒體', reliabilityNote: 'AP 具記者署名，並引用 Microsoft、教師工會與協議條款。' }],
+  },
+  {
+    id: 'gates-foundation-ai-access-2026-09-15', image: '/news/ai-robotics-research.png', imageAlt: 'AI、醫療、教育與多語言公益應用的彩色概念圖', category: '產業與社會',
+    title: 'Gates Foundation 承諾投入 10 億美元擴大 AI 取得，重點放在語言、健康與教育落差',
+    summary: 'AP 報導基金會將在兩年內投入 10 億美元，支持在地語言模型、健康、教育與小農應用，同時警告 AI 可能擴大不平等。',
+    publishedAt: '2026-09-15 12:03', updatedAt: '2026-09-15 15:25', tags: ['Gates Foundation','AI 公益','多語言'], verified: true,
+    evidenceLevel: '可信報導', evidenceNote: '金額與用途來自 AP 對基金會年度報告及主管的採訪整理；後續實際撥款與成效仍需追蹤。',
+    body: [
+      { heading: '資金將用在哪裡', text: '基金會表示，10 億美元將在兩年內投入 AI 相關工作，包括在地語言資料與模型、健康成果、教育工具以及小農資訊服務。', citations: [1] },
+      { heading: '市場意義', text: '這筆承諾把 AI 競爭從大型商業市場延伸到資源不足地區，也凸顯英文與少數主要語言以外的資料缺口。', citations: [1] },
+      { heading: '後續觀察', text: '承諾金額不等於已產生成效；需要持續核對受款計畫、公開評估、當地治理與受益者實際使用情況。', citations: [1] },
+    ],
+    sources: [{ id: 1, name: 'Associated Press', type: '新聞', title: 'Gates Foundation warns AI could widen inequality as foundation pledges $1B', url: 'https://apnews.com/article/bill-gates-foundation-ai-united-nations-26ce25f9be20574a4fa04a5f983521ae', date: '2026-09-15', reliability: '可信媒體', reliabilityNote: 'AP 引用基金會年度報告與主管訪談；執行成效尚待後續資料。' }],
+  },
+  {
+    id: 'microsoft-ai-code-of-conduct-2026-09-15', image: '/news/ai-agent-tools.png', imageAlt: 'AI 模型安全規則與人類監督的彩色概念圖', category: '安全與治理',
+    title: 'Microsoft 公開模型行為規範，將網路攻擊、欺騙與逃避人類監督列為紅線',
+    summary: 'TechCrunch 根據 Microsoft AI 官方文件報導，模型規範包含不可被個別任務覆蓋的最高原則與安全限制。',
+    publishedAt: '2026-09-15 11:27', updatedAt: '2026-09-15 15:25', tags: ['Microsoft AI','模型規範','AI 安全'], verified: true,
+    evidenceLevel: '多方證實', evidenceNote: '可信媒體報導可回溯至 Microsoft AI 官方原始文件，核心條文有第一手來源支持。',
+    body: [
+      { heading: '規範說了什麼', text: 'TechCrunch 報導，Microsoft AI 的模型行為規範要求模型支持人類、避免網路攻擊與深偽等行為，並禁止以欺騙、串通或自我強化方式逃避授權人員監督。', citations: [1,2] },
+      { heading: '為什麼重要', text: '把模型最高原則寫成可公開檢查的文件，有助外界比較供應商的安全邊界，也為後續評測與事故追責提供基準。', citations: [1,2] },
+      { heading: '限制', text: '公開規範描述的是設計目標，並不能單獨證明模型在所有情境都會遵守；仍需搭配獨立評測與事件揭露。', citations: [1,2] },
+    ],
+    sources: [
+      { id: 1, name: 'TechCrunch', type: '新聞', title: "Microsoft's new AI 'code of conduct' tells models not to hack systems or trick humans", url: 'https://techcrunch.com/2026/09/14/microsofts-new-ai-code-of-conduct-tells-models-not-to-hack-systems-or-trick-humans/', date: '2026-09-15', reliability: '可信媒體', reliabilityNote: '具記者署名並直接連結 Microsoft AI 原始文件。' },
+      { id: 2, name: 'Microsoft AI', type: '官方公告', title: 'MAI model code of conduct', url: 'https://microsoft.ai/', date: '2026-09-14', reliability: '第一手官方來源', reliabilityNote: '規範由 Microsoft AI 發布；實際遵循程度仍需外部評測。' },
+    ],
+  },
+  {
     id: 'anthropic-enterprise-cost-controls',
     image: '/news/taiwan-data-governance.png',
     imageAlt: '企業團隊檢視 AI 使用量與成本分析的彩色概念圖',
