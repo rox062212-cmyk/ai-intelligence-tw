@@ -565,7 +565,7 @@ function HomeView({
         每日整理最新 AI 情報，並持續保存可搜尋的歷史紀錄；每項結論都能回到原始資料。
       </p>
       <div className="mt-10 grid gap-5 lg:grid-cols-[1.7fr_0.8fr]">
-        <section className="rounded-2xl border border-border border-t-4 border-t-foreground bg-card p-6 sm:p-8">
+        <section className="self-start rounded-2xl border border-border border-t-4 border-t-foreground bg-card p-6 sm:p-8">
           <div className="flex items-center justify-between">
             <h2 className="text-2xl font-semibold">每日 AI 重點</h2>
             <span className="text-sm text-muted-foreground">
