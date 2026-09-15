@@ -2,6 +2,35 @@ import { NextResponse } from 'next/server';
 import { getDb } from '@/db';
 import { comments } from '@/db/schema';
 import { getChatGPTUser } from '@/app/chatgpt-auth';
+import { desc, eq } from 'drizzle-orm';
+
+export async function GET(request: Request) {
+  const articleId = new URL(request.url).searchParams.get('articleId')?.trim();
+  if (!articleId)
+    return NextResponse.json({ error: 'invalid_article' }, { status: 400 });
+  const rows = await getDb()
+    .select({
+      id: comments.id,
+      author: comments.authorName,
+      body: comments.body,
+      createdAt: comments.createdAt,
+    })
+    .from(comments)
+    .where(eq(comments.articleId, articleId))
+    .orderBy(desc(comments.createdAt));
+  return NextResponse.json({
+    rows: rows.map((row) => ({
+      ...row,
+      createdAt: new Date(row.createdAt).toLocaleString('zh-TW', {
+        timeZone: 'Asia/Taipei',
+        month: 'numeric',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+      }),
+    })),
+  });
+}
 
 export async function POST(request: Request) {
   const user = await getChatGPTUser();

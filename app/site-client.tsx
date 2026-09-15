@@ -101,21 +101,9 @@ export default function SiteClient({
   const [subscribeState, setSubscribeState] = useState<
     'idle' | 'loading' | 'done' | 'error'
   >('idle');
-  const [comments, setComments] = useState<Comment[]>([
-    {
-      id: 1,
-      author: '林育成',
-      body: '實際導入時，我更在意 API 成本是否能維持穩定。',
-      createdAt: '今天 09:42',
-    },
-    {
-      id: 2,
-      author: '陳小安',
-      body: '希望未來也能標示文章更新前後的差異。',
-      createdAt: '今天 10:03',
-    },
-  ]);
+  const [comments, setComments] = useState<Comment[]>([]);
   const [commentText, setCommentText] = useState('');
+  const [commentError, setCommentError] = useState('');
 
   useEffect(() => {
     const saved = localStorage.getItem('ai-info-theme') as Theme | null;
@@ -123,6 +111,15 @@ export default function SiteClient({
     const browserZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
     if (browserZone) setTimeZone(browserZone);
   }, []);
+
+  useEffect(() => {
+    if (view !== 'article') return;
+    setComments([]);
+    fetch(`/api/comments?articleId=${encodeURIComponent(selected.id)}`)
+      .then((response) => (response.ok ? response.json() : Promise.reject()))
+      .then((data: { rows: Comment[] }) => setComments(data.rows))
+      .catch(() => setCommentError('目前無法載入留言。'));
+  }, [selected.id, view]);
 
   useEffect(() => {
     const root = document.documentElement;
@@ -270,6 +267,7 @@ export default function SiteClient({
     event.preventDefault();
     const body = commentText.trim();
     if (!body) return;
+    setCommentError('');
     if (!user) {
       window.location.href = `/signin-with-chatgpt?return_to=${encodeURIComponent('/')}`;
       return;
@@ -287,10 +285,8 @@ export default function SiteClient({
         ...items,
       ]);
     } catch {
-      setComments((items) => [
-        { id: Date.now(), author: user.displayName, body, createdAt: '剛剛' },
-        ...items,
-      ]);
+      setCommentError('留言未送出，請稍後再試。');
+      return;
     }
     setCommentText('');
   }
@@ -452,6 +448,7 @@ export default function SiteClient({
         <ArticleView
           article={selected}
           comments={comments}
+          commentError={commentError}
           user={user}
           commentText={commentText}
           setCommentText={setCommentText}
@@ -1121,6 +1118,7 @@ function SearchView({
 function ArticleView({
   article,
   comments,
+  commentError,
   user,
   commentText,
   setCommentText,
@@ -1129,6 +1127,7 @@ function ArticleView({
 }: {
   article: Article;
   comments: Comment[];
+  commentError: string;
   user: ChatGPTUser | null;
   commentText: string;
   setCommentText: (value: string) => void;
@@ -1207,7 +1206,15 @@ function ArticleView({
                 {user ? '發表留言' : '登入並留言'}
               </button>
             </form>
+            {commentError && (
+              <p className="mt-3 text-sm text-red-500">{commentError}</p>
+            )}
             <div className="mt-8">
+              {comments.length === 0 && !commentError && (
+                <p className="border-t border-border py-8 text-muted-foreground">
+                  尚無留言，歡迎分享第一則觀點。
+                </p>
+              )}
               {comments.map((comment) => (
                 <div key={comment.id} className="border-t border-border py-5">
                   <div className="flex items-center gap-3">

@@ -38,6 +38,7 @@ export const articles: Article[] = [
       { heading: '發生了什麼', text: 'AP 報導，多位科技領袖近期要求政府更積極處理先進 AI 風險，但美國行政部門與國會對監管方向仍存在明顯落差。', citations: [1] },
       { heading: '為什麼重要', text: '產業一方面推進模型能力，另一方面要求建立外部規則，顯示安全治理正從公司內部承諾進入政治協商。', citations: [1] },
       { heading: '仍待確認', text: '目前是立場與議程競爭，尚不能視為具體法案即將通過；需繼續觀察國會提案、聽證與行政措施。', citations: [1] },
+      { heading: '接下來值得觀察', text: '短期重點是國會是否把產業警告轉成可執行的安全評測、事故通報與責任規則，以及不同政黨能否在選舉年形成最低共識。對企業而言，政策尚未定案不代表可以等待，模型風險分級與內部稽核仍應先行建立。', citations: [1] },
     ],
     sources: [{ id: 1, name: 'Associated Press', type: '新聞', title: 'Tech CEOs call for AI regulation. Trump and Congress are not rushing to act', url: 'https://apnews.com/article/ai-regulation-trump-congress-tech-politics-d2d1bac8e8666c681937665596a4f603', date: '2026-09-15', reliability: '可信媒體', reliabilityNote: 'AP 有記者署名、採訪內容與編輯制度；政策結果仍須等待官方程序。' }],
   },
@@ -51,6 +52,7 @@ export const articles: Article[] = [
       { heading: '協議的核心', text: '依 AP 報導，Microsoft 承諾除狹窄安全例外外，不使用學生或教育工作者資料訓練 AI，也不得將資料用於廣告、出售或一般產品開發。', citations: [1] },
       { heading: '對學校的影響', text: '協議要求第三方稽核與面向家庭的清楚說明，代表學校採用 AI 工具時不能只比較功能，也必須審查資料流向與供應商責任。', citations: [1] },
       { heading: '限制', text: '這套標準目前主要適用 Microsoft 的相關校園合約，能否成為跨產業標準仍取決於其他大型供應商是否跟進。', citations: [1] },
+      { heading: '學校與家長應該看什麼', text: '真正重要的不只是供應商承諾，而是學校能否列出實際使用的 AI 工具、保存哪些資料、資料保留多久、誰可存取，以及家長和學生能否選擇退出。第三方稽核結果是否公開，也會影響這項協議的可信度。', citations: [1] },
     ],
     sources: [{ id: 1, name: 'Associated Press', type: '新聞', title: 'Microsoft commits to sweeping AI privacy rules for students', url: 'https://apnews.com/article/ai-school-student-data-privacy-microsoft-google-89b040631d635e0d8673f1e9aa9a6e28', date: '2026-09-15', reliability: '可信媒體', reliabilityNote: 'AP 具記者署名，並引用 Microsoft、教師工會與協議條款。' }],
   },
@@ -64,6 +66,7 @@ export const articles: Article[] = [
       { heading: '資金將用在哪裡', text: '基金會表示，10 億美元將在兩年內投入 AI 相關工作，包括在地語言資料與模型、健康成果、教育工具以及小農資訊服務。', citations: [1] },
       { heading: '市場意義', text: '這筆承諾把 AI 競爭從大型商業市場延伸到資源不足地區，也凸顯英文與少數主要語言以外的資料缺口。', citations: [1] },
       { heading: '後續觀察', text: '承諾金額不等於已產生成效；需要持續核對受款計畫、公開評估、當地治理與受益者實際使用情況。', citations: [1] },
+      { heading: '為何在地語言是關鍵', text: '許多 AI 服務在英語環境表現較完整，但在資料稀少的語言中，醫療、農業與教育建議更容易出現理解偏差。投資資料集只是第一步，還需要當地專家參與驗證、建立回報機制，並確認服務不會因基礎設施與費用門檻排除真正需要的人。', citations: [1] },
     ],
     sources: [{ id: 1, name: 'Associated Press', type: '新聞', title: 'Gates Foundation warns AI could widen inequality as foundation pledges $1B', url: 'https://apnews.com/article/bill-gates-foundation-ai-united-nations-26ce25f9be20574a4fa04a5f983521ae', date: '2026-09-15', reliability: '可信媒體', reliabilityNote: 'AP 引用基金會年度報告與主管訪談；執行成效尚待後續資料。' }],
   },
@@ -77,6 +80,7 @@ export const articles: Article[] = [
       { heading: '規範說了什麼', text: 'TechCrunch 報導，Microsoft AI 的模型行為規範要求模型支持人類、避免網路攻擊與深偽等行為，並禁止以欺騙、串通或自我強化方式逃避授權人員監督。', citations: [1,2] },
       { heading: '為什麼重要', text: '把模型最高原則寫成可公開檢查的文件，有助外界比較供應商的安全邊界，也為後續評測與事故追責提供基準。', citations: [1,2] },
       { heading: '限制', text: '公開規範描述的是設計目標，並不能單獨證明模型在所有情境都會遵守；仍需搭配獨立評測與事件揭露。', citations: [1,2] },
+      { heading: '如何判斷規範是否有效', text: '後續應觀察 Microsoft 是否公開更具體的測試方法、違規案例與模型更新紀錄，以及外部研究者能否重現安全評測。若規範只停留在原則層級，使用者仍無法判斷不同模型在高風險任務中的實際差異。', citations: [1,2] },
     ],
     sources: [
       { id: 1, name: 'TechCrunch', type: '新聞', title: "Microsoft's new AI 'code of conduct' tells models not to hack systems or trick humans", url: 'https://techcrunch.com/2026/09/14/microsofts-new-ai-code-of-conduct-tells-models-not-to-hack-systems-or-trick-humans/', date: '2026-09-15', reliability: '可信媒體', reliabilityNote: '具記者署名並直接連結 Microsoft AI 原始文件。' },
@@ -111,6 +115,11 @@ export const articles: Article[] = [
       {
         heading: '解讀限制',
         text: '這是一場產品與營運實務講座，並非新模型發布，也沒有提供跨供應商的成本比較。實際節省幅度仍取決於各公司的工作負載、模型選擇與內部使用規範。',
+        citations: [1],
+      },
+      {
+        heading: '企業可以如何驗證成效',
+        text: '管理者可先把不同工作類型分開記錄，例如摘要、程式開發、客服與研究，再比較每項任務的模型費用、人工時間與錯誤修正成本。只有把支出連回實際成果，才能判斷較昂貴模型是否值得使用，也能避免單純限制額度反而降低工作效率。',
         citations: [1],
       },
     ],
