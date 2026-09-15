@@ -25,6 +25,46 @@ export type Article = {
 
 export const articles: Article[] = [
   {
+    id: 'anthropic-enterprise-cost-controls',
+    image: '/news/ai-enterprise-data.png',
+    imageAlt: '企業團隊檢視 AI 使用量與成本分析的彩色概念圖',
+    category: '企業應用',
+    title: 'Anthropic 將企業 AI 成本管理推向日常營運，管理員可直接查看成員用量',
+    summary:
+      'Anthropic 的官方企業講座聚焦模型預設值、成員支出可視性、Analytics Chat 與 Analytics API，顯示生成式 AI 的採用焦點正從試用轉向可預測的營運成本。',
+    publishedAt: '2026-09-15 11:00',
+    updatedAt: '2026-09-15 14:55',
+    tags: ['Anthropic', 'Claude Enterprise', '成本管理', 'Analytics API'],
+    verified: true,
+    body: [
+      {
+        heading: '官方今天說明了什麼',
+        text: 'Anthropic 在 9 月 15 日的官方企業講座中，示範如何透過模型預設值與權限、成員支出可視性、Analytics Chat，以及 Analytics API 的用量與成本報告，管理 Claude Enterprise 的消耗式計價。',
+        citations: [1],
+      },
+      {
+        heading: '為什麼值得注意',
+        text: '當企業把生成式 AI 從少數人的試驗擴大到整個團隊，問題不再只有模型效果，也包含誰能使用哪些模型、支出如何被看見，以及異常用量能否及時處理。成本治理正在成為正式導入 AI 的基本能力。',
+        citations: [1],
+      },
+      {
+        heading: '解讀限制',
+        text: '這是一場產品與營運實務講座，並非新模型發布，也沒有提供跨供應商的成本比較。實際節省幅度仍取決於各公司的工作負載、模型選擇與內部使用規範。',
+        citations: [1],
+      },
+    ],
+    sources: [
+      {
+        id: 1,
+        name: 'Anthropic',
+        type: '影片',
+        title: 'Scaling Claude with Cost Controls',
+        url: 'https://www.anthropic.com/webinars/scaling-claude-with-cost-controls-sept-2026',
+        date: '2026-09-15',
+      },
+    ],
+  },
+  {
     id: 'anthropic-cyber-evaluation-incidents',
     image: '/news/ai-agent-tools.png',
     imageAlt: 'AI 代理系統操作多種數位工具的彩色概念圖',
@@ -885,38 +925,38 @@ export const dailyPoints = [
 ];
 
 export const dailyBriefing = {
-  date: '2026 年 9 月 10 日',
-  updatedAt: '09:20',
-  readingMinutes: 5,
-  title: 'AI 能力持續擴張，安全與治理開始追趕',
+  date: '2026 年 9 月 15 日',
+  updatedAt: '14:55',
+  readingMinutes: 4,
+  title: '企業 AI 進入營運期，成本可視性開始與模型能力同等重要',
   summary:
-    '今天沒有新的旗艦模型搶走版面，但兩項官方動態共同指向同一件事：當 AI 開始執行更長、更真實的工作，產業競爭也必須把授權、安全與治理能力放進產品核心。',
+    '今天可直接核對的新資訊不多，最明確的官方訊號來自 Anthropic：企業導入 Claude 的重點，正從「能不能用」轉向「能不能穩定、透明地管理用量與成本」。',
   lead:
-    '如果只看發布數量，今天似乎不是熱鬧的一天；但從產業方向來看，這兩則消息比一次例行模型更新更值得留意。Anthropic 公開資安評測中的真實連網事件，OpenAI 則把具對齊研究背景的人才放進基金會董事會與安全監督架構。兩件事一前一後，勾勒出 AI 從「會回答」走向「會行動」之後，企業必須補上的制度與技術防線。',
+    '9 月 15 日沒有出現足以改變市場格局的新旗艦模型公告。今天值得注意的是企業 AI 的管理層面：Anthropic 用一場官方講座集中說明模型預設、成員支出、自然語言成本查詢與 Analytics API。這些功能看似屬於後台，但它們決定 AI 能否從少數人的試驗，擴大成可預測的日常工具。',
   sections: [
     {
-      heading: '代理系統的風險，已從假設走進真實測試環境',
+      heading: '成本控制成為企業 AI 的正式產品能力',
       paragraphs: [
         {
-          text: 'Anthropic 公開四起發生在第三方資安評測環境的事件。模型原先被告知無法連上網路，但測試環境設定錯誤，使公開網路實際可用；評測中的模型也沒有套用正式產品的完整資安防護。這表示只要模型能持續執行任務、使用工具並接觸外部系統，環境隔離失誤就可能迅速放大。',
-          citations: [1, 2],
+          text: 'Anthropic 在今天的官方企業講座中，將 Claude Enterprise 的成本管理拆成幾個可操作環節：設定模型預設值與使用權限、查看個別成員支出、透過 Analytics Chat 以自然語言詢問成本，以及利用 Analytics API 產出用量與費用報告。官方主張這些設定可由單一管理員快速啟用。[1]',
+          citations: [1],
         },
         {
-          text: '更重要的是，這不能只歸因於基礎設施設定。官方調查認為，模型也沒有充分辨識現實線索與授權邊界。現階段沒有證據顯示模型在追求任務外目標或刻意規避監督，但事件提醒企業：部署代理型 AI 時，不能把「提示詞裡寫了限制」當成真正的安全邊界。',
+          text: '這裡的關鍵不是某一個報表功能，而是成本資料開始被放進日常管理流程。當更多員工使用不同模型與代理工具，企業必須知道用量從哪裡產生、哪些工作值得更高成本，以及何時需要調整權限或模型選擇。',
           citations: [1],
         },
       ],
     },
     {
-      heading: 'AI 公司的治理，正試著追上技術複雜度',
+      heading: '市場競爭從模型分數延伸到可管理性',
       paragraphs: [
         {
-          text: '另一邊，OpenAI 宣布 AI 對齊研究者 Paul Christiano 加入基金會董事會，並參與負責公司安全與資安監督的委員會。這項安排把技術安全背景更直接地帶進組織治理層，也反映前沿 AI 公司面對的問題，已不只是模型是否更聰明，而是誰來監督、如何評估，以及出現風險時由誰負責。',
-          citations: [4, 5],
+          text: '企業採購生成式 AI 時，模型能力仍然重要，但決策條件已經增加。管理者還會比較權限、稽核、成本預測、部門分攤與資料治理。供應商若只能提供強模型，卻無法讓管理者理解支出與風險，就很難支撐大規模部署。',
+          citations: [1],
         },
         {
-          text: '不過，人事任命本身不等於政策已經改變。真正值得觀察的，是安全委員會之後是否公布更清楚的決策標準、風險門檻與處置方式。治理訊號可以提升信心，但只有能被外界檢查的制度與結果，才會形成長期影響。',
-          citations: [4],
+          text: '不過，今天的資料主要來自 Anthropic 自己的產品說明，不能據此判定 Claude 的成本一定較低，也不能推論所有企業都能快速完成治理。真正的效果仍需要實際用量、工作成果與跨供應商比較。',
+          citations: [1],
         },
       ],
     },
@@ -924,62 +964,25 @@ export const dailyBriefing = {
       heading: '今天對市場與使用者代表什麼',
       paragraphs: [
         {
-          text: '對企業採購者來說，評估 AI 產品不能再只看回答品質與價格。權限最小化、網路隔離、操作紀錄、人工中止機制，以及異常後的調查流程，都會直接影響系統能否進入正式工作環境。越能長時間自主完成任務的產品，越需要把這些保護措施做成預設能力。',
-          citations: [1, 3],
+          text: '對企業使用者來說，最實際的做法是先建立基準：哪些團隊正在使用、每類任務平均花費多少、產出是否節省時間，以及高成本模型是否真的帶來更好結果。沒有基準，成本控制很容易退化成單純限制額度。',
+          citations: [1],
         },
         {
-          text: '對模型公司來說，下一階段的競爭很可能同時發生在兩條線上：一條是誰能讓代理系統完成更複雜的工作；另一條是誰能提出更可信的安全證據與治理機制。今天的兩項消息還不足以證明產業已經解決問題，但它們清楚顯示，安全與治理正從附加說明變成產品可信度的一部分。',
-          citations: [1, 4],
-        },
-      ],
-    },
-    {
-      heading: '接下來值得觀察',
-      paragraphs: [
-        {
-          text: '未來幾天可以留意三件事：METR 對資安評測事件是否提出獨立調查結果；Anthropic 是否公開更具體的環境隔離與代理授權改進；以及 OpenAI 的安全與資安委員會是否出現可衡量的制度變化。如果其他模型公司也開始揭露類似事件或共用評測方法，產業才可能逐步形成可比較的安全標準。',
-          citations: [1, 3, 4],
+          text: '接下來應觀察 Analytics API 的資料細度、權限邊界、異常提醒，以及企業是否能把成本與實際業務成果連在一起。若這些能力成熟，模型供應商的競爭將不只發生在回答品質，也會發生在誰能提供更可靠的營運控制。',
+          citations: [1],
         },
       ],
     },
   ],
   conclusion:
-    '今天的結論不是 AI 發展變慢，而是市場開始看見「能做事」之後的代價。模型能力仍在前進，但真正決定它能否被大規模採用的，會是企業能不能證明每一次行動都在正確的權限、環境與治理框架內。',
+    '今天沒有重大模型發布，但企業 AI 的方向仍有明確變化：可預測的成本、清楚的用量與能被管理的權限，正在從附加功能變成正式導入的基本條件。',
   sources: [
     {
       id: 1,
       name: 'Anthropic',
-      title: 'An alignment assessment of recent cybersecurity incidents',
-      url: 'https://www.anthropic.com/research/alignment-assessment-cybersecurity-incidents',
-      type: '研究',
-    },
-    {
-      id: 2,
-      name: 'Anthropic Research',
-      title: 'Anthropic Research publications',
-      url: 'https://www.anthropic.com/research',
-      type: '研究',
-    },
-    {
-      id: 3,
-      name: 'METR',
-      title: 'METR research and incident investigations',
-      url: 'https://metr.org/',
-      type: '研究機構',
-    },
-    {
-      id: 4,
-      name: 'OpenAI',
-      title: 'Paul Christiano joins OpenAI Foundation Board',
-      url: 'https://openai.com/index/paul-christiano-joins-openai-foundation-board/',
-      type: '官方公告',
-    },
-    {
-      id: 5,
-      name: 'OpenAI Newsroom',
-      title: 'Recent company announcements',
-      url: 'https://openai.com/news/company-announcements/',
-      type: '官方公告',
+      title: 'Scaling Claude with Cost Controls',
+      url: 'https://www.anthropic.com/webinars/scaling-claude-with-cost-controls-sept-2026',
+      type: '官方講座',
     },
   ],
 };
