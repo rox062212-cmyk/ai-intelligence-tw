@@ -26,7 +26,7 @@ export type Article = {
 export const articles: Article[] = [
   {
     id: 'anthropic-enterprise-cost-controls',
-    image: '/news/ai-enterprise-data.png',
+    image: '/news/taiwan-data-governance.png',
     imageAlt: '企業團隊檢視 AI 使用量與成本分析的彩色概念圖',
     category: '企業應用',
     title: 'Anthropic 將企業 AI 成本管理推向日常營運，管理員可直接查看成員用量',

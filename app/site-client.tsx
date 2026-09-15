@@ -696,6 +696,10 @@ function HomeView({
                 src={article.image}
                 alt={article.imageAlt}
                 loading="lazy"
+                onError={(event) => {
+                  event.currentTarget.onerror = null;
+                  event.currentTarget.src = '/news/ai-agent-tools.png';
+                }}
                 className="h-full w-full object-cover transition duration-500 group-hover:scale-[1.02]"
               />
             </div>
