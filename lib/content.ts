@@ -6,6 +6,8 @@ export type Source = {
   url: string;
   date: string;
   note?: string;
+  reliability?: '第一手官方來源' | '可信媒體' | '研究或技術來源' | '社群線索';
+  reliabilityNote?: string;
 };
 
 export type Article = {
@@ -19,6 +21,8 @@ export type Article = {
   updatedAt: string;
   tags: string[];
   verified: boolean;
+  evidenceLevel?: '官方確認' | '多方證實' | '可信報導' | '傳聞追蹤';
+  evidenceNote?: string;
   body: { heading: string; text: string; citations: number[] }[];
   sources: Source[];
 };
@@ -36,6 +40,8 @@ export const articles: Article[] = [
     updatedAt: '2026-09-15 14:55',
     tags: ['Anthropic', 'Claude Enterprise', '成本管理', 'Analytics API'],
     verified: true,
+    evidenceLevel: '官方確認',
+    evidenceNote: '事件日期與內容來自 Anthropic 官方活動頁面。',
     body: [
       {
         heading: '官方今天說明了什麼',
@@ -61,6 +67,8 @@ export const articles: Article[] = [
         title: 'Scaling Claude with Cost Controls',
         url: 'https://www.anthropic.com/webinars/scaling-claude-with-cost-controls-sept-2026',
         date: '2026-09-15',
+        reliability: '第一手官方來源',
+        reliabilityNote: '由 Anthropic 官方網站發布，可直接核對活動日期與議程。',
       },
     ],
   },

@@ -22,6 +22,7 @@ import {
   calendarEvents,
   dailyBriefing,
   type Article,
+  type Source,
 } from '@/lib/content';
 
 type View = 'home' | 'daily' | 'calendar' | 'search' | 'article' | 'admin';
@@ -62,6 +63,19 @@ const newestArticleDate = articles.reduce(
 const latestArticles = articles.filter((article) =>
   article.publishedAt.startsWith(newestArticleDate),
 );
+
+function evidenceLabel(article: Article) {
+  return article.evidenceLevel ?? (article.verified ? '多方證實' : '傳聞追蹤');
+}
+
+function sourceReliability(source: Source) {
+  if (source.reliability) return source.reliability;
+  if (source.type === '官方公告') return '第一手官方來源';
+  if (source.type === '新聞') return '可信媒體';
+  if (source.type === '研究' || source.type === '技術文件')
+    return '研究或技術來源';
+  return '來源可核對';
+}
 
 export default function SiteClient({
   user,
@@ -715,7 +729,7 @@ function HomeView({
               />
             </div>
             <span className="text-sm font-semibold text-muted-foreground">
-              {article.category}・{article.sources.length} 個來源
+              {article.category}・{evidenceLabel(article)}・{article.sources.length} 個來源
             </span>
             <h3 className="mt-2 text-xl font-semibold leading-8 group-hover:underline">
               {article.title}
@@ -1133,7 +1147,7 @@ function ArticleView({
         <div className="flex flex-wrap items-center gap-3 text-sm text-muted-foreground">
           <span>{article.category}</span>
           <span>・</span>
-          <span>{article.verified ? '已交叉查證' : '待確認'}</span>
+          <span>{evidenceLabel(article)}</span>
           <span>・</span>
           <span>{article.sources.length} 個來源</span>
         </div>
@@ -1146,6 +1160,15 @@ function ArticleView({
         <p className="mt-4 text-sm text-muted-foreground">
           發布 {article.publishedAt}・最後更新 {article.updatedAt}
         </p>
+        <div className="mt-5 rounded-xl border border-border bg-card px-4 py-3">
+          <strong>可信度判定：{evidenceLabel(article)}</strong>
+          <p className="mt-1 text-sm leading-6 text-muted-foreground">
+            {article.evidenceNote ??
+              (article.verified
+                ? '內容已由可直接閱讀的公開來源核對；請仍以右側原文為準。'
+                : '目前證據仍不完整，僅作為市場線索追蹤，不代表事件已發生。')}
+          </p>
+        </div>
       </div>
       <div className="mt-10 grid gap-10 lg:grid-cols-[minmax(0,1fr)_320px]">
         <article>
@@ -1222,12 +1245,20 @@ function ArticleView({
                   <span className="text-xs text-muted-foreground">
                     來源 {source.id}・{source.type}
                   </span>
+                  <span className="mt-2 inline-flex rounded-full border border-border px-2 py-1 text-xs font-semibold">
+                    {sourceReliability(source)}
+                  </span>
                   <strong className="mt-1 block leading-6">
                     {source.name}
                   </strong>
                   <span className="mt-1 block text-sm text-muted-foreground">
                     {source.title}
                   </span>
+                  {(source.reliabilityNote || source.note) && (
+                    <span className="mt-2 block text-sm leading-6 text-muted-foreground">
+                      {source.reliabilityNote ?? source.note}
+                    </span>
+                  )}
                   <span className="mt-2 flex items-center gap-1 text-sm font-semibold">
                     閱讀原文 <ExternalLink className="size-3" />
                   </span>
