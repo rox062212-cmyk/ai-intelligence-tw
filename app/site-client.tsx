@@ -52,6 +52,17 @@ const nav: { id: View; label: string }[] = [
   { id: 'calendar', label: 'AI 日曆' },
 ];
 
+const newestArticleDate = articles.reduce(
+  (latest, article) =>
+    article.publishedAt.slice(0, 10) > latest
+      ? article.publishedAt.slice(0, 10)
+      : latest,
+  '',
+);
+const latestArticles = articles.filter((article) =>
+  article.publishedAt.startsWith(newestArticleDate),
+);
+
 export default function SiteClient({
   user,
   initialView = 'home',
@@ -661,7 +672,7 @@ function HomeView({
         <h2 className="text-2xl font-semibold">最新情報</h2>
         <div className="flex items-center gap-2">
           <span className="hidden text-sm text-muted-foreground sm:inline">
-            今日 {articles.length} 則・已依來源可信度排序
+            今日 {latestArticles.length} 則・已依來源可信度排序
           </span>
           <button
             type="button"
@@ -685,7 +696,7 @@ function HomeView({
         ref={latestRail}
         className="flex snap-x snap-mandatory gap-6 overflow-x-auto scroll-smooth [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
       >
-        {articles.map((article) => (
+        {latestArticles.map((article) => (
           <button
             key={article.id}
             onClick={() => onArticle(article)}
