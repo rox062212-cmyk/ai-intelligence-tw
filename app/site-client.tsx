@@ -53,14 +53,15 @@ const nav: { id: View; label: string }[] = [
   { id: 'calendar', label: 'AI 日曆' },
 ];
 
-const newestArticleDate = articles.reduce(
+const publishableArticles = articles.filter((article) => article.sources.length >= 3);
+const newestArticleDate = publishableArticles.reduce(
   (latest, article) =>
     article.publishedAt.slice(0, 10) > latest
       ? article.publishedAt.slice(0, 10)
       : latest,
   '',
 );
-const latestArticles = articles.filter((article) =>
+const latestArticles = publishableArticles.filter((article) =>
   article.publishedAt.startsWith(newestArticleDate),
 );
 
@@ -1174,7 +1175,7 @@ function ArticleView({
           <div className="border-y border-foreground py-6">
             <strong>閱讀方式</strong>
             <p className="mt-2 leading-7 text-muted-foreground">
-              本文由多項來源重新整理，重要敘述旁的數字可對照右側原始資料。
+              本文至少比對三個獨立來源；先核對共同事實，再整理各方觀點與分歧。重要敘述旁的數字可對照右側原始資料。
             </p>
           </div>
           {article.body.map((section) => (
