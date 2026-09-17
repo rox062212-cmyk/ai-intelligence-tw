@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useMemo, useRef, useState } from 'react';
+import type { RefObject } from 'react';
 import {
   CalendarDays,
   Check,
@@ -56,16 +57,21 @@ const nav: { id: View; label: string }[] = [
 const publishableArticles = articles.filter(
   (article) => article.sources.length >= 3,
 );
-const newestArticleDate = publishableArticles.reduce(
-  (latest, article) =>
-    article.publishedAt.slice(0, 10) > latest
-      ? article.publishedAt.slice(0, 10)
-      : latest,
-  '',
-);
-const latestArticles = publishableArticles.filter((article) =>
-  article.publishedAt.startsWith(newestArticleDate),
-);
+const featuredArticleIds = [
+  'openai-model-misalignment-reporting-2026-09-17',
+  'claude-cowork-docs-slides-2026-09-17',
+  'microsoft-ai-code-of-conduct-2026-09-15',
+  'anthropic-cyber-evaluation-incidents',
+  'taiwan-ai-governance',
+  'ai-compute-infrastructure',
+];
+const featuredArticles = featuredArticleIds
+  .map((id) => publishableArticles.find((article) => article.id === id))
+  .filter((article): article is Article => Boolean(article));
+const featuredIds = new Set(featuredArticles.map((article) => article.id));
+const moreArticles = publishableArticles
+  .filter((article) => !featuredIds.has(article.id))
+  .sort((a, b) => b.publishedAt.localeCompare(a.publishedAt));
 
 function evidenceLabel(article: Article) {
   return article.evidenceLevel ?? (article.verified ? '多方證實' : '傳聞追蹤');
@@ -615,6 +621,7 @@ function HomeView({
   onSubscribe: () => void;
 }) {
   const latestRail = useRef<HTMLDivElement>(null);
+  const moreRail = useRef<HTMLDivElement>(null);
   const todayLabel = new Intl.DateTimeFormat('zh-TW', {
     year: 'numeric',
     month: 'long',
@@ -637,9 +644,12 @@ function HomeView({
     .filter((event) => event.date >= todayIso)
     .sort((a, b) => a.date.localeCompare(b.date))
     .slice(0, 3);
-  const scrollLatest = (direction: -1 | 1) => {
-    latestRail.current?.scrollBy({
-      left: direction * latestRail.current.clientWidth,
+  const scrollRail = (
+    rail: RefObject<HTMLDivElement | null>,
+    direction: -1 | 1,
+  ) => {
+    rail.current?.scrollBy({
+      left: direction * rail.current.clientWidth,
       behavior: 'smooth',
     });
   };
@@ -713,23 +723,26 @@ function HomeView({
         </aside>
       </div>
       <div className="mt-12 flex items-end justify-between gap-4 border-b border-foreground pb-3">
-        <h2 className="text-2xl font-semibold">最新情報</h2>
+        <div>
+          <h2 className="text-2xl font-semibold">熱門焦點</h2>
+          <p className="mt-1 text-sm text-muted-foreground">近期關注度最高的重要情報</p>
+        </div>
         <div className="flex items-center gap-2">
           <span className="hidden text-sm text-muted-foreground sm:inline">
-            今日 {latestArticles.length} 則・已依來源可信度排序
+            精選 {featuredArticles.length} 則・跨日期整理
           </span>
           <button
             type="button"
-            onClick={() => scrollLatest(-1)}
-            aria-label="查看上一組最新情報"
+            onClick={() => scrollRail(latestRail, -1)}
+            aria-label="查看上一組熱門焦點"
             className="grid size-9 place-items-center rounded-full border border-border transition hover:bg-secondary"
           >
             <ChevronLeft className="size-4" />
           </button>
           <button
             type="button"
-            onClick={() => scrollLatest(1)}
-            aria-label="查看下一組最新情報"
+            onClick={() => scrollRail(latestRail, 1)}
+            aria-label="查看下一組熱門焦點"
             className="grid size-9 place-items-center rounded-full border border-border transition hover:bg-secondary"
           >
             <ChevronRight className="size-4" />
@@ -740,7 +753,7 @@ function HomeView({
         ref={latestRail}
         className="flex snap-x snap-mandatory gap-6 overflow-x-auto scroll-smooth [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
       >
-        {latestArticles.map((article) => (
+        {featuredArticles.map((article) => (
           <button
             key={article.id}
             onClick={() => onArticle(article)}
@@ -764,6 +777,70 @@ function HomeView({
             <span className="text-sm font-semibold text-muted-foreground">
               {article.category}・{evidenceLabel(article)}・
               {article.sources.length} 個來源
+            </span>
+            <h3 className="mt-2 text-xl font-semibold leading-8 group-hover:underline">
+              {article.title}
+            </h3>
+            <p className="mt-2 leading-7 text-muted-foreground">
+              {article.summary}
+            </p>
+          </button>
+        ))}
+      </div>
+      <div className="mt-12 flex items-end justify-between gap-4 border-b border-foreground pb-3">
+        <div>
+          <h2 className="text-2xl font-semibold">更多情報</h2>
+          <p className="mt-1 text-sm text-muted-foreground">從最新到過往，持續保留可回看的情報</p>
+        </div>
+        <div className="flex items-center gap-2">
+          <span className="hidden text-sm text-muted-foreground sm:inline">
+            共 {moreArticles.length} 則
+          </span>
+          <button
+            type="button"
+            onClick={() => scrollRail(moreRail, -1)}
+            aria-label="查看上一組更多情報"
+            className="grid size-9 place-items-center rounded-full border border-border transition hover:bg-secondary"
+          >
+            <ChevronLeft className="size-4" />
+          </button>
+          <button
+            type="button"
+            onClick={() => scrollRail(moreRail, 1)}
+            aria-label="查看下一組更多情報"
+            className="grid size-9 place-items-center rounded-full border border-border transition hover:bg-secondary"
+          >
+            <ChevronRight className="size-4" />
+          </button>
+        </div>
+      </div>
+      <div
+        ref={moreRail}
+        className="flex snap-x snap-mandatory gap-6 overflow-x-auto scroll-smooth [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+      >
+        {moreArticles.map((article) => (
+          <button
+            key={article.id}
+            onClick={() => onArticle(article)}
+            className="group shrink-0 basis-[88%] snap-start border-b border-border py-6 text-left sm:basis-[calc((100%-1.5rem)/2)] lg:basis-[calc((100%-3rem)/3)]"
+          >
+            <div className="relative mb-5 aspect-[16/9] overflow-hidden bg-secondary">
+              <img
+                src={article.image}
+                alt={article.imageAlt}
+                loading="lazy"
+                onError={(event) => {
+                  event.currentTarget.onerror = null;
+                  event.currentTarget.src = '/news/ai-agent-tools.png';
+                }}
+                className="h-full w-full object-cover transition duration-500 group-hover:scale-[1.02]"
+              />
+              <span className="absolute right-3 top-3 rounded-full border border-white/40 bg-black/75 px-2.5 py-1 text-xs font-semibold tracking-wide text-white backdrop-blur-sm">
+                {compactArticleDate(article)}
+              </span>
+            </div>
+            <span className="text-sm font-semibold text-muted-foreground">
+              {article.category}・{evidenceLabel(article)}・{article.sources.length} 個來源
             </span>
             <h3 className="mt-2 text-xl font-semibold leading-8 group-hover:underline">
               {article.title}
