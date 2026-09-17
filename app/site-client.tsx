@@ -621,7 +621,6 @@ function HomeView({
   onSubscribe: () => void;
 }) {
   const latestRail = useRef<HTMLDivElement>(null);
-  const moreRail = useRef<HTMLDivElement>(null);
   const todayLabel = new Intl.DateTimeFormat('zh-TW', {
     year: 'numeric',
     month: 'long',
@@ -792,37 +791,14 @@ function HomeView({
           <h2 className="text-2xl font-semibold">更多情報</h2>
           <p className="mt-1 text-sm text-muted-foreground">從最新到過往，持續保留可回看的情報</p>
         </div>
-        <div className="flex items-center gap-2">
-          <span className="hidden text-sm text-muted-foreground sm:inline">
-            共 {moreArticles.length} 則
-          </span>
-          <button
-            type="button"
-            onClick={() => scrollRail(moreRail, -1)}
-            aria-label="查看上一組更多情報"
-            className="grid size-9 place-items-center rounded-full border border-border transition hover:bg-secondary"
-          >
-            <ChevronLeft className="size-4" />
-          </button>
-          <button
-            type="button"
-            onClick={() => scrollRail(moreRail, 1)}
-            aria-label="查看下一組更多情報"
-            className="grid size-9 place-items-center rounded-full border border-border transition hover:bg-secondary"
-          >
-            <ChevronRight className="size-4" />
-          </button>
-        </div>
+        <span className="text-sm text-muted-foreground">共 {moreArticles.length} 則</span>
       </div>
-      <div
-        ref={moreRail}
-        className="flex snap-x snap-mandatory gap-6 overflow-x-auto scroll-smooth [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
-      >
+      <div className="grid gap-x-5 sm:grid-cols-2 lg:grid-cols-4">
         {moreArticles.map((article) => (
           <button
             key={article.id}
             onClick={() => onArticle(article)}
-            className="group shrink-0 basis-[88%] snap-start border-b border-border py-6 text-left sm:basis-[calc((100%-1.5rem)/2)] lg:basis-[calc((100%-3rem)/3)]"
+            className="group border-b border-border py-6 text-left"
           >
             <div className="relative mb-5 aspect-[16/9] overflow-hidden bg-secondary">
               <img
