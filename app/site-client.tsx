@@ -80,6 +80,10 @@ function sourceReliability(source: Source) {
   return '來源可核對';
 }
 
+function compactArticleDate(article: Article) {
+  return article.publishedAt.slice(0, 10).replaceAll('-', '.');
+}
+
 export default function SiteClient({
   user,
   initialView = 'home',
@@ -657,11 +661,16 @@ function HomeView({
       </p>
       <div className="mt-10 grid gap-5 lg:grid-cols-[1.7fr_0.8fr]">
         <section className="self-start rounded-2xl border border-border border-t-4 border-t-foreground bg-card p-6 sm:p-8">
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between gap-3">
             <h2 className="text-2xl font-semibold">每日 AI 重點</h2>
-            <span className="text-sm text-muted-foreground">
-              整合 {dailyBriefing.sources.length} 個來源
-            </span>
+            <div className="flex items-center gap-2 text-sm text-muted-foreground">
+              <span className="rounded-full border border-border px-2.5 py-1 font-medium text-foreground">
+                {dailyBriefing.date.replaceAll('年 ', '.').replaceAll('月 ', '.').replace('日', '')}
+              </span>
+              <span className="hidden sm:inline">
+                整合 {dailyBriefing.sources.length} 個來源
+              </span>
+            </div>
           </div>
           <h3 className="mt-6 max-w-2xl font-serif text-3xl font-medium leading-tight">
             {dailyBriefing.title}
@@ -737,7 +746,7 @@ function HomeView({
             onClick={() => onArticle(article)}
             className="group shrink-0 basis-[88%] snap-start border-b border-border py-6 text-left sm:basis-[calc((100%-1.5rem)/2)] lg:basis-[calc((100%-3rem)/3)]"
           >
-            <div className="mb-5 aspect-[16/9] overflow-hidden bg-secondary">
+            <div className="relative mb-5 aspect-[16/9] overflow-hidden bg-secondary">
               <img
                 src={article.image}
                 alt={article.imageAlt}
@@ -748,6 +757,9 @@ function HomeView({
                 }}
                 className="h-full w-full object-cover transition duration-500 group-hover:scale-[1.02]"
               />
+              <span className="absolute right-3 top-3 rounded-full border border-white/40 bg-black/75 px-2.5 py-1 text-xs font-semibold tracking-wide text-white backdrop-blur-sm">
+                {compactArticleDate(article)}
+              </span>
             </div>
             <span className="text-sm font-semibold text-muted-foreground">
               {article.category}・{evidenceLabel(article)}・
@@ -1102,7 +1114,12 @@ function SearchView({
             className="grid w-full gap-4 border-t border-border py-6 text-left first:border-t-0 sm:grid-cols-[150px_1fr]"
           >
             <div>
-              <span className="text-sm font-semibold">{article.category}</span>
+              <div className="flex flex-wrap items-center gap-2">
+                <span className="text-sm font-semibold">{article.category}</span>
+                <span className="rounded-full border border-border px-2.5 py-1 text-xs font-semibold text-muted-foreground">
+                  {compactArticleDate(article)}
+                </span>
+              </div>
               <span className="mt-1 block text-sm text-muted-foreground">
                 {article.sources.length} 個來源
               </span>
