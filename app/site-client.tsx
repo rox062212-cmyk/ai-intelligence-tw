@@ -53,7 +53,9 @@ const nav: { id: View; label: string }[] = [
   { id: 'calendar', label: 'AI 日曆' },
 ];
 
-const publishableArticles = articles.filter((article) => article.sources.length >= 3);
+const publishableArticles = articles.filter(
+  (article) => article.sources.length >= 3,
+);
 const newestArticleDate = publishableArticles.reduce(
   (latest, article) =>
     article.publishedAt.slice(0, 10) > latest
@@ -323,7 +325,9 @@ export default function SiteClient({
             ))}
             {isAdmin && (
               <button
-                onClick={() => { window.location.href = '/admin'; }}
+                onClick={() => {
+                  window.location.href = '/admin';
+                }}
                 className={`whitespace-nowrap rounded-full px-3 py-2 text-sm ${view === 'admin' ? 'bg-secondary font-semibold' : 'text-muted-foreground hover:text-foreground'}`}
               >
                 管理後台
@@ -401,7 +405,9 @@ export default function SiteClient({
               ))}
               {isAdmin && (
                 <button
-                  onClick={() => { window.location.href = '/admin'; }}
+                  onClick={() => {
+                    window.location.href = '/admin';
+                  }}
                   className="border-b border-border py-3 text-left"
                 >
                   管理後台
@@ -611,6 +617,22 @@ function HomeView({
     day: 'numeric',
     timeZone: 'Asia/Taipei',
   }).format(new Date());
+  const taipeiDateParts = new Intl.DateTimeFormat('en', {
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    timeZone: 'Asia/Taipei',
+  })
+    .formatToParts(new Date())
+    .reduce<Record<string, string>>((parts, part) => {
+      if (part.type !== 'literal') parts[part.type] = part.value;
+      return parts;
+    }, {});
+  const todayIso = `${taipeiDateParts.year}-${taipeiDateParts.month}-${taipeiDateParts.day}`;
+  const upcomingEvents = [...calendarEvents]
+    .filter((event) => event.date >= todayIso)
+    .sort((a, b) => a.date.localeCompare(b.date))
+    .slice(0, 3);
   const scrollLatest = (direction: -1 | 1) => {
     latestRail.current?.scrollBy({
       left: direction * latestRail.current.clientWidth,
@@ -630,7 +652,8 @@ function HomeView({
         掌握 AI 現況，也查得到每一次重要變化
       </h1>
       <p className="mt-4 max-w-3xl text-lg leading-8 text-muted-foreground">
-        每日整理最新 AI 情報，並持續保存可搜尋的歷史紀錄；每項結論都能回到原始資料。
+        每日整理最新 AI
+        情報，並持續保存可搜尋的歷史紀錄；每項結論都能回到原始資料。
       </p>
       <div className="mt-10 grid gap-5 lg:grid-cols-[1.7fr_0.8fr]">
         <section className="self-start rounded-2xl border border-border border-t-4 border-t-foreground bg-card p-6 sm:p-8">
@@ -658,7 +681,7 @@ function HomeView({
             <h2 className="text-xl font-semibold">即將發生</h2>
             <CalendarDays className="size-5" />
           </div>
-          {calendarEvents.slice(0, 3).map((event) => (
+          {upcomingEvents.map((event) => (
             <div
               key={event.id}
               className="border-b border-border py-5 last:border-0"
@@ -727,7 +750,8 @@ function HomeView({
               />
             </div>
             <span className="text-sm font-semibold text-muted-foreground">
-              {article.category}・{evidenceLabel(article)}・{article.sources.length} 個來源
+              {article.category}・{evidenceLabel(article)}・
+              {article.sources.length} 個來源
             </span>
             <h3 className="mt-2 text-xl font-semibold leading-8 group-hover:underline">
               {article.title}
@@ -907,6 +931,7 @@ function CalendarView({
     教育: 'border-emerald-500 bg-emerald-50 text-emerald-950 dark:bg-emerald-950/55 dark:text-emerald-100',
     政策: 'border-rose-500 bg-rose-50 text-rose-950 dark:bg-rose-950/55 dark:text-rose-100',
     競賽: 'border-fuchsia-500 bg-fuchsia-50 text-fuchsia-950 dark:bg-fuchsia-950/55 dark:text-fuchsia-100',
+    安全: 'border-red-500 bg-red-50 text-red-950 dark:bg-red-950/55 dark:text-red-100',
     模型: 'border-indigo-500 bg-indigo-50 text-indigo-950 dark:bg-indigo-950/55 dark:text-indigo-100',
     產品更新: 'border-teal-500 bg-teal-50 text-teal-950 dark:bg-teal-950/55 dark:text-teal-100',
     停止服務: 'border-orange-500 bg-orange-50 text-orange-950 dark:bg-orange-950/55 dark:text-orange-100',
@@ -1295,7 +1320,8 @@ function AdminView({ adminEmail }: { adminEmail: string }) {
         fetch('/api/admin/subscriptions'),
         fetch('/api/admin/comments'),
       ]);
-      if (!subscriptionResponse.ok || !commentResponse.ok) throw new Error('load');
+      if (!subscriptionResponse.ok || !commentResponse.ok)
+        throw new Error('load');
       const subscriptionData = (await subscriptionResponse.json()) as {
         rows: AdminSubscription[];
       };
@@ -1357,9 +1383,15 @@ function AdminView({ adminEmail }: { adminEmail: string }) {
       setAdminComments((items) => items.filter((row) => row.id !== item.id));
   };
 
-  const activeCount = subscriptions.filter((item) => item.status === 'active').length;
-  const pendingCount = subscriptions.filter((item) => item.status === 'pending').length;
-  const hiddenCount = adminComments.filter((item) => item.status === 'hidden').length;
+  const activeCount = subscriptions.filter(
+    (item) => item.status === 'active',
+  ).length;
+  const pendingCount = subscriptions.filter(
+    (item) => item.status === 'pending',
+  ).length;
+  const hiddenCount = adminComments.filter(
+    (item) => item.status === 'hidden',
+  ).length;
 
   return (
     <main className="mx-auto max-w-7xl px-4 py-10 lg:px-8">
@@ -1368,10 +1400,15 @@ function AdminView({ adminEmail }: { adminEmail: string }) {
           <div className="flex items-center gap-2 text-sm font-semibold tracking-widest text-muted-foreground">
             <ShieldCheck className="size-4" /> 最高管理權限
           </div>
-          <h1 className="mt-3 font-serif text-4xl font-medium sm:text-5xl">管理後台</h1>
+          <h1 className="mt-3 font-serif text-4xl font-medium sm:text-5xl">
+            管理後台
+          </h1>
           <p className="mt-3 text-muted-foreground">目前登入：{adminEmail}</p>
         </div>
-        <button onClick={() => void load()} className="rounded-full border border-border px-4 py-2 text-sm font-semibold">
+        <button
+          onClick={() => void load()}
+          className="rounded-full border border-border px-4 py-2 text-sm font-semibold"
+        >
           重新整理
         </button>
       </div>
@@ -1383,7 +1420,10 @@ function AdminView({ adminEmail }: { adminEmail: string }) {
           ['等待驗證', pendingCount],
           ['已隱藏留言', hiddenCount],
         ].map(([label, value]) => (
-          <div key={label} className="rounded-2xl border border-border bg-card p-5">
+          <div
+            key={label}
+            className="rounded-2xl border border-border bg-card p-5"
+          >
             <div className="text-sm text-muted-foreground">{label}</div>
             <strong className="mt-2 block text-3xl">{value}</strong>
           </div>
@@ -1391,35 +1431,88 @@ function AdminView({ adminEmail }: { adminEmail: string }) {
       </div>
 
       <div className="mt-8 flex gap-2 border-b border-border">
-        <button onClick={() => setTab('subscriptions')} className={`px-4 py-3 font-semibold ${tab === 'subscriptions' ? 'border-b-2 border-foreground' : 'text-muted-foreground'}`}>
+        <button
+          onClick={() => setTab('subscriptions')}
+          className={`px-4 py-3 font-semibold ${tab === 'subscriptions' ? 'border-b-2 border-foreground' : 'text-muted-foreground'}`}
+        >
           訂閱者管理
         </button>
-        <button onClick={() => setTab('comments')} className={`px-4 py-3 font-semibold ${tab === 'comments' ? 'border-b-2 border-foreground' : 'text-muted-foreground'}`}>
+        <button
+          onClick={() => setTab('comments')}
+          className={`px-4 py-3 font-semibold ${tab === 'comments' ? 'border-b-2 border-foreground' : 'text-muted-foreground'}`}
+        >
           留言管理
         </button>
       </div>
 
-      {loading && <p className="py-12 text-muted-foreground">正在載入後台資料…</p>}
+      {loading && (
+        <p className="py-12 text-muted-foreground">正在載入後台資料…</p>
+      )}
       {error && <p className="py-12 text-destructive">{error}</p>}
 
       {!loading && !error && tab === 'subscriptions' && (
         <div className="mt-6 overflow-x-auto rounded-2xl border border-border bg-card">
           <table className="w-full min-w-[900px] text-left text-sm">
             <thead className="border-b border-border text-muted-foreground">
-              <tr><th className="p-4">Email</th><th className="p-4">狀態</th><th className="p-4">每日寄送</th><th className="p-4">關鍵字</th><th className="p-4">更新時間</th><th className="p-4">操作</th></tr>
+              <tr>
+                <th className="p-4">Email</th>
+                <th className="p-4">狀態</th>
+                <th className="p-4">每日寄送</th>
+                <th className="p-4">關鍵字</th>
+                <th className="p-4">更新時間</th>
+                <th className="p-4">操作</th>
+              </tr>
             </thead>
             <tbody>
               {subscriptions.map((item) => (
-                <tr key={item.id} className="border-b border-border last:border-0">
+                <tr
+                  key={item.id}
+                  className="border-b border-border last:border-0"
+                >
                   <td className="p-4 font-semibold">{item.email}</td>
-                  <td className="p-4"><span className="rounded-full bg-secondary px-3 py-1">{item.status === 'active' ? '已啟用' : item.status === 'paused' ? '已停用' : '等待驗證'}</span></td>
-                  <td className="p-4">{item.sendTime}<span className="ml-2 text-muted-foreground">{item.timeZone}</span></td>
-                  <td className="max-w-52 truncate p-4 text-muted-foreground">{JSON.parse(item.keywords || '[]').join('、') || '全部'}</td>
-                  <td className="p-4 text-muted-foreground">{new Date(item.updatedAt).toLocaleString('zh-TW')}</td>
-                  <td className="p-4"><div className="flex gap-2">
-                    <button onClick={() => void updateSubscription(item.id, item.status === 'active' ? 'paused' : 'active')} className="rounded-full border border-border px-3 py-1.5 font-semibold">{item.status === 'active' ? '停用' : '啟用'}</button>
-                    <button onClick={() => void deleteSubscription(item)} className="grid size-8 place-items-center rounded-full border border-border text-destructive" aria-label={`刪除 ${item.email}`}><Trash2 className="size-4" /></button>
-                  </div></td>
+                  <td className="p-4">
+                    <span className="rounded-full bg-secondary px-3 py-1">
+                      {item.status === 'active'
+                        ? '已啟用'
+                        : item.status === 'paused'
+                          ? '已停用'
+                          : '等待驗證'}
+                    </span>
+                  </td>
+                  <td className="p-4">
+                    {item.sendTime}
+                    <span className="ml-2 text-muted-foreground">
+                      {item.timeZone}
+                    </span>
+                  </td>
+                  <td className="max-w-52 truncate p-4 text-muted-foreground">
+                    {JSON.parse(item.keywords || '[]').join('、') || '全部'}
+                  </td>
+                  <td className="p-4 text-muted-foreground">
+                    {new Date(item.updatedAt).toLocaleString('zh-TW')}
+                  </td>
+                  <td className="p-4">
+                    <div className="flex gap-2">
+                      <button
+                        onClick={() =>
+                          void updateSubscription(
+                            item.id,
+                            item.status === 'active' ? 'paused' : 'active',
+                          )
+                        }
+                        className="rounded-full border border-border px-3 py-1.5 font-semibold"
+                      >
+                        {item.status === 'active' ? '停用' : '啟用'}
+                      </button>
+                      <button
+                        onClick={() => void deleteSubscription(item)}
+                        className="grid size-8 place-items-center rounded-full border border-border text-destructive"
+                        aria-label={`刪除 ${item.email}`}
+                      >
+                        <Trash2 className="size-4" />
+                      </button>
+                    </div>
+                  </td>
                 </tr>
               ))}
             </tbody>
@@ -1429,14 +1522,45 @@ function AdminView({ adminEmail }: { adminEmail: string }) {
 
       {!loading && !error && tab === 'comments' && (
         <div className="mt-6 space-y-3">
-          {adminComments.length === 0 && <p className="py-8 text-muted-foreground">目前沒有留言。</p>}
+          {adminComments.length === 0 && (
+            <p className="py-8 text-muted-foreground">目前沒有留言。</p>
+          )}
           {adminComments.map((item) => (
-            <article key={item.id} className="rounded-2xl border border-border bg-card p-5">
+            <article
+              key={item.id}
+              className="rounded-2xl border border-border bg-card p-5"
+            >
               <div className="flex flex-col justify-between gap-4 sm:flex-row">
-                <div><strong>{item.authorName}</strong><span className="ml-2 text-sm text-muted-foreground">{item.authorEmail}</span><p className="mt-3 leading-7">{item.body}</p><p className="mt-2 text-xs text-muted-foreground">文章：{item.articleId}・{new Date(item.createdAt).toLocaleString('zh-TW')}</p></div>
+                <div>
+                  <strong>{item.authorName}</strong>
+                  <span className="ml-2 text-sm text-muted-foreground">
+                    {item.authorEmail}
+                  </span>
+                  <p className="mt-3 leading-7">{item.body}</p>
+                  <p className="mt-2 text-xs text-muted-foreground">
+                    文章：{item.articleId}・
+                    {new Date(item.createdAt).toLocaleString('zh-TW')}
+                  </p>
+                </div>
                 <div className="flex shrink-0 gap-2">
-                  <button onClick={() => void updateComment(item.id, item.status === 'published' ? 'hidden' : 'published')} className="rounded-full border border-border px-3 py-1.5 text-sm font-semibold">{item.status === 'published' ? '隱藏' : '公開'}</button>
-                  <button onClick={() => void deleteComment(item)} className="grid size-9 place-items-center rounded-full border border-border text-destructive" aria-label="刪除留言"><Trash2 className="size-4" /></button>
+                  <button
+                    onClick={() =>
+                      void updateComment(
+                        item.id,
+                        item.status === 'published' ? 'hidden' : 'published',
+                      )
+                    }
+                    className="rounded-full border border-border px-3 py-1.5 text-sm font-semibold"
+                  >
+                    {item.status === 'published' ? '隱藏' : '公開'}
+                  </button>
+                  <button
+                    onClick={() => void deleteComment(item)}
+                    className="grid size-9 place-items-center rounded-full border border-border text-destructive"
+                    aria-label="刪除留言"
+                  >
+                    <Trash2 className="size-4" />
+                  </button>
                 </div>
               </div>
             </article>
