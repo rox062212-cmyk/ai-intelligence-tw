@@ -47,3 +47,26 @@ export const savedArticles = sqliteTable(
     uniqueIndex('idx_saved_user_article').on(table.userId, table.articleId),
   ],
 );
+
+export const emailDeliveries = sqliteTable(
+  'email_deliveries',
+  {
+    id: integer('id').primaryKey({ autoIncrement: true }),
+    subscriptionId: integer('subscription_id').notNull(),
+    digestDate: text('digest_date').notNull(),
+    status: text('status').notNull().default('pending'),
+    attempts: integer('attempts').notNull().default(0),
+    resendEmailId: text('resend_email_id'),
+    lastError: text('last_error'),
+    createdAt: text('created_at').notNull(),
+    updatedAt: text('updated_at').notNull(),
+    sentAt: text('sent_at'),
+  },
+  (table) => [
+    uniqueIndex('idx_email_delivery_subscription_date').on(
+      table.subscriptionId,
+      table.digestDate,
+    ),
+    index('idx_email_delivery_status').on(table.status, table.updatedAt),
+  ],
+);
