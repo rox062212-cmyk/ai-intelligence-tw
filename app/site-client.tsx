@@ -26,8 +26,19 @@ import {
   type Source,
 } from '@/lib/content';
 
-type View = 'home' | 'daily' | 'calendar' | 'search' | 'article' | 'admin';
+type View =
+  | 'home'
+  | 'daily'
+  | 'calendar'
+  | 'calendar-article'
+  | 'search'
+  | 'article'
+  | 'admin';
 type Theme = 'system' | 'light' | 'dark';
+type CalendarEvent = (typeof calendarEvents)[number];
+type SearchResult =
+  | { kind: 'article'; item: Article; date: string }
+  | { kind: 'calendar'; item: CalendarEvent; date: string };
 type Comment = { id: number; author: string; body: string; createdAt: string };
 type AdminSubscription = {
   id: number;
@@ -52,6 +63,21 @@ type AdminComment = {
 const nav: { id: View; label: string }[] = [
   { id: 'home', label: '首頁' },
   { id: 'calendar', label: 'AI 日曆' },
+];
+
+const searchCompanies = [
+  '全部公司',
+  'OpenAI',
+  'Google',
+  'Microsoft',
+  'Anthropic',
+  'Meta',
+  'NVIDIA',
+  'Apple',
+  'Amazon',
+  'xAI',
+  'Mistral AI',
+  'DeepSeek',
 ];
 
 const publishableArticles = articles.filter(
@@ -95,6 +121,36 @@ function compactArticleDate(article: Article) {
   return article.publishedAt.slice(0, 10).replaceAll('-', '.');
 }
 
+function calendarEventBrief(event: CalendarEvent) {
+  const contextByType: Record<string, string> = {
+    活動: '這是一項值得追蹤的 AI 社群活動，可留意現場公布內容、講者分享與後續釋出的公開資料。',
+    研究: '這項研究行程可能帶來新的方法、評測或技術成果，後續應以論文、技術報告與主辦單位公告為準。',
+    產業: '這項產業動態可能影響 AI 市場、基礎設施或企業策略，適合持續觀察後續合作與實際落地。',
+    教育: '這項教育行程聚焦 AI 知識與應用推廣，可留意課程內容、參與資格及活動後公開的教材。',
+    政策: '這項政策動態可能影響 AI 治理、監管或產業規範，後續仍需追蹤正式文件與實施範圍。',
+    競賽: '這項競賽可反映特定 AI 應用的實務需求，值得關注參賽條件、評選標準及最終成果。',
+    安全: '這項安全動態涉及 AI 風險與防護機制，應優先核對官方說明、影響範圍與後續修正。',
+    模型: '這項模型動態值得留意能力、可用範圍、定價與安全評測；實際表現仍需等待官方文件及獨立測試。',
+    產品更新: '這項產品更新可能改變現有使用流程，建議留意推出範圍、帳號資格、費用與功能限制。',
+    停止服務: '這項服務異動可能影響既有工作流程，使用者應核對停止時間、替代方案與資料遷移安排。',
+  };
+
+  return (
+    contextByType[event.type] ??
+    '這項行程值得持續追蹤，後續資訊應以主辦單位或官方來源的最新公告為準。'
+  );
+}
+
+function formatCalendarDate(date: string) {
+  return new Intl.DateTimeFormat('zh-TW', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+    weekday: 'long',
+    timeZone: 'UTC',
+  }).format(new Date(`${date}T00:00:00Z`));
+}
+
 export default function SiteClient({
   user,
   initialView = 'home',
@@ -105,8 +161,13 @@ export default function SiteClient({
   const isAdmin = user?.email.toLowerCase() === 'rox062212@gmail.com';
   const [view, setView] = useState<View>(initialView);
   const [selected, setSelected] = useState<Article>(articles[0]);
+  const [selectedCalendarEvent, setSelectedCalendarEvent] =
+    useState<CalendarEvent>(calendarEvents[0]);
   const [query, setQuery] = useState('');
   const [category, setCategory] = useState('全部');
+  const [searchCompany, setSearchCompany] = useState('全部公司');
+  const [searchDateFrom, setSearchDateFrom] = useState('');
+  const [searchDateTo, setSearchDateTo] = useState('');
   const [calendarFilter, setCalendarFilter] = useState('全部');
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [subscribeOpen, setSubscribeOpen] = useState(false);
@@ -197,12 +258,26 @@ export default function SiteClient({
         setCategory('全部');
         setView('search');
         const normalized = value.toLowerCase();
-        const count = articles.filter((article) =>
+        const articleCount = articles.filter((article) =>
           [article.title, article.summary, article.category, ...article.tags]
             .join(' ')
             .toLowerCase()
             .includes(normalized),
         ).length;
+        const calendarCount = calendarEvents.filter((event) =>
+          [
+            event.title,
+            event.company,
+            event.type,
+            event.date,
+            event.format,
+            event.status,
+          ]
+            .join(' ')
+            .toLowerCase()
+            .includes(normalized),
+        ).length;
+        const count = articleCount + calendarCount;
         return { query: value, resultCount: count };
       },
     };
@@ -218,15 +293,22 @@ export default function SiteClient({
 
   const categories = [
     '全部',
-    ...Array.from(new Set(articles.map((article) => article.category))),
+    ...Array.from(
+      new Set([
+        ...articles.map((article) => article.category),
+        ...calendarEvents.map((event) => event.type),
+      ]),
+    ),
   ];
   const eventTypes = [
     '全部',
     ...Array.from(new Set(calendarEvents.map((event) => event.type))),
   ];
-  const results = useMemo(
-    () =>
-      articles.filter((article) => {
+  const results = useMemo(() => {
+    const normalizedQuery = query.trim().toLowerCase();
+    const articleResults: SearchResult[] = articles
+      .filter((article) => {
+        const articleDate = article.publishedAt.slice(0, 10);
         const text = [
           article.title,
           article.summary,
@@ -238,11 +320,49 @@ export default function SiteClient({
           .toLowerCase();
         return (
           (category === '全部' || article.category === category) &&
-          (!query.trim() || text.includes(query.trim().toLowerCase()))
+          (searchCompany === '全部公司' ||
+            text.includes(searchCompany.toLowerCase())) &&
+          (!searchDateFrom || articleDate >= searchDateFrom) &&
+          (!searchDateTo || articleDate <= searchDateTo) &&
+          (!normalizedQuery || text.includes(normalizedQuery))
         );
-      }),
-    [category, query],
-  );
+      })
+      .map((article) => ({
+        kind: 'article',
+        item: article,
+        date: article.publishedAt.slice(0, 10),
+      }));
+    const calendarResults: SearchResult[] = calendarEvents
+      .filter((event) => {
+        const text = [
+          event.title,
+          event.company,
+          event.type,
+          event.date,
+          event.format,
+          event.status,
+        ]
+          .join(' ')
+          .toLowerCase();
+        return (
+          (category === '全部' || event.type === category) &&
+          (searchCompany === '全部公司' ||
+            text.includes(searchCompany.toLowerCase())) &&
+          (!searchDateFrom || event.date >= searchDateFrom) &&
+          (!searchDateTo || event.date <= searchDateTo) &&
+          (!normalizedQuery || text.includes(normalizedQuery))
+        );
+      })
+      .map((event) => ({
+        kind: 'calendar',
+        item: event,
+        date: event.date,
+      }));
+
+    return [...articleResults, ...calendarResults].sort((a, b) =>
+      b.date.localeCompare(a.date),
+    );
+  }, [category, query, searchCompany, searchDateFrom, searchDateTo]);
   const filteredEvents = calendarEvents.filter(
     (event) => calendarFilter === '全部' || event.type === calendarFilter,
   );
@@ -255,6 +375,10 @@ export default function SiteClient({
   const openArticle = (article: Article) => {
     setSelected(article);
     go('article');
+  };
+  const openCalendarArticle = (event: CalendarEvent) => {
+    setSelectedCalendarEvent(event);
+    go('calendar-article');
   };
 
   async function subscribe(event: React.FormEvent) {
@@ -454,6 +578,13 @@ export default function SiteClient({
           activeFilter={calendarFilter}
           setFilter={setCalendarFilter}
           events={filteredEvents}
+          onEvent={openCalendarArticle}
+        />
+      )}
+      {view === 'calendar-article' && (
+        <CalendarArticleView
+          event={selectedCalendarEvent}
+          onBack={() => go('calendar')}
         />
       )}
       {view === 'search' && (
@@ -462,8 +593,16 @@ export default function SiteClient({
           categories={categories}
           category={category}
           setCategory={setCategory}
+          companies={searchCompanies}
+          company={searchCompany}
+          setCompany={setSearchCompany}
+          dateFrom={searchDateFrom}
+          setDateFrom={setSearchDateFrom}
+          dateTo={searchDateTo}
+          setDateTo={setSearchDateTo}
           results={results}
           onArticle={openArticle}
+          onCalendarArticle={openCalendarArticle}
         />
       )}
       {view === 'article' && (
@@ -796,8 +935,7 @@ function HomeView({
               </span>
             </div>
             <span className="text-sm font-semibold text-muted-foreground">
-              {article.category}・{evidenceLabel(article)}・
-              {article.sources.length} 個來源
+              {article.category}・{evidenceLabel(article)}・{article.sources.length} 個來源
             </span>
             <h3 className="mt-2 text-xl font-semibold leading-8 group-hover:underline">
               {article.title}
@@ -845,7 +983,8 @@ function HomeView({
               </span>
             </div>
             <span className="text-sm font-semibold text-muted-foreground">
-              {article.category}・{evidenceLabel(article)}・{article.sources.length} 個來源
+              {article.category}・{evidenceLabel(article)}・
+              {article.sources.length} 個來源
             </span>
             <h3 className="mt-2 text-xl font-semibold leading-8 group-hover:underline">
               {article.title}
@@ -1021,11 +1160,13 @@ function CalendarView({
   activeFilter,
   setFilter,
   events,
+  onEvent,
 }: {
   filters: string[];
   activeFilter: string;
   setFilter: (value: string) => void;
   events: typeof calendarEvents;
+  onEvent: (event: CalendarEvent) => void;
 }) {
   const taipeiDateParts = new Intl.DateTimeFormat('en', {
     year: 'numeric',
@@ -1148,12 +1289,12 @@ function CalendarView({
                     {day}
                   </span>
                   {dayEvents.map((event) => (
-                    <a
+                    <button
                       key={event.id}
-                      href={event.source}
-                      target="_blank"
-                      rel="noreferrer"
-                      className={`mt-2 block rounded-lg border-l-4 p-2 text-xs leading-5 transition hover:brightness-95 dark:hover:brightness-110 ${typeStyles[event.type] ?? fallbackStyle}`}
+                      type="button"
+                      onClick={() => onEvent(event)}
+                      aria-label={`開啟日程：${event.title}`}
+                      className={`mt-2 block w-full rounded-lg border-l-4 p-2 text-left text-xs leading-5 transition hover:brightness-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring dark:hover:brightness-110 ${typeStyles[event.type] ?? fallbackStyle}`}
                     >
                       <strong className="block">{event.title}</strong>
                       <span className="opacity-70">
@@ -1166,7 +1307,7 @@ function CalendarView({
                             ? '○ 預計'
                             : '△ 傳聞'}
                       </span>
-                    </a>
+                    </button>
                   ))}
                 </div>
               );
@@ -1194,78 +1335,288 @@ function CalendarView({
   );
 }
 
+function CalendarArticleView({
+  event,
+  onBack,
+}: {
+  event: CalendarEvent;
+  onBack: () => void;
+}) {
+  const credibility =
+    event.status === '已確認'
+      ? '目前列為已確認日程；日期與內容仍可能由主辦單位調整，請以原始來源的最新公告為準。'
+      : event.status === '預計'
+        ? '官方尚未公布完整日期或細節，目前內容屬預計時程。'
+        : '目前尚未獲得官方確認，請將此項視為追蹤線索，不宜當成已發生事實。';
+
+  return (
+    <main className="mx-auto max-w-7xl px-4 py-10 lg:px-8">
+      <button
+        onClick={onBack}
+        className="mb-7 text-sm font-semibold text-muted-foreground hover:text-foreground"
+      >
+        ← 返回 AI 日曆
+      </button>
+      <div className="max-w-5xl">
+        <div className="flex flex-wrap items-center gap-3 text-sm text-muted-foreground">
+          <span>{event.type}</span>
+          <span>・</span>
+          <span>{event.status}</span>
+          <span>・</span>
+          <span>{event.format}</span>
+        </div>
+        <h1 className="mt-4 font-serif text-4xl font-medium leading-tight tracking-tight sm:text-5xl">
+          {event.title}
+        </h1>
+        <p className="mt-5 text-xl leading-9 text-muted-foreground">
+          {calendarEventBrief(event)}
+        </p>
+        <p className="mt-4 text-sm text-muted-foreground">
+          日程 {formatCalendarDate(event.date)}・{event.company}
+        </p>
+        <div className="mt-5 rounded-xl border border-border bg-card px-4 py-3">
+          <strong>可信度判定：{event.status}</strong>
+          <p className="mt-1 text-sm leading-6 text-muted-foreground">
+            {credibility}
+          </p>
+        </div>
+      </div>
+
+      <div className="mt-10 grid gap-10 lg:grid-cols-[minmax(0,1fr)_320px]">
+        <article>
+          <div className="border-y border-foreground py-6">
+            <strong>情報摘要</strong>
+            <p className="mt-2 leading-7 text-muted-foreground">
+              {event.company} 的「{event.title}」目前安排於
+              {formatCalendarDate(event.date)}，活動形式為{event.format}。
+            </p>
+          </div>
+          <section className="py-8">
+            <h2 className="text-2xl font-semibold">這項日程值得注意什麼</h2>
+            <p className="mt-4 text-lg leading-9">{calendarEventBrief(event)}</p>
+          </section>
+          <section className="border-t border-border py-8">
+            <h2 className="text-2xl font-semibold">後續追蹤</h2>
+            <p className="mt-4 text-lg leading-9">
+              日程前後可持續核對主辦單位公告、議程或產品文件；若日期、參與方式或內容有所調整，本篇情報也應同步更新。
+            </p>
+          </section>
+        </article>
+
+        <aside>
+          <div className="sticky top-24 rounded-2xl border border-border bg-card p-5">
+            <h2 className="text-xl font-semibold">日程資料</h2>
+            <dl className="mt-4 space-y-4 text-sm">
+              <div className="border-t border-border pt-4 first:border-t-0 first:pt-0">
+                <dt className="text-muted-foreground">日期</dt>
+                <dd className="mt-1 font-semibold">{formatCalendarDate(event.date)}</dd>
+              </div>
+              <div className="border-t border-border pt-4">
+                <dt className="text-muted-foreground">主辦／公司</dt>
+                <dd className="mt-1 font-semibold">{event.company}</dd>
+              </div>
+              <div className="border-t border-border pt-4">
+                <dt className="text-muted-foreground">形式</dt>
+                <dd className="mt-1 font-semibold">{event.format}</dd>
+              </div>
+            </dl>
+            <a
+              href={event.source}
+              target="_blank"
+              rel="noreferrer"
+              className="mt-6 inline-flex items-center gap-2 font-semibold underline underline-offset-4"
+            >
+              查看原始來源 <ExternalLink className="size-4" />
+            </a>
+          </div>
+        </aside>
+      </div>
+    </main>
+  );
+}
+
 function SearchView({
   query,
   categories,
   category,
   setCategory,
+  companies,
+  company,
+  setCompany,
+  dateFrom,
+  setDateFrom,
+  dateTo,
+  setDateTo,
   results,
   onArticle,
+  onCalendarArticle,
 }: {
   query: string;
   categories: string[];
   category: string;
   setCategory: (value: string) => void;
-  results: Article[];
+  companies: string[];
+  company: string;
+  setCompany: (value: string) => void;
+  dateFrom: string;
+  setDateFrom: (value: string) => void;
+  dateTo: string;
+  setDateTo: (value: string) => void;
+  results: SearchResult[];
   onArticle: (article: Article) => void;
+  onCalendarArticle: (event: CalendarEvent) => void;
 }) {
   return (
     <main className="mx-auto max-w-6xl px-4 py-12 lg:px-8">
       <h1 className="font-serif text-4xl font-medium sm:text-5xl">
         搜尋所有 AI 情報
       </h1>
-      <div className="mt-7 flex flex-wrap gap-2">
-        {categories.map((item) => (
-          <button
-            key={item}
-            onClick={() => setCategory(item)}
-            className={`rounded-full border px-4 py-2 text-sm ${category === item ? 'border-foreground bg-foreground text-background' : 'border-border'}`}
+      <div className="mt-8 grid gap-4 border-y border-border py-5 md:grid-cols-[1.4fr_1fr_1.3fr_auto] md:items-end">
+        <label className="grid gap-2 text-sm font-semibold">
+          日期
+          <span className="grid grid-cols-[1fr_auto_1fr] items-center gap-2">
+            <input
+              type="date"
+              value={dateFrom}
+              onChange={(event) => setDateFrom(event.target.value)}
+              aria-label="起始日期"
+              className="min-w-0 rounded-xl border border-border bg-background px-3 py-2.5 font-normal"
+            />
+            <span className="text-muted-foreground">至</span>
+            <input
+              type="date"
+              value={dateTo}
+              min={dateFrom || undefined}
+              onChange={(event) => setDateTo(event.target.value)}
+              aria-label="結束日期"
+              className="min-w-0 rounded-xl border border-border bg-background px-3 py-2.5 font-normal"
+            />
+          </span>
+        </label>
+        <label className="grid gap-2 text-sm font-semibold">
+          公司
+          <select
+            value={company}
+            onChange={(event) => setCompany(event.target.value)}
+            className="rounded-xl border border-border bg-background px-3 py-2.5 font-normal"
           >
-            {item}
-          </button>
-        ))}
+            {companies.map((item) => (
+              <option key={item}>{item}</option>
+            ))}
+          </select>
+        </label>
+        <label className="grid gap-2 text-sm font-semibold">
+          類型
+          <select
+            value={category}
+            onChange={(event) => setCategory(event.target.value)}
+            className="rounded-xl border border-border bg-background px-3 py-2.5 font-normal"
+          >
+            {categories.map((item) => (
+              <option key={item} value={item}>
+                {item === '全部' ? '全部類型' : item}
+              </option>
+            ))}
+          </select>
+        </label>
+        <button
+          type="button"
+          onClick={() => {
+            setDateFrom('');
+            setDateTo('');
+            setCompany('全部公司');
+            setCategory('全部');
+          }}
+          className="rounded-xl border border-border px-4 py-2.5 text-sm font-semibold hover:bg-secondary"
+        >
+          清除篩選
+        </button>
       </div>
       <div className="mt-8 border-t border-foreground">
         <p className="py-4 text-sm text-muted-foreground">
           找到 {results.length} 項相關情報
         </p>
-        {results.map((article) => (
-          <button
-            key={article.id}
-            onClick={() => onArticle(article)}
-            className="grid w-full gap-4 border-t border-border py-6 text-left first:border-t-0 sm:grid-cols-[150px_1fr]"
-          >
-            <div>
-              <div className="flex flex-wrap items-center gap-2">
-                <span className="text-sm font-semibold">{article.category}</span>
-                <span className="rounded-full border border-border px-2.5 py-1 text-xs font-semibold text-muted-foreground">
-                  {compactArticleDate(article)}
+        {results.map((result) => {
+          if (result.kind === 'article') {
+            const article = result.item;
+            return (
+              <button
+                key={`article-${article.id}`}
+                onClick={() => onArticle(article)}
+                className="grid w-full gap-4 border-t border-border py-6 text-left first:border-t-0 sm:grid-cols-[150px_1fr]"
+              >
+                <div>
+                  <div className="flex flex-wrap items-center gap-2">
+                    <span className="text-sm font-semibold">{article.category}</span>
+                    <span className="rounded-full border border-border px-2.5 py-1 text-xs font-semibold text-muted-foreground">
+                      {compactArticleDate(article)}
+                    </span>
+                  </div>
+                  <span className="mt-1 block text-sm text-muted-foreground">
+                    {article.sources.length} 個來源
+                  </span>
+                </div>
+                <div>
+                  <h2 className="text-xl font-semibold leading-8 hover:underline">
+                    {article.title}
+                  </h2>
+                  <p className="mt-2 leading-7 text-muted-foreground">
+                    {article.summary}
+                  </p>
+                  <div className="mt-3 flex flex-wrap gap-2">
+                    {article.tags.map((tag) => (
+                      <span
+                        key={tag}
+                        className="rounded-full bg-secondary px-3 py-1 text-xs"
+                      >
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              </button>
+            );
+          }
+
+          const event = result.item;
+          return (
+            <button
+              key={`calendar-${event.id}`}
+              onClick={() => onCalendarArticle(event)}
+              className="grid w-full gap-4 border-t border-border py-6 text-left first:border-t-0 sm:grid-cols-[150px_1fr]"
+            >
+              <div>
+                <div className="flex flex-wrap items-center gap-2">
+                  <span className="text-sm font-semibold">{event.type}</span>
+                  <span className="rounded-full border border-border px-2.5 py-1 text-xs font-semibold text-muted-foreground">
+                    {event.date.replaceAll('-', '.')}
+                  </span>
+                </div>
+                <span className="mt-1 block text-sm text-muted-foreground">
+                  {event.status}・{event.format}
                 </span>
               </div>
-              <span className="mt-1 block text-sm text-muted-foreground">
-                {article.sources.length} 個來源
-              </span>
-            </div>
-            <div>
-              <h2 className="text-xl font-semibold leading-8 hover:underline">
-                {article.title}
-              </h2>
-              <p className="mt-2 leading-7 text-muted-foreground">
-                {article.summary}
-              </p>
-              <div className="mt-3 flex flex-wrap gap-2">
-                {article.tags.map((tag) => (
-                  <span
-                    key={tag}
-                    className="rounded-full bg-secondary px-3 py-1 text-xs"
-                  >
-                    {tag}
-                  </span>
-                ))}
+              <div>
+                <h2 className="text-xl font-semibold leading-8 hover:underline">
+                  {event.title}
+                </h2>
+                <p className="mt-2 leading-7 text-muted-foreground">
+                  {calendarEventBrief(event)}
+                </p>
+                <div className="mt-3 flex flex-wrap gap-2">
+                  {[event.company, event.type, 'AI 日曆'].map((tag) => (
+                    <span
+                      key={tag}
+                      className="rounded-full bg-secondary px-3 py-1 text-xs"
+                    >
+                      {tag}
+                    </span>
+                  ))}
+                </div>
               </div>
-            </div>
-          </button>
-        ))}
+            </button>
+          );
+        })}
         {results.length === 0 && (
           <div className="py-20 text-center">
             <Search className="mx-auto mb-4 size-8 text-muted-foreground" />
