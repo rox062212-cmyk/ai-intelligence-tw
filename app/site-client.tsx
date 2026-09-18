@@ -57,13 +57,24 @@ const nav: { id: View; label: string }[] = [
 const publishableArticles = articles.filter(
   (article) => article.sources.length >= 3,
 );
-const latestPublishDate = publishableArticles
-  .map((article) => article.publishedAt.slice(0, 10))
-  .sort()
-  .at(-1);
-const featuredArticles = publishableArticles
-  .filter((article) => article.publishedAt.startsWith(latestPublishDate ?? ''))
-  .sort((a, b) => b.publishedAt.localeCompare(a.publishedAt));
+const chronologicallySorted = [...publishableArticles].sort((a, b) =>
+  b.publishedAt.localeCompare(a.publishedAt),
+);
+const newestDate = chronologicallySorted[0]?.publishedAt.slice(0, 10) ?? '';
+const recentFeatured = chronologicallySorted.slice(0, 3);
+const earlierFeatured = chronologicallySorted
+  .filter((article) => article.publishedAt.slice(0, 10) !== newestDate)
+  .sort(
+    (a, b) =>
+      b.sources.length - a.sources.length ||
+      b.publishedAt.localeCompare(a.publishedAt),
+  )
+  .slice(0, 3);
+const featuredArticles = [...recentFeatured, ...earlierFeatured];
+const featuredIds = new Set(featuredArticles.map((article) => article.id));
+const moreArticles = chronologicallySorted.filter(
+  (article) => !featuredIds.has(article.id),
+);
 
 function evidenceLabel(article: Article) {
   return article.evidenceLevel ?? (article.verified ? '多方證實' : '傳聞追蹤');
@@ -715,14 +726,14 @@ function HomeView({
       </div>
       <div className="mt-12 flex items-end justify-between gap-4 border-b border-foreground pb-3">
         <div>
-          <h2 className="text-2xl font-semibold">最新情報</h2>
+          <h2 className="text-2xl font-semibold">熱門焦點</h2>
           <p className="mt-1 text-sm text-muted-foreground">
-            僅顯示最新更新日且通過三來源門檻的內容
+            綜合近期影響與來源廣度，混合不同日期的重要情報
           </p>
         </div>
         <div className="flex items-center gap-2">
           <span className="hidden text-sm text-muted-foreground sm:inline">
-            {latestPublishDate?.replaceAll('-', '.')}・共 {featuredArticles.length} 則
+            精選 {featuredArticles.length} 則
           </span>
           <button
             type="button"
@@ -775,6 +786,49 @@ function HomeView({
               {article.title}
             </h3>
             <p className="mt-2 leading-7 text-muted-foreground">
+              {article.summary}
+            </p>
+          </button>
+        ))}
+      </div>
+      <div className="mt-12 flex items-end justify-between gap-4 border-b border-foreground pb-3">
+        <div>
+          <h2 className="text-2xl font-semibold">更多情報</h2>
+          <p className="mt-1 text-sm text-muted-foreground">
+            由新到舊持續保留，方便回看不同日期的內容
+          </p>
+        </div>
+        <span className="text-sm text-muted-foreground">共 {moreArticles.length} 則</span>
+      </div>
+      <div className="grid items-stretch gap-x-5 sm:grid-cols-2 lg:grid-cols-4">
+        {moreArticles.map((article) => (
+          <button
+            key={article.id}
+            onClick={() => onArticle(article)}
+            className="group flex h-full min-w-0 flex-col border-b border-border py-6 text-left"
+          >
+            <div className="relative mb-5 h-48 w-full shrink-0 overflow-hidden bg-secondary sm:h-44 lg:h-36 xl:h-44">
+              <img
+                src={article.image}
+                alt={article.imageAlt}
+                loading="lazy"
+                onError={(event) => {
+                  event.currentTarget.onerror = null;
+                  event.currentTarget.src = '/news/ai-agent-tools.png';
+                }}
+                className="h-full w-full object-cover transition duration-500 group-hover:scale-[1.02]"
+              />
+              <span className="absolute right-3 top-3 rounded-full border border-white/40 bg-black/75 px-2.5 py-1 text-xs font-semibold tracking-wide text-white backdrop-blur-sm">
+                {compactArticleDate(article)}
+              </span>
+            </div>
+            <span className="text-sm font-semibold text-muted-foreground">
+              {article.category}・{evidenceLabel(article)}・{article.sources.length} 個來源
+            </span>
+            <h3 className="mt-2 text-xl font-semibold leading-8 group-hover:underline">
+              {article.title}
+            </h3>
+            <p className="mt-2 flex-1 leading-7 text-muted-foreground">
               {article.summary}
             </p>
           </button>

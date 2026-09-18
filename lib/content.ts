@@ -274,7 +274,7 @@ export const articles: Article[] = [
   },
   {
     id: 'us-house-ratepayer-protection-act-2026-09-17',
-    image: '/news/ai-compute-infrastructure.png',
+    image: '/news/data-center-grid-policy.png',
     imageAlt: 'AI 資料中心、電網與家庭電費帳單的彩色概念圖',
     category: '政策與治理',
     title: '美國眾議院 417 比 3 通過資料中心電費法案，但州政府仍保有採行裁量',
@@ -360,7 +360,7 @@ export const articles: Article[] = [
   },
   {
     id: 'huawei-ascend-960-roadmap-2026-09-17',
-    image: '/news/ai-compute-infrastructure.png',
+    image: '/news/ascend-interconnect-system.png',
     imageAlt: '大型 AI 晶片叢集、光互連與資料中心的彩色概念圖',
     category: '晶片與基礎設施',
     title: 'Huawei 提前 Ascend 960 晶片時程，競爭焦點轉向大規模互連與整體系統',
@@ -834,7 +834,7 @@ export const articles: Article[] = [
   },
   {
     id: 'tool-using-models',
-    image: '/news/ai-agent-tools.png',
+    image: '/news/long-running-ai-agents.png',
     imageAlt: '機器手臂操作多種數位工具的彩色概念圖',
     category: '模型與產品',
     title: 'AI 模型競爭轉向長時間任務與工具操作，實際成本仍待驗證',
@@ -898,7 +898,7 @@ export const articles: Article[] = [
   },
   {
     id: 'video-generation-control',
-    image: '/news/video-generation-editing.png',
+    image: '/news/video-character-editing.png',
     imageAlt: '影片剪輯時間軸與人物一致性的彩色概念圖',
     category: '影像與影片',
     title: '影片生成工具的下一場競爭：角色一致性、局部修改與工作流程整合',
