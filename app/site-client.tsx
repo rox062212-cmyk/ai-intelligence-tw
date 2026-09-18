@@ -624,6 +624,14 @@ function HomeView({
   onSubscribe: () => void;
 }) {
   const latestRail = useRef<HTMLDivElement>(null);
+  const moreSection = useRef<HTMLDivElement>(null);
+  const [morePage, setMorePage] = useState(1);
+  const morePageSize = 12;
+  const morePageCount = Math.max(1, Math.ceil(moreArticles.length / morePageSize));
+  const paginatedMoreArticles = moreArticles.slice(
+    (morePage - 1) * morePageSize,
+    morePage * morePageSize,
+  );
   const todayLabel = new Intl.DateTimeFormat('zh-TW', {
     year: 'numeric',
     month: 'long',
@@ -653,6 +661,13 @@ function HomeView({
     rail.current?.scrollBy({
       left: direction * rail.current.clientWidth,
       behavior: 'smooth',
+    });
+  };
+  const changeMorePage = (page: number) => {
+    const nextPage = Math.min(Math.max(page, 1), morePageCount);
+    setMorePage(nextPage);
+    requestAnimationFrame(() => {
+      moreSection.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
     });
   };
 
@@ -791,17 +806,22 @@ function HomeView({
           </button>
         ))}
       </div>
-      <div className="mt-12 flex items-end justify-between gap-4 border-b border-foreground pb-3">
+      <div
+        ref={moreSection}
+        className="mt-12 scroll-mt-24 flex items-end justify-between gap-4 border-b border-foreground pb-3"
+      >
         <div>
           <h2 className="text-2xl font-semibold">更多情報</h2>
           <p className="mt-1 text-sm text-muted-foreground">
             由新到舊持續保留，方便回看不同日期的內容
           </p>
         </div>
-        <span className="text-sm text-muted-foreground">共 {moreArticles.length} 則</span>
+        <span className="text-sm text-muted-foreground">
+          共 {moreArticles.length} 則・第 {morePage}／{morePageCount} 頁
+        </span>
       </div>
       <div className="grid items-stretch gap-x-5 sm:grid-cols-2 lg:grid-cols-4">
-        {moreArticles.map((article) => (
+        {paginatedMoreArticles.map((article) => (
           <button
             key={article.id}
             onClick={() => onArticle(article)}
@@ -834,6 +854,46 @@ function HomeView({
           </button>
         ))}
       </div>
+      {morePageCount > 1 && (
+        <nav
+          aria-label="更多情報分頁"
+          className="mt-8 flex flex-wrap items-center justify-center gap-2"
+        >
+          <button
+            type="button"
+            onClick={() => changeMorePage(morePage - 1)}
+            disabled={morePage === 1}
+            className="rounded-full border border-border px-4 py-2 text-sm font-semibold disabled:cursor-not-allowed disabled:opacity-35"
+          >
+            ← 上一頁
+          </button>
+          {Array.from({ length: morePageCount }, (_, index) => index + 1).map(
+            (page) => (
+              <button
+                key={page}
+                type="button"
+                onClick={() => changeMorePage(page)}
+                aria-current={page === morePage ? 'page' : undefined}
+                className={`grid size-10 place-items-center rounded-full border text-sm font-semibold ${
+                  page === morePage
+                    ? 'border-foreground bg-foreground text-background'
+                    : 'border-border hover:bg-secondary'
+                }`}
+              >
+                {page}
+              </button>
+            ),
+          )}
+          <button
+            type="button"
+            onClick={() => changeMorePage(morePage + 1)}
+            disabled={morePage === morePageCount}
+            className="rounded-full border border-border px-4 py-2 text-sm font-semibold disabled:cursor-not-allowed disabled:opacity-35"
+          >
+            下一頁 →
+          </button>
+        </nav>
+      )}
       <section className="mt-14 flex flex-col items-start justify-between gap-6 border-y border-border py-8 sm:flex-row sm:items-center">
         <div>
           <h2 className="text-2xl font-semibold">
