@@ -1,6 +1,7 @@
 import { eq } from 'drizzle-orm';
 import { getDb } from '@/db';
 import { subscriptions } from '@/db/schema';
+import { computeInitialSendAt } from '@/lib/daily-email';
 
 function page(title: string, message: string, success: boolean) {
   return new Response(
@@ -32,18 +33,32 @@ export async function GET(request: Request) {
 
   const db = getDb();
   const record = await db
-    .select({ id: subscriptions.id, status: subscriptions.status })
+    .select({
+      id: subscriptions.id,
+      status: subscriptions.status,
+      sendTime: subscriptions.sendTime,
+      timeZone: subscriptions.timeZone,
+      nextSendAt: subscriptions.nextSendAt,
+    })
     .from(subscriptions)
     .where(eq(subscriptions.verificationToken, token))
     .get();
 
   if (!record) return page('驗證連結已失效', '請回到網站重新申請驗證信。', false);
-  if (record.status === 'active')
+  if (record.status === 'active' && record.nextSendAt)
     return page('這個信箱已完成驗證', '你的每日 AI 情報訂閱已經啟用。', true);
 
   await db
     .update(subscriptions)
-    .set({ status: 'active', updatedAt: new Date().toISOString() })
+    .set({
+      status: 'active',
+      nextSendAt: computeInitialSendAt(
+        record.timeZone,
+        record.sendTime,
+        new Date(),
+      ),
+      updatedAt: new Date().toISOString(),
+    })
     .where(eq(subscriptions.id, record.id));
 
   return page('Email 驗證完成', '你的訂閱已啟用，之後會依照設定時間寄送每日 AI 情報。', true);

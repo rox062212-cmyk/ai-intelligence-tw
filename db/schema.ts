@@ -6,17 +6,24 @@ import {
   uniqueIndex,
 } from 'drizzle-orm/sqlite-core';
 
-export const subscriptions = sqliteTable('subscriptions', {
-  id: integer('id').primaryKey({ autoIncrement: true }),
-  email: text('email').notNull().unique(),
-  keywords: text('keywords').notNull().default('[]'),
-  sendTime: text('send_time').notNull().default('10:00'),
-  timeZone: text('time_zone').notNull().default('Asia/Taipei'),
-  status: text('status').notNull().default('pending'),
-  verificationToken: text('verification_token').notNull(),
-  createdAt: text('created_at').notNull(),
-  updatedAt: text('updated_at').notNull(),
-});
+export const subscriptions = sqliteTable(
+  'subscriptions',
+  {
+    id: integer('id').primaryKey({ autoIncrement: true }),
+    email: text('email').notNull().unique(),
+    keywords: text('keywords').notNull().default('[]'),
+    sendTime: text('send_time').notNull().default('10:00'),
+    timeZone: text('time_zone').notNull().default('Asia/Taipei'),
+    nextSendAt: text('next_send_at'),
+    status: text('status').notNull().default('pending'),
+    verificationToken: text('verification_token').notNull(),
+    createdAt: text('created_at').notNull(),
+    updatedAt: text('updated_at').notNull(),
+  },
+  (table) => [
+    index('idx_subscriptions_due').on(table.status, table.nextSendAt),
+  ],
+);
 
 export const comments = sqliteTable(
   'comments',

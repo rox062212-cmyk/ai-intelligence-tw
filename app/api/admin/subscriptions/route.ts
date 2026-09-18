@@ -3,6 +3,7 @@ import { NextResponse } from 'next/server';
 import { getAdminUser } from '@/app/admin-auth';
 import { getDb } from '@/db';
 import { subscriptions } from '@/db/schema';
+import { computeInitialSendAt } from '@/lib/daily-email';
 
 async function authorize() {
   const admin = await getAdminUser();
@@ -41,9 +42,31 @@ export async function PATCH(request: Request) {
   const status = payload?.status;
   if (!Number.isInteger(id) || !['active', 'paused', 'pending'].includes(String(status)))
     return NextResponse.json({ error: 'invalid_request' }, { status: 400 });
-  await getDb()
+  const db = getDb();
+  const current = await db
+    .select({
+      sendTime: subscriptions.sendTime,
+      timeZone: subscriptions.timeZone,
+    })
+    .from(subscriptions)
+    .where(eq(subscriptions.id, id))
+    .get();
+  if (!current)
+    return NextResponse.json({ error: 'not_found' }, { status: 404 });
+  await db
     .update(subscriptions)
-    .set({ status: String(status), updatedAt: new Date().toISOString() })
+    .set({
+      status: String(status),
+      nextSendAt:
+        status === 'active'
+          ? computeInitialSendAt(
+              current.timeZone,
+              current.sendTime,
+              new Date(),
+            )
+          : null,
+      updatedAt: new Date().toISOString(),
+    })
     .where(eq(subscriptions.id, id));
   return NextResponse.json({ ok: true });
 }

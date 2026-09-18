@@ -8,6 +8,7 @@ type SubscriptionRecord = {
   keywords: string;
   send_time: string;
   time_zone: string;
+  next_send_at: string;
   verification_token: string;
 };
 
@@ -41,6 +42,75 @@ function localDateTime(now: Date, timeZone: string) {
     date: `${values.year}-${values.month}-${values.day}`,
     time: `${values.hour}:${values.minute}`,
   };
+}
+
+function calendarParts(date: Date) {
+  return {
+    year: date.getUTCFullYear(),
+    month: date.getUTCMonth() + 1,
+    day: date.getUTCDate(),
+  };
+}
+
+function utcForZonedLocal(
+  timeZone: string,
+  date: { year: number; month: number; day: number },
+  sendTime: string,
+) {
+  const [hour, minute] = sendTime.split(':').map(Number);
+  const desired = Date.UTC(date.year, date.month - 1, date.day, hour, minute);
+  let candidate = desired;
+  for (let index = 0; index < 4; index += 1) {
+    const actual = localDateTime(new Date(candidate), timeZone);
+    const [actualYear, actualMonth, actualDay] = actual.date.split('-').map(Number);
+    const [actualHour, actualMinute] = actual.time.split(':').map(Number);
+    const represented = Date.UTC(
+      actualYear,
+      actualMonth - 1,
+      actualDay,
+      actualHour,
+      actualMinute,
+    );
+    const correction = desired - represented;
+    candidate += correction;
+    if (correction === 0) break;
+  }
+  return new Date(candidate);
+}
+
+export function computeNextSendAt(
+  timeZone: string,
+  sendTime: string,
+  after: Date,
+) {
+  const local = localDateTime(after, timeZone);
+  const [year, month, day] = local.date.split('-').map(Number);
+  let localCalendar = new Date(Date.UTC(year, month - 1, day));
+  let candidate = utcForZonedLocal(
+    timeZone,
+    calendarParts(localCalendar),
+    sendTime,
+  );
+  if (candidate.getTime() <= after.getTime()) {
+    localCalendar = new Date(localCalendar.getTime() + 86_400_000);
+    candidate = utcForZonedLocal(
+      timeZone,
+      calendarParts(localCalendar),
+      sendTime,
+    );
+  }
+  return candidate.toISOString();
+}
+
+export function computeInitialSendAt(
+  timeZone: string,
+  sendTime: string,
+  now: Date,
+) {
+  const local = localDateTime(now, timeZone);
+  return local.time >= sendTime
+    ? now.toISOString()
+    : computeNextSendAt(timeZone, sendTime, now);
 }
 
 function parseKeywords(raw: string) {
@@ -220,21 +290,56 @@ export async function dispatchDueDailyEmails(env: RuntimeEnv, now = new Date()) 
     .bind(now.toISOString(), staleBefore)
     .run();
 
-  const { results = [] } = await env.DB.prepare(
-    `SELECT id, email, keywords, send_time, time_zone, verification_token
-     FROM subscriptions WHERE status = 'active'`,
-  ).all<SubscriptionRecord>();
-
-  const summary = { checked: results.length, due: 0, sent: 0, failed: 0 };
-  for (const subscription of results) {
-    let local: { date: string; time: string };
+  const { results: missingSchedule = [] } = await env.DB.prepare(
+    `SELECT id, send_time, time_zone FROM subscriptions
+     WHERE status = 'active' AND next_send_at IS NULL LIMIT 500`,
+  ).all<{ id: number; send_time: string; time_zone: string }>();
+  for (const subscription of missingSchedule) {
+    let nextSendAt: string;
     try {
-      local = localDateTime(now, subscription.time_zone);
+      nextSendAt = computeInitialSendAt(
+        subscription.time_zone,
+        subscription.send_time,
+        now,
+      );
     } catch {
       continue;
     }
-    if (local.time < subscription.send_time) continue;
-    summary.due += 1;
+    await env.DB.prepare(
+      `UPDATE subscriptions SET next_send_at = ?, updated_at = ?
+       WHERE id = ? AND next_send_at IS NULL`,
+    )
+      .bind(nextSendAt, now.toISOString(), subscription.id)
+      .run();
+  }
+
+  const { results = [] } = await env.DB.prepare(
+    `SELECT id, email, keywords, send_time, time_zone, next_send_at,
+            verification_token
+     FROM subscriptions
+     WHERE status = 'active' AND next_send_at <= ?
+     ORDER BY next_send_at ASC LIMIT 500`,
+  )
+    .bind(now.toISOString())
+    .all<SubscriptionRecord>();
+
+  const summary = {
+    checked: results.length,
+    initialized: missingSchedule.length,
+    due: results.length,
+    sent: 0,
+    failed: 0,
+  };
+  for (const subscription of results) {
+    let digestDate: string;
+    try {
+      digestDate = localDateTime(
+        new Date(subscription.next_send_at),
+        subscription.time_zone,
+      ).date;
+    } catch {
+      continue;
+    }
     const createdAt = now.toISOString();
     await env.DB.prepare(
       `INSERT INTO email_deliveries
@@ -242,18 +347,49 @@ export async function dispatchDueDailyEmails(env: RuntimeEnv, now = new Date()) 
        VALUES (?, ?, 'pending', 0, ?, ?)
        ON CONFLICT(subscription_id, digest_date) DO NOTHING`,
     )
-      .bind(subscription.id, local.date, createdAt, createdAt)
+      .bind(subscription.id, digestDate, createdAt, createdAt)
       .run();
     const delivery = await env.DB.prepare(
       `SELECT id, status, attempts FROM email_deliveries
        WHERE subscription_id = ? AND digest_date = ?`,
     )
-      .bind(subscription.id, local.date)
+      .bind(subscription.id, digestDate)
       .first<{ id: number; status: string; attempts: number }>();
-    if (!delivery || delivery.status === 'sent' || delivery.attempts >= 3) continue;
-    const outcome = await sendOne(env, subscription, local.date, delivery.id);
+    const advanceSchedule = async () => {
+      const nextSendAt = computeNextSendAt(
+        subscription.time_zone,
+        subscription.send_time,
+        now,
+      );
+      await env.DB.prepare(
+        `UPDATE subscriptions SET next_send_at = ?, updated_at = ? WHERE id = ?`,
+      )
+        .bind(nextSendAt, now.toISOString(), subscription.id)
+        .run();
+    };
+    if (!delivery) continue;
+    if (delivery.status === 'sent' || delivery.attempts >= 3) {
+      await advanceSchedule();
+      continue;
+    }
+    const outcome = await sendOne(
+      env,
+      subscription,
+      digestDate,
+      delivery.id,
+    );
     if (outcome === 'sent') summary.sent += 1;
     if (outcome === 'failed') summary.failed += 1;
+    if (outcome === 'sent') {
+      await advanceSchedule();
+    } else if (outcome === 'failed') {
+      const attempts = await env.DB.prepare(
+        `SELECT attempts FROM email_deliveries WHERE id = ?`,
+      )
+        .bind(delivery.id)
+        .first<{ attempts: number }>();
+      if ((attempts?.attempts ?? 0) >= 3) await advanceSchedule();
+    }
   }
   return summary;
 }

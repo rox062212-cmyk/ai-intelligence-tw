@@ -63,6 +63,7 @@ export async function POST(request: Request) {
         keywords: JSON.stringify(keywords),
         sendTime,
         timeZone,
+        nextSendAt: null,
         status: 'pending',
         verificationToken: token,
         updatedAt: now,
