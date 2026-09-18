@@ -29,6 +29,90 @@ export type Article = {
 
 export const articles: Article[] = [
   {
+    id: 'king-charles-ai-summit-2026-09-18',
+    image: '/news/ai-policy-regulation.png',
+    imageAlt: 'AI 企業、公共治理與國際安全對話的彩色概念圖',
+    category: '安全與治理',
+    title: '英王查爾斯召集四大 AI 公司談共同原則，但峰會未產生具約束力承諾',
+    summary:
+      'NVIDIA、Google DeepMind、OpenAI 與 Anthropic 代表在蘇格蘭討論安全、國際合作與人類尊嚴；各方確認會議存在與議題，但公開成果仍停留在原則討論。',
+    publishedAt: '2026-09-18 08:30',
+    updatedAt: '2026-09-18 08:30',
+    tags: ['AI 安全', '國際治理', '英國', 'OpenAI', 'Anthropic', 'Google DeepMind', 'NVIDIA'],
+    verified: true,
+    evidenceLevel: '多方證實',
+    evidenceNote:
+      '英國王室官方紀錄確認會議目的、參與組織與討論方向；AP、PA Media 與 Decrypt 分別補充出席名單、安全辯論背景、草案性質及無約束力限制。各來源一致確認峰會沒有公布法律、協議或簽署成果，因此不能把原則討論寫成產業承諾。',
+    body: [
+      {
+        heading: '多方共同確認的事實',
+        text: '英王查爾斯三世於 9 月 17 日在蘇格蘭 Dumfries House 召集人工智慧峰會。英國王室、AP、PA Media 與 Decrypt 都確認，NVIDIA、Google DeepMind、OpenAI 與 Anthropic 有代表參與，英國 AI 部長 Kanishka Narayan 也出席；會議由 Ditchley Foundation 協助，核心問題是能否建立一套引導 AI 發展與應用的共同原則。[1][2][3][4]',
+        citations: [1, 2, 3, 4],
+      },
+      {
+        heading: '主辦方與王室的立場',
+        text: '王室把峰會定位為跨產業、政府與公民社會的對話，重點是讓 AI 服務社會、地方社群、人類尊嚴與環境，而不只追求能力和效率。查爾斯在開場談話中同時肯定 AI 的潛力與警告失控、惡意使用及災難性後果，要求與會者思考安全、國際合作與不讓任何國家掉隊。[1][2][3]',
+        citations: [1, 2, 3],
+      },
+      {
+        heading: '媒體觀點、一致處與限制',
+        text: 'AP 把峰會放在近期大型 AI 公司要求放慢前沿能力進展的安全爭論中；PA Media 報導 Ditchley Foundation 準備了共享原則草案，並列出跨國合作與安全問題；Decrypt 則直指會議沒有產生具約束力協議。各方對「風險需要討論」高度一致，但沒有證據顯示參與公司已同意共同時程、外部審查或停止部署。[2][3][4]',
+        citations: [2, 3, 4],
+      },
+      {
+        heading: '綜合判讀',
+        text: '這場峰會的重要性在於，OpenAI、Anthropic、Google DeepMind 與 NVIDIA 被放在同一個公共治理場合，安全討論也從公司聲明延伸到國際政治與社會正當性；但它目前仍是軟性治理。真正能改變企業行為的訊號，將是公開文本、具名簽署、共同測試標準、獨立稽核權限或政府採納。若後續都沒有出現，峰會更接近高能見度的道德呼籲，而不是可執行的安全制度。[1][2][3][4]',
+        citations: [1, 2, 3, 4],
+      },
+    ],
+    sources: [
+      {
+        id: 1,
+        name: 'The Royal Family',
+        type: '官方公告',
+        title: 'The King convenes tech leaders for AI Summit in Scotland',
+        url: 'https://www.royal.uk/news-and-activity/2026-09-17/the-king-convenes-tech-leaders-for-ai-summit-in-scotland',
+        date: '2026-09-17',
+        reliability: '第一手官方來源',
+        reliabilityNote:
+          '可直接核對會議地點、主辦方、參與組織與王室設定的討論方向；屬主辦方紀錄，未公開閉門討論全文或任何承諾清單。',
+      },
+      {
+        id: 2,
+        name: 'Associated Press',
+        type: '新聞',
+        title: 'The king and AI: UK monarch Charles meets artificial intelligence leaders as safety concerns swirl',
+        url: 'https://apnews.com/article/0765bee1e338cf65846a046fb5825a4a',
+        date: '2026-09-17',
+        reliability: '可信媒體',
+        reliabilityNote:
+          '具署名與編輯制度，獨立核對出席者、開場談話及峰會與近期 AI 安全爭論的關聯。',
+      },
+      {
+        id: 3,
+        name: 'PA Media',
+        type: '新聞',
+        title: 'King to seek “reassurance” from AI leaders amid concerns over the technology',
+        url: 'https://pa.media/blogs/pa-editors-picks/king-to-seek-reassurance-from-ai-leaders-amid-concerns-over-the-technology/',
+        date: '2026-09-17',
+        reliability: '可信媒體',
+        reliabilityNote:
+          '英國通訊社具署名報導，補充 Ditchley Foundation 草案、預定議題與英國治理脈絡；部分內容為會前取得的安排。',
+      },
+      {
+        id: 4,
+        name: 'Decrypt',
+        type: '新聞',
+        title: 'King Charles Convenes OpenAI, Anthropic, Nvidia and Google for AI Safety Summit',
+        url: 'https://decrypt.co/378504/king-charles-openai-anthropic-nvidia-google-deepmind-ai-safety',
+        date: '2026-09-17',
+        reliability: '可信媒體',
+        reliabilityNote:
+          '具作者與編輯署名，確認峰會結束後仍無具約束力成果，並把事件放入近期產業減速倡議脈絡；不是政策原始文件。',
+      },
+    ],
+  },
+  {
     id: 'openai-model-misalignment-reporting-2026-09-17',
     image: '/news/ai-agent-tools.png',
     imageAlt: 'AI 模型監測、事件通報與安全調查的彩色概念圖',
@@ -1366,6 +1450,37 @@ export const calendarEvents = [
     source: 'https://www.huawei.com/en/events/huaweiconnect',
   },
   {
+    id: 40,
+    date: '2026-09-16',
+    title: 'Google DeepMind 成立 DeepMind Institute 討論 AGI 社會影響',
+    type: '研究',
+    company: 'Google DeepMind',
+    status: '已確認',
+    format: '線上',
+    source: 'https://institute.deepmind.com/essays/introducing-the-deepmind-institute/',
+  },
+  {
+    id: 41,
+    date: '2026-09-17',
+    title: '英王查爾斯於蘇格蘭召集 AI 安全峰會',
+    type: '政策',
+    company: 'The Royal Family／Ditchley Foundation',
+    status: '已確認',
+    format: '實體',
+    source:
+      'https://www.royal.uk/news-and-activity/2026-09-17/the-king-convenes-tech-leaders-for-ai-summit-in-scotland',
+  },
+  {
+    id: 42,
+    date: '2026-09-17',
+    title: 'Anthropic 開源 Claude 產生的生物分子模型優化程式碼',
+    type: '研究',
+    company: 'Anthropic',
+    status: '已確認',
+    format: '線上',
+    source: 'https://www.anthropic.com/research/claude-uplifts-biomolecular-modeling',
+  },
+  {
     id: 8,
     date: '2026-09-16',
     title: 'CLAIR 研究領導力與人工智慧研討會',
@@ -1533,28 +1648,13 @@ export const calendarEvents = [
 
 export const dailyPoints = [
   {
-    title: '模型失準進入常態事件通報',
-    text: 'OpenAI 一次揭露六起案例並建立固定框架，但發布判斷仍主要由公司掌握。',
-    articleId: 'openai-model-misalignment-reporting-2026-09-17',
-  },
-  {
-    title: 'AI 助理開始接管文件工作區',
-    text: 'Claude 把聊天、長時間任務、文件與簡報放進同一流程，直接逼近辦公軟體核心。',
-    articleId: 'claude-cowork-docs-slides-2026-09-17',
-  },
-  {
-    title: 'AI 基礎設施成本成為正式政治議題',
-    text: '美國眾議院以 417 比 3 通過法案，要求各州考慮讓大型資料中心負擔新增電網成本。',
-    articleId: 'us-house-ratepayer-protection-act-2026-09-17',
-  },
-  {
-    title: 'AI 晶片競爭轉向整體系統',
-    text: 'Huawei 提前 Ascend 960 時程，並以大規模互連和 SuperPoD 系統對抗供應限制。',
-    articleId: 'huawei-ascend-960-roadmap-2026-09-17',
+    title: '四大 AI 公司同場談治理，但承諾仍停在原則層次',
+    text: '蘇格蘭峰會把安全、國際合作與人類尊嚴放上同一張議程，卻沒有公布簽署文本、共同時程或獨立稽核安排。',
+    articleId: 'king-charles-ai-summit-2026-09-18',
   },
 ];
 
-export const dailyBriefing = {
+export const dailyBriefing20260917 = {
   date: '2026 年 9 月 17 日',
   updatedAt: '16:30',
   readingMinutes: 5,
@@ -1742,6 +1842,115 @@ export const dailyBriefing = {
       title:
         'Huawei quickens AI chip pace, promises next entrant 3 quarters early',
       url: 'https://www.scmp.com/tech/big-tech/article/3367832/huawei-quickens-ai-chip-pace-promises-next-entrant-3-quarters-early',
+      type: '新聞',
+    },
+  ],
+};
+
+export const dailyBriefing = {
+  date: '2026 年 9 月 18 日',
+  updatedAt: '08:30',
+  readingMinutes: 4,
+  title: 'AI 安全共識進入國際政治舞台，但可執行規則仍未出現',
+  summary:
+    '今天只有一件事通過三個獨立來源門檻：英王查爾斯召集 NVIDIA、Google DeepMind、OpenAI 與 Anthropic 代表，討論共同治理原則。會議提高了安全議題的政治能見度，卻沒有公布簽署文本、共同時程或獨立稽核安排。',
+  lead: '過去 24 小時出現多項 AI 公告與產業線索，但多數仍只有官方說法或同源轉載，沒有達到正式文章所需的三來源門檻。唯一通過的是 9 月 17 日在蘇格蘭舉行的 AI 峰會。這場會議把四家掌握前沿模型與運算供應鏈的企業帶到同一張桌上，公開談安全、國際合作、人類尊嚴與環境；然而，會議的成果仍是「討論是否建立共同原則」，不是具約束力的共同規則。今天的重點因此不在一項新技術，而在治理能否從高層宣示走向可檢查的制度。',
+  sections: [
+    {
+      heading: '今日全貌：安全討論從公司聲明走進國際公共場合',
+      paragraphs: [
+        {
+          text: '英王查爾斯三世在 Dumfries House 召集 NVIDIA、Google DeepMind、OpenAI 與 Anthropic 代表，英國 AI 部長 Kanishka Narayan 也出席。王室官方紀錄、AP、PA Media 與 Decrypt 都確認，Ditchley Foundation 協助安排討論，議題包括 AI 如何造福社會、安全如何成為核心，以及是否能形成共享原則。[1][2][3][4]',
+          citations: [1, 2, 3, 4],
+        },
+        {
+          text: '峰會的時機比名單更重要。近期大型 AI 公司一方面持續推出更能自主執行工作的系統，另一方面又公開要求安全措施追上能力。查爾斯的開場談話把失控、惡意使用和災難性後果帶到政治與公民社會語境，等於要求企業說明：除了自行保證，它們願意接受什麼共同約束。[1][2][3]',
+          citations: [1, 2, 3],
+        },
+      ],
+    },
+    {
+      heading: '消息關聯：四家公司的角色不同，風險卻互相連動',
+      paragraphs: [
+        {
+          text: 'OpenAI、Anthropic 與 Google DeepMind 直接開發前沿模型，NVIDIA 則掌握訓練與推論的重要運算平台。模型能力、部署速度與硬體供給彼此放大：更大的算力讓模型更快進步，更強的模型又推高資料中心與商業部署需求。若安全規則只約束其中一段，風險與競爭壓力可能轉移到供應鏈的另一段。峰會把模型公司和運算供應商放在同一場合，至少承認治理不能只盯著聊天產品。[1][2]',
+          citations: [1, 2],
+        },
+        {
+          text: 'PA Media 報導，Ditchley Foundation 準備了以人類尊嚴、社會福祉與自然環境為核心的共享原則草案；王室公告則把它描述為需要跨產業、政府與公民社會共同討論的方向。兩者都沒有說與會公司已簽署。這個差異很關鍵：桌上有草案，不等於市場上已有標準，更不等於企業部署決策已受約束。[1][3]',
+          citations: [1, 3],
+        },
+      ],
+    },
+    {
+      heading: '市場、產業與企業影響：治理能力開始成為競爭條件',
+      paragraphs: [
+        {
+          text: '對模型公司而言，參與這類峰會能增加政策溝通與社會正當性，但也提高外界對透明度的期待。企業客戶接下來會更有理由要求供應商交代事故通報、外部評測、權限控制、模型更新與中止程序。若四家公司的公開立場逐漸接近，採購規格可能先於法律形成事實上的最低安全門檻。[2][3][4]',
+          citations: [2, 3, 4],
+        },
+        {
+          text: '對政府與投資市場而言，峰會顯示 AI 安全已不是研究社群的邊緣題目，而是牽涉產業政策、國際競爭與基礎設施的高層議題。但目前沒有新的法規、資本支出限制或產品時程，因此不應把這場會議解讀成產業已協調減速。短期影響主要是聲譽、政策預期與企業治理壓力，而不是直接改變收入或部署速度。[1][2][4]',
+          citations: [1, 2, 4],
+        },
+      ],
+    },
+    {
+      heading: '未確定處：閉門會議留下的空白比公開談話更多',
+      paragraphs: [
+        {
+          text: '公開資料沒有完整與會名單、閉門討論紀錄、草案全文、異議內容或公司逐一表態。Decrypt 指出峰會沒有產生具約束力協議；王室公告也只說代表們「考慮」能否建立共同原則。由此可確定的是對話發生了，不能確定的是任何公司是否同意固定減速、共享事故、接受第三方稽核或讓政府提前審查模型。[1][4]',
+          citations: [1, 4],
+        },
+        {
+          text: '查爾斯擁有召集與象徵影響力，卻沒有直接規管這些跨國公司的權力。若沒有監管機關、國際協議或產業組織接手，峰會的原則很可能只停留在自願承諾。反過來說，若草案日後公開並獲具名簽署，它也可能成為政府立法、採購規範或跨公司評測的起點。[1][2][3][4]',
+          citations: [1, 2, 3, 4],
+        },
+      ],
+    },
+    {
+      heading: '後續觀察：從「誰出席」轉向「誰接受被檢查」',
+      paragraphs: [
+        {
+          text: '接下來應優先看五件事：Ditchley Foundation 是否公開草案；參與公司是否具名簽署；是否提出共同的能力與事故分級；獨立評測者能否取得持續而非一次性的模型與訓練資料；英國或其他政府是否把原則轉成採購、通報或監管要求。這些才是軟性對話能否變成制度的證據。[1][3][4]',
+          citations: [1, 3, 4],
+        },
+        {
+          text: '企業現在不必等峰會結論才行動。採購前可要求供應商提供模型卡、第三方評測、事件通報時限、資料與工具權限邊界、版本回退方案和責任窗口；董事會則應把前沿模型的能力提升與風險門檻放在同一個審查流程。今日的消息證明，安全語言已進入最高層級，但真正的治理仍取決於可驗證、可比較、可追責的細節。[1][2][3][4]',
+          citations: [1, 2, 3, 4],
+        },
+      ],
+    },
+  ],
+  conclusion:
+    '今天的正式新增只有一件，卻清楚顯示 AI 治理正在改變層級：從個別公司的安全聲明，進入國家、國際合作與社會價值的公共議程。這是必要進展，但不是完成。判斷峰會是否真正重要，不應看開場談話多強烈，而要看之後有沒有公開文本、具名承諾、獨立稽核與可執行規則。',
+  sources: [
+    {
+      id: 1,
+      name: 'The Royal Family',
+      title: 'The King convenes tech leaders for AI Summit in Scotland',
+      url: 'https://www.royal.uk/news-and-activity/2026-09-17/the-king-convenes-tech-leaders-for-ai-summit-in-scotland',
+      type: '官方公告',
+    },
+    {
+      id: 2,
+      name: 'Associated Press',
+      title: 'The king and AI: UK monarch Charles meets artificial intelligence leaders as safety concerns swirl',
+      url: 'https://apnews.com/article/0765bee1e338cf65846a046fb5825a4a',
+      type: '新聞',
+    },
+    {
+      id: 3,
+      name: 'PA Media',
+      title: 'King to seek “reassurance” from AI leaders amid concerns over the technology',
+      url: 'https://pa.media/blogs/pa-editors-picks/king-to-seek-reassurance-from-ai-leaders-amid-concerns-over-the-technology/',
+      type: '新聞',
+    },
+    {
+      id: 4,
+      name: 'Decrypt',
+      title: 'King Charles Convenes OpenAI, Anthropic, Nvidia and Google for AI Safety Summit',
+      url: 'https://decrypt.co/378504/king-charles-openai-anthropic-nvidia-google-deepmind-ai-safety',
       type: '新聞',
     },
   ],
