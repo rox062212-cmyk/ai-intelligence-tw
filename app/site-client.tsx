@@ -72,9 +72,11 @@ const earlierFeatured = chronologicallySorted
   .slice(0, 3);
 const featuredArticles = [...recentFeatured, ...earlierFeatured];
 const featuredIds = new Set(featuredArticles.map((article) => article.id));
-const moreArticles = chronologicallySorted.filter(
-  (article) => !featuredIds.has(article.id),
-);
+// 「更多情報」同時是歷史資料庫入口；保留早期尚未補齊三方來源的文章，
+// 避免它們因新版刊登門檻而從首頁消失。三方來源門檻仍用於焦點推薦與新文章。
+const moreArticles = [...articles]
+  .sort((a, b) => b.publishedAt.localeCompare(a.publishedAt))
+  .filter((article) => !featuredIds.has(article.id));
 
 function evidenceLabel(article: Article) {
   return article.evidenceLevel ?? (article.verified ? '多方證實' : '傳聞追蹤');
