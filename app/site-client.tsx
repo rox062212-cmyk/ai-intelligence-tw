@@ -149,16 +149,25 @@ const publishableArticles = articles.filter(
 const chronologicallySorted = [...publishableArticles].sort((a, b) =>
   b.publishedAt.localeCompare(a.publishedAt),
 );
-const newestDate = chronologicallySorted[0]?.publishedAt.slice(0, 10) ?? '';
 const recentFeatured = chronologicallySorted.slice(0, 3);
-const earlierFeatured = chronologicallySorted
-  .filter((article) => article.publishedAt.slice(0, 10) !== newestDate)
+const recentFeaturedIds = new Set(recentFeatured.map((article) => article.id));
+const featuredDates = new Set(
+  recentFeatured.map((article) => article.publishedAt.slice(0, 10)),
+);
+const earlierFeatured: Article[] = [];
+for (const article of chronologicallySorted
+  .filter((item) => !recentFeaturedIds.has(item.id))
   .sort(
     (a, b) =>
       b.sources.length - a.sources.length ||
       b.publishedAt.localeCompare(a.publishedAt),
-  )
-  .slice(0, 3);
+  )) {
+  const articleDate = article.publishedAt.slice(0, 10);
+  if (featuredDates.has(articleDate)) continue;
+  earlierFeatured.push(article);
+  featuredDates.add(articleDate);
+  if (earlierFeatured.length === 3) break;
+}
 const featuredArticles = [...recentFeatured, ...earlierFeatured];
 const featuredIds = new Set(featuredArticles.map((article) => article.id));
 // 「更多情報」同時是歷史資料庫入口；保留早期尚未補齊三方來源的文章，
