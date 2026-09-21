@@ -64,16 +64,81 @@ const nav: { id: View; label: string }[] = [
   { id: 'calendar', label: 'AI 日曆' },
 ];
 
+function calendarEventImage(event: CalendarEvent) {
+  const title = event.title.toLowerCase();
+  if (title.includes('量子')) return '/news/quantum-ai-lab.png';
+  if (title.includes('巴塞隆納') || title.includes('行動通訊'))
+    return '/news/mobile-ai-expo.png';
+  if (title.includes('晶片') || title.includes('ascend'))
+    return '/news/ascend-interconnect-system.png';
+  if (title.includes('具身') || title.includes('機器學習'))
+    return '/news/ai-robotics-research.png';
+  if (title.includes('影片') || title.includes('視覺'))
+    return '/news/video-generation-editing.png';
+
+  const imagePools: Record<string, string[]> = {
+    研究: [
+      '/news/ai-conference-auditorium.png',
+      '/news/open-source-ecosystem.png',
+      '/news/ai-robotics-research.png',
+      '/news/long-running-ai-agents.png',
+      '/news/ai-creative-workflow.png',
+    ],
+    產業: [
+      '/news/ai-compute-infrastructure.png',
+      '/news/mobile-ai-expo.png',
+      '/news/data-center-grid-policy.png',
+      '/news/ascend-interconnect-system.png',
+    ],
+    政策: [
+      '/news/ai-policy-regulation.png',
+      '/news/us-china-ai-notification.png',
+      '/news/data-center-grid-policy.png',
+      '/news/taiwan-data-governance.png',
+    ],
+    模型: [
+      '/news/long-running-ai-agents.png',
+      '/news/ai-agent-tools.png',
+      '/news/open-source-ecosystem.png',
+    ],
+    產品更新: [
+      '/news/ai-creative-workflow.png',
+      '/news/video-character-editing.png',
+      '/news/ai-agent-tools.png',
+      '/news/open-source-ecosystem.png',
+    ],
+    停止服務: [
+      '/news/video-generation-editing.png',
+      '/news/ai-agent-tools.png',
+      '/news/ai-creative-workflow.png',
+    ],
+    競賽: [
+      '/news/ai-robotics-research.png',
+      '/news/ai-conference-auditorium.png',
+      '/news/ai-agent-tools.png',
+    ],
+    教育: [
+      '/news/ai-conference-auditorium.png',
+      '/news/ai-creative-workflow.png',
+    ],
+    活動: [
+      '/news/ai-conference-auditorium.png',
+      '/news/ai-agent-tools.png',
+      '/news/mobile-ai-expo.png',
+    ],
+    安全: [
+      '/news/ai-policy-regulation.png',
+      '/news/long-running-ai-agents.png',
+      '/news/us-china-ai-notification.png',
+    ],
+  };
+  const pool = imagePools[event.type] ?? ['/news/ai-agent-tools.png'];
+  return pool[event.id % pool.length];
+}
+
 const calendarArticles: Article[] = calendarEvents.map((event) => ({
   id: `calendar-${event.id}`,
-  image:
-    event.type === '政策'
-      ? '/news/ai-policy-regulation.png'
-      : event.type === '研究'
-        ? '/news/ai-robotics-research.png'
-        : event.type === '產業'
-          ? '/news/ai-compute-infrastructure.png'
-          : '/news/ai-agent-tools.png',
+  image: calendarEventImage(event),
   imageAlt: `${event.title}的 AI 情報主題圖`,
   category: event.type,
   title: event.title,
