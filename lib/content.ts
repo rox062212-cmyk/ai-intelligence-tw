@@ -29,6 +29,118 @@ export type Article = {
 
 export const articles: Article[] = [
   {
+    id: 'us-china-ai-incident-notification-2026-09-21',
+    image: '/news/us-china-ai-notification.png',
+    imageAlt: '美中兩端 AI 系統透過安全通報線路連結的彩色概念圖',
+    category: '安全與治理',
+    title: '美國提議與中國建立 AI 國安事件通報機制，對話框架仍待兩國領袖確認',
+    summary:
+      '美中官員在紐約討論 AI 對話與國安級事件通知；多家現場報導確認美方提案，但中國是否接受、事件門檻、通報內容與驗證方式都尚未公布。',
+    publishedAt: '2026-09-21 10:47',
+    updatedAt: '2026-09-21 10:47',
+    tags: ['美國', '中國', 'AI 安全', '事件通報', '國際治理', 'Scott Bessent'],
+    verified: true,
+    evidenceLevel: '多方證實',
+    evidenceNote:
+      'AP、Reuters、AFP 與共同社均由紐約會談現場或會後採訪獨立確認美方提出國安級 AI 事件通知機制；Reuters 與 AFP 同時指出中方尚未公開接受。中國外交部先前的正式說法可核對北京主張開放、包容治理並反對恐慌與對抗，但不能視為對本次具體機制的同意。',
+    body: [
+      {
+        heading: '四個獨立報導共同確認的事實',
+        text: '美國財政部長 Scott Bessent 9 月 20 日在紐約與中國國務院副總理何立峰會談後表示，美方提議建立「美中 AI 對話」，並在 AI 事件升高到國家安全層級時互相通知。AP、Reuters、AFP 與共同社都由現場或會後採訪確認這項提案，並一致指出它是本週川普與習近平華盛頓會談的準備工作之一。[1][2][3][4]',
+        citations: [1, 2, 3, 4],
+      },
+      {
+        heading: '美方的定位：先建立危機溝通，不等於共同監管',
+        text: 'Bessent 把提案描述為讓全球前兩大 AI 強國從不透明走向更多透明度，目標是辨識共同目標與共同威脅。Reuters 進一步報導，美國的先進 AI 晶片與半導體設備出口管制不在這套通報機制的討論範圍；換言之，美方目前試圖把危機通知與科技競爭分開，而不是用一場會議解決所有 AI、晶片與貿易爭議。[1][2][3]',
+        citations: [1, 2, 3],
+      },
+      {
+        heading: '中方立場與目前矛盾',
+        text: '共同社報導，中方貿易代表李成鋼僅表示協議氣氛「良好」；Reuters 與 AFP 都指出，中方沒有在會後公開接受通知機制。北京在 9 月 14 日的正式說法是支持開放、包容、造福所有人的 AI 發展，並反對以恐慌、對抗與惡性競爭處理治理。這與危機溝通並非必然衝突，但雙方對何謂國安事件、哪些資料可交換、如何避免通報變成情報蒐集，仍可能有根本分歧。[2][3][4][5]',
+        citations: [2, 3, 4, 5],
+      },
+      {
+        heading: '背景脈絡：安全合作與加速競賽同時存在',
+        text: 'Axios 在會前取得的美方說法顯示，華府願意討論開放權重與封閉權重模型的共同風險，但川普政府同時反對以放慢開發換取安全，理由是可能讓中國追上。中國外交部則反對把 AI 描繪成對抗性威脅。兩邊都說需要合作，卻仍以競爭與國安框架理解彼此；通知機制若成立，最可能先處理誤判與重大事故，而不是形成全面一致的模型規範。[5][6]',
+        citations: [5, 6],
+      },
+      {
+        heading: '綜合判讀',
+        text: '這項提案的價值在於把 AI 風險從企業自願揭露推向兩個大國之間的危機溝通；若能及時說明重大失控、跨境網路事件或軍事誤判，可能降低把事故誤認為敵對行動的風險。但目前只有「提出並討論」得到確認，尚無雙方同意的文本、事件分級、通知時限、驗證程序或保密邊界。真正的進展要看 9 月 24 日領袖會談是否採納、是否設立工作層級窗口，以及中國是否公開確認同等義務。[1][2][3][4][5][6]',
+        citations: [1, 2, 3, 4, 5, 6],
+      },
+    ],
+    sources: [
+      {
+        id: 1,
+        name: 'Associated Press',
+        type: '新聞',
+        title: 'US proposes AI incident alert system in talks with China, Bessent says',
+        url: 'https://apnews.com/article/bessent-ai-xi-trump-china-trade-2c7f54f07e755f506d9db9b91df282bd',
+        date: '2026-09-21',
+        reliability: '可信媒體',
+        reliabilityNote:
+          '具署名、編輯制度與紐約現場照片，直接引述 Bessent 與美國貿易代表的會後談話，確認提案與後續領袖會談；沒有中方正式接受的證據。',
+      },
+      {
+        id: 2,
+        name: 'Reuters／Boursorama',
+        type: '新聞',
+        title:
+          "Bessent propose la mise en place de notifications américano-chinoises en matière de sécurité de l'IA",
+        url: 'https://www.boursorama.com/bourse/actualites/bessent-propose-la-mise-en-place-de-notifications-americano-chinoises-en-matiere-de-securite-de-l-ia-lors-de-discussions-avec-le-vice-premier-ministre-chinois-b40caaf8dc4f2d5609dce06209cf9d94',
+        date: '2026-09-21',
+        reliability: '可信媒體',
+        reliabilityNote:
+          'Reuters 具名記者由會談現場整理，補充中方未公開回應、晶片出口管制不在機制議程，以及領袖峰會與工作層級後續。Boursorama 為免費完整轉載。',
+      },
+      {
+        id: 3,
+        name: 'Agence France-Presse／Boursorama',
+        type: '新聞',
+        title: "Les Etats-Unis ont discuté avec la Chine d'un « mécanisme » de dialogue sur l'IA",
+        url: 'https://www.boursorama.com/bourse/actualites/les-etats-unis-ont-discute-avec-la-chine-d-un-mecanisme-de-dialogue-sur-l-ia-29b82fee794fa6f2a6ab6778611b3bed',
+        date: '2026-09-21',
+        reliability: '可信媒體',
+        reliabilityNote:
+          'AFP 現場採訪獨立確認提案、國安事件門檻與中方未發言，並補充 9 月 24 日國宴及 AI 企業領袖出席脈絡。',
+      },
+      {
+        id: 4,
+        name: '共同通信／熊本日日新聞',
+        type: '新聞',
+        title: 'ＡＩで通知制度の導入提案　米国が中国に、透明性向上へ',
+        url: 'https://kumanichi.com/articles/2038191',
+        date: '2026-09-21',
+        reliability: '可信媒體',
+        reliabilityNote:
+          '共同社紐約現場採訪與自有照片確認美方提議及再次會談安排，並記錄中方貿易代表對會談氣氛的簡短回應。',
+      },
+      {
+        id: 5,
+        name: '中國外交部',
+        type: '官方公告',
+        title: "Foreign Ministry Spokesperson Guo Jiakun's Regular Press Conference on September 14, 2026",
+        url: 'https://www.mfa.gov.cn/eng/xw/fyrbt/lxjzh/202609/t20260914_12021997.html',
+        date: '2026-09-14',
+        reliability: '第一手官方來源',
+        reliabilityNote:
+          '可直接核對中國政府在會談前對 AI 開放治理、國際合作與反對恐慌敘事的公開立場；並非對 9 月 20 日具體提案的正式答覆。',
+      },
+      {
+        id: 6,
+        name: 'Axios',
+        type: '新聞',
+        title: 'Scoop: U.S. open to discuss AI « shared risks » with China, Bessent says',
+        url: 'https://www.axios.com/2026/09/16/us-open-ai-shared-risks-china-bessent',
+        date: '2026-09-16',
+        reliability: '可信媒體',
+        reliabilityNote:
+          '具署名與編輯制度，會前取得 Bessent 與白宮官員說法，可核對美方原先設定的開放／封閉權重模型與共同風險議程。',
+      },
+    ],
+  },
+  {
     id: 'king-charles-ai-summit-2026-09-18',
     image: '/news/ai-policy-regulation.png',
     imageAlt: 'AI 企業、公共治理與國際安全對話的彩色概念圖',
@@ -1481,6 +1593,28 @@ export const calendarEvents = [
     source: 'https://www.anthropic.com/research/claude-uplifts-biomolecular-modeling',
   },
   {
+    id: 43,
+    date: '2026-09-20',
+    title: '美中官員討論 AI 國安事件通報機制',
+    type: '政策',
+    company: '美國財政部／中國國務院',
+    status: '已確認',
+    format: '實體',
+    source:
+      'https://apnews.com/article/bessent-ai-xi-trump-china-trade-2c7f54f07e755f506d9db9b91df282bd',
+  },
+  {
+    id: 44,
+    date: '2026-09-24',
+    title: '川普、習近平會談預計檢視美中 AI 事件通報提案',
+    type: '政策',
+    company: '美國／中國',
+    status: '預計',
+    format: '實體',
+    source:
+      'https://www.boursorama.com/bourse/actualites/bessent-propose-la-mise-en-place-de-notifications-americano-chinoises-en-matiere-de-securite-de-l-ia-lors-de-discussions-avec-le-vice-premier-ministre-chinois-b40caaf8dc4f2d5609dce06209cf9d94',
+  },
+  {
     id: 8,
     date: '2026-09-16',
     title: 'CLAIR 研究領導力與人工智慧研討會',
@@ -1504,7 +1638,7 @@ export const calendarEvents = [
   {
     id: 10,
     date: '2026-09-21',
-    title: '2026 國際人工智慧研討會（International AI Symposium）',
+    title: '2026 國際人工智慧研討會（9/21–24）',
     type: '研究',
     company: 'ICAS',
     status: '已確認',
@@ -1514,7 +1648,7 @@ export const calendarEvents = [
   {
     id: 11,
     date: '2026-09-22',
-    title: 'NVIDIA 新加坡人工智慧日（AI Day Singapore）',
+    title: 'NVIDIA 新加坡人工智慧日（9/22–23）',
     type: '產業',
     company: 'NVIDIA',
     status: '已確認',
@@ -1534,7 +1668,7 @@ export const calendarEvents = [
   {
     id: 13,
     date: '2026-10-01',
-    title: 'IEEE 科技高峰會：合乎倫理的人工智慧（Ethical AI）',
+    title: 'IEEE 科技高峰會：合乎倫理的人工智慧（10/1–2）',
     type: '政策',
     company: 'IEEE',
     status: '已確認',
@@ -1544,17 +1678,17 @@ export const calendarEvents = [
   {
     id: 14,
     date: '2026-10-04',
-    title: 'IEEE 系統、人類與控制論研討會（SMC Conference）',
+    title: 'IEEE 系統、人類與控制論研討會（10/4–7）',
     type: '研究',
     company: 'IEEE',
     status: '已確認',
     format: '實體',
-    source: 'https://ai.ieee.org/events/',
+    source: 'https://ieeesmc2026.org/',
   },
   {
     id: 15,
     date: '2026-11-09',
-    title: 'NVIDIA 首爾人工智慧日（AI Day Seoul）',
+    title: 'NVIDIA 首爾人工智慧日（11/9–10）',
     type: '產業',
     company: 'NVIDIA',
     status: '已確認',
@@ -1564,17 +1698,17 @@ export const calendarEvents = [
   {
     id: 16,
     date: '2026-12-06',
-    title: 'NeurIPS 2026 與 NVIDIA 人工智慧研究展示',
+    title: 'NeurIPS 2026 三地會議（12/6–13）',
     type: '研究',
-    company: 'NeurIPS／NVIDIA',
+    company: 'NeurIPS',
     status: '已確認',
     format: '實體',
-    source: 'https://www.nvidia.com/en-us/events/neurips/',
+    source: 'https://neurips.cc/Conferences/2026/Dates',
   },
   {
     id: 17,
     date: '2026-12-13',
-    title: 'IEEE 量子人工智慧研討會（Quantum AI Conference）',
+    title: 'IEEE 量子人工智慧研討會（12/13–16）',
     type: '研究',
     company: 'IEEE',
     status: '已確認',
@@ -1584,7 +1718,7 @@ export const calendarEvents = [
   {
     id: 18,
     date: '2027-02-16',
-    title: 'AAAI-27 人工智慧研討會',
+    title: 'AAAI-27 人工智慧研討會（2/16–23）',
     type: '研究',
     company: 'AAAI',
     status: '已確認',
@@ -1594,12 +1728,12 @@ export const calendarEvents = [
   {
     id: 19,
     date: '2027-03-01',
-    title: '2027 巴塞隆納世界行動通訊大會（MWC Barcelona）',
+    title: '2027 巴塞隆納世界行動通訊大會（3/1–4）',
     type: '產業',
-    company: 'MWC／NVIDIA',
+    company: 'GSMA／MWC',
     status: '已確認',
     format: '實體',
-    source: 'https://www.nvidia.com/en-us/events/mobile-world-congress/',
+    source: 'https://www.mwcbarcelona.com/about',
   },
   {
     id: 20,
@@ -1648,9 +1782,9 @@ export const calendarEvents = [
 
 export const dailyPoints = [
   {
-    title: '四大 AI 公司同場談治理，但承諾仍停在原則層次',
-    text: '蘇格蘭峰會把安全、國際合作與人類尊嚴放上同一張議程，卻沒有公布簽署文本、共同時程或獨立稽核安排。',
-    articleId: 'king-charles-ai-summit-2026-09-18',
+    title: '美中開始談 AI 重大事故通報，但尚未形成共同規則',
+    text: '四家獨立通訊社確認美方提出國安級事件通知機制；中方是否接受、通報門檻與驗證方式仍待領袖會談。',
+    articleId: 'us-china-ai-incident-notification-2026-09-21',
   },
 ];
 
@@ -1847,7 +1981,7 @@ export const dailyBriefing20260917 = {
   ],
 };
 
-export const dailyBriefing = {
+export const dailyBriefing20260918 = {
   date: '2026 年 9 月 18 日',
   updatedAt: '08:30',
   readingMinutes: 4,
@@ -1951,6 +2085,129 @@ export const dailyBriefing = {
       name: 'Decrypt',
       title: 'King Charles Convenes OpenAI, Anthropic, Nvidia and Google for AI Safety Summit',
       url: 'https://decrypt.co/378504/king-charles-openai-anthropic-nvidia-google-deepmind-ai-safety',
+      type: '新聞',
+    },
+  ],
+};
+
+export const dailyBriefing = {
+  date: '2026 年 9 月 21 日',
+  updatedAt: '10:47',
+  readingMinutes: 5,
+  title: '美中把 AI 風險帶進危機溝通，但「通報什麼、如何驗證」仍是空白',
+  summary:
+    '今天只有美中討論 AI 國安事件通報機制通過三個獨立來源門檻。四家通訊社確認美方提案與後續領袖會談安排，但中國尚未公開接受，事件分級、通知時限、驗證與保密規則也都沒有文本。',
+  lead: '過去 24 小時真正達到多來源門檻的消息只有一件：美國財政部長 Scott Bessent 與中國國務院副總理何立峰在紐約會談後，美方提出建立「美中 AI 對話」，並在 AI 事件升高到國家安全層級時互相通知。這不是一份已簽署協議，也不是美中已同意放慢模型開發；它比較像是在競爭最激烈的兩個 AI 強國之間，先嘗試建立一條重大事故與誤判的緊急通話線。AP、Reuters、AFP 與共同社對提案本身的描述一致，卻也共同留下最重要的空白：中方沒有公開接受，雙方更沒有公布何謂「國安級事件」。',
+  sections: [
+    {
+      heading: '今日全貌：從企業自願揭露走向國家間危機通知',
+      paragraphs: [
+        {
+          text: '9 月 20 日的紐約會談同時處理 AI、貿易與關鍵礦物。Bessent 會後說，美方提議建立一套國家安全層級 AI 事件的通知機制，讓全球前兩大 AI 強國對共同目標與共同威脅有更多透明度。AP、Reuters、AFP 與共同社都由現場或會後採訪確認這項提案，並把它連到 9 月 24 日川普與習近平的華盛頓會談。[1][2][3][4]',
+          citations: [1, 2, 3, 4],
+        },
+        {
+          text: '這條線索承接了本月連續出現的模型異常、代理越界與產業安全爭論。先前多數通報仍由企業自行選擇是否公開；如果兩國建立正式窗口，AI 事故就可能像重大網路攻擊或其他跨境安全事件一樣，被納入政府間危機管理。不過今天得到確認的是「討論通報機制」，不是雙方已有共同規則。[1][2][3]',
+          citations: [1, 2, 3],
+        },
+      ],
+    },
+    {
+      heading: '消息關聯：安全合作沒有消除晶片與模型競爭',
+      paragraphs: [
+        {
+          text: 'Reuters 報導，美國對先進 AI 晶片與半導體設備的出口管制不在本次通報機制議程。這個邊界很重要：華府試圖建立事故溝通，並不代表它會放鬆技術限制；中國願意談風險，也不表示會接受美國對安全事件的定義。合作與競爭會同時存在，通知機制若要運作，就必須在不暴露模型、軍事或供應鏈機密的前提下，讓對方相信警報是真的。[2]',
+          citations: [2],
+        },
+        {
+          text: '中國外交部在會談前的正式立場是支持開放、包容、造福所有人的 AI 發展，並反對恐慌、對抗與惡性競爭。Axios 同時取得美方說法，指出議程可能涵蓋開放權重與封閉權重模型的共同風險。兩邊都使用「合作」語言，但美方著重國安事件與透明度，中方更強調避免威脅敘事；這是未來談判最可能出現的概念落差。[5][6]',
+          citations: [5, 6],
+        },
+      ],
+    },
+    {
+      heading: '市場、產業與企業影響：事故治理可能成為跨境營運條件',
+      paragraphs: [
+        {
+          text: '短期內，提案不會直接改變模型價格、晶片供應或公司營收，也沒有新的法律義務。但如果領袖會談採納並建立工作層級窗口，大型模型公司、雲端平台與關鍵基礎設施業者可能被要求提供可供政府判斷的事件分級、時間線、受影響系統與緩解措施。企業原本只面對客戶、監管者與媒體的事故回報，未來可能多一層跨國外交與國安通報。[1][2][3]',
+          citations: [1, 2, 3],
+        },
+        {
+          text: '對跨境部署 AI 代理的公司而言，這也提高了治理標準。若事故可能被上升為國家安全事件，企業需要能回答模型當時存取了什麼、使用哪些憑證、是否跨境傳輸資料、誰有權中止，以及紀錄能否交給獨立方驗證。沒有這些基礎資料，政府間通知容易退化成政治指控，無法真正降低誤判。[1][2][4]',
+          citations: [1, 2, 4],
+        },
+      ],
+    },
+    {
+      heading: '未確定處：中方接受與否只是第一個問題',
+      paragraphs: [
+        {
+          text: 'Reuters 與 AFP 明確指出，中方在會後沒有公開接受這套機制；共同社只記錄李成鋼對會談氣氛的簡短正面回應。即使 9 月 24 日領袖會談表示支持，仍要回答至少六件事：何謂國安級 AI 事件、誰負責判定、多久內通知、需要分享哪些技術證據、如何保護商業與軍事機密，以及錯誤或惡意通報如何處理。[2][3][4]',
+          citations: [2, 3, 4],
+        },
+        {
+          text: '另一個風險是機制範圍過窄。如果只處理已造成國安影響的極端事件，日常但重要的模型越界、資料外洩與代理失控仍可能不在其中；如果門檻過寬，雙方又可能因敏感資料與情報風險拒絕合作。有效制度需要清楚分級，也要把企業事故通報、第三方鑑識與政府外交窗口接在一起。[1][2][5]',
+          citations: [1, 2, 5],
+        },
+      ],
+    },
+    {
+      heading: '後續觀察：看文本、窗口與第一次實際使用',
+      paragraphs: [
+        {
+          text: '接下來最重要的節點是 9 月 24 日川普與習近平會談。應觀察雙方是否共同宣布機制，而不是只有美方重述；是否設置具名主管機關與常設聯絡窗口；是否把模型失控、AI 促成的網路事件、軍事誤判或生物風險列入分級；以及是否要求企業保存足以回溯的技術紀錄。[1][2][3][4]',
+          citations: [1, 2, 3, 4],
+        },
+        {
+          text: '真正的成效不會由簽署當天決定，而要看第一次事件發生時，雙方能否及時通知、交換最低必要證據、避免升級並在事後公開可核對的摘要。企業現在可以先盤點自己的事故分類、跨境資料流、模型與工具權限、日誌留存及政府聯絡流程；這些能力不論美中機制是否落地，都已是使用高自主 AI 系統的必要條件。[1][2][5][6]',
+          citations: [1, 2, 5, 6],
+        },
+      ],
+    },
+  ],
+  conclusion:
+    '今天的正式新增只有一件，但它把 AI 安全推到新的層級：不再只是公司要不要公開模型異常，而是兩個主要 AI 強國能否在重大事件中避免誤判。美方已提出一條通報線，中方尚未公開接下；在共同文本、事件分級、驗證程序與常設窗口出現前，這仍是外交提案，不是安全網。下一步應少看宣示，多看 9 月 24 日後是否有可執行的制度細節。',
+  sources: [
+    {
+      id: 1,
+      name: 'Associated Press',
+      title: 'US proposes AI incident alert system in talks with China, Bessent says',
+      url: 'https://apnews.com/article/bessent-ai-xi-trump-china-trade-2c7f54f07e755f506d9db9b91df282bd',
+      type: '新聞',
+    },
+    {
+      id: 2,
+      name: 'Reuters／Boursorama',
+      title: 'Bessent proposes US-China AI safety notifications in talks with Chinese vice premier',
+      url: 'https://www.boursorama.com/bourse/actualites/bessent-propose-la-mise-en-place-de-notifications-americano-chinoises-en-matiere-de-securite-de-l-ia-lors-de-discussions-avec-le-vice-premier-ministre-chinois-b40caaf8dc4f2d5609dce06209cf9d94',
+      type: '新聞',
+    },
+    {
+      id: 3,
+      name: 'Agence France-Presse／Boursorama',
+      title: "Les Etats-Unis ont discuté avec la Chine d'un « mécanisme » de dialogue sur l'IA",
+      url: 'https://www.boursorama.com/bourse/actualites/les-etats-unis-ont-discute-avec-la-chine-d-un-mecanisme-de-dialogue-sur-l-ia-29b82fee794fa6f2a6ab6778611b3bed',
+      type: '新聞',
+    },
+    {
+      id: 4,
+      name: '共同通信／熊本日日新聞',
+      title: 'ＡＩで通知制度の導入提案　米国が中国に、透明性向上へ',
+      url: 'https://kumanichi.com/articles/2038191',
+      type: '新聞',
+    },
+    {
+      id: 5,
+      name: '中國外交部',
+      title: "Foreign Ministry Spokesperson Guo Jiakun's Regular Press Conference on September 14, 2026",
+      url: 'https://www.mfa.gov.cn/eng/xw/fyrbt/lxjzh/202609/t20260914_12021997.html',
+      type: '官方公告',
+    },
+    {
+      id: 6,
+      name: 'Axios',
+      title: 'Scoop: U.S. open to discuss AI shared risks with China, Bessent says',
+      url: 'https://www.axios.com/2026/09/16/us-open-ai-shared-risks-china-bessent',
       type: '新聞',
     },
   ],
