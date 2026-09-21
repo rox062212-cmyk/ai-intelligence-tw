@@ -706,7 +706,7 @@ export default function SiteClient({
           onSubscribe={() => setSubscribeOpen(true)}
         />
       )}
-      {view === 'daily' && <DailyView />}
+      {view === 'daily' && <DailyView onBack={() => go('home')} />}
       {view === 'calendar' && (
         <CalendarView
           filters={eventTypes}
@@ -1193,10 +1193,18 @@ function HomeView({
   );
 }
 
-function DailyView() {
+function DailyView({ onBack }: { onBack: () => void }) {
   return (
     <main className="mx-auto max-w-5xl px-4 py-12 lg:px-8 lg:py-16">
       <article className="mx-auto max-w-3xl">
+        <button
+          type="button"
+          onClick={onBack}
+          className="mb-8 inline-flex items-center gap-2 rounded-full border border-border px-4 py-2 text-sm font-semibold transition hover:bg-secondary"
+        >
+          <ChevronLeft className="size-4" />
+          回到首頁
+        </button>
         <p className="text-sm font-semibold tracking-widest text-muted-foreground">
           每日更新・最後整理 {dailyBriefing.updatedAt}・約{' '}
           {dailyBriefing.readingMinutes} 分鐘閱讀
