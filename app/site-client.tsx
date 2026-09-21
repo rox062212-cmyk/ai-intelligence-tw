@@ -11,10 +11,13 @@ import {
   Mail,
   Menu,
   MessageCircle,
+  LogIn,
+  LogOut,
   Search,
   Settings,
   ShieldCheck,
   Trash2,
+  UserRound,
   X,
 } from 'lucide-react';
 import type { ChatGPTUser } from './chatgpt-auth';
@@ -305,6 +308,7 @@ export default function SiteClient({
   const [searchDateTo, setSearchDateTo] = useState('');
   const [calendarFilter, setCalendarFilter] = useState('全部');
   const [settingsOpen, setSettingsOpen] = useState(false);
+  const [accountOpen, setAccountOpen] = useState(false);
   const [subscribeOpen, setSubscribeOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [theme, setTheme] = useState<Theme>('system');
@@ -631,6 +635,26 @@ export default function SiteClient({
           >
             訂閱每日情報
           </button>
+          {user ? (
+            <button
+              type="button"
+              onClick={() => setAccountOpen(true)}
+              className="grid size-10 shrink-0 place-items-center rounded-full border border-border"
+              aria-label={`帳號：${user.displayName}`}
+              title={user.email}
+            >
+              <UserRound className="size-4" />
+            </button>
+          ) : (
+            <a
+              href="/signin-with-chatgpt?return_to=%2F"
+              target="_top"
+              className="hidden shrink-0 items-center gap-2 rounded-full border border-border px-4 py-2 text-sm font-semibold sm:inline-flex"
+            >
+              <LogIn className="size-4" />
+              登入
+            </a>
+          )}
           <button
             onClick={() => setSettingsOpen(true)}
             className="grid size-10 shrink-0 place-items-center rounded-full border border-border"
@@ -693,6 +717,26 @@ export default function SiteClient({
               >
                 訂閱每日情報
               </button>
+              {user ? (
+                <button
+                  type="button"
+                  onClick={() => {
+                    setMobileOpen(false);
+                    setAccountOpen(true);
+                  }}
+                  className="border-t border-border py-3 text-left"
+                >
+                  帳號：{user.displayName}
+                </button>
+              ) : (
+                <a
+                  href="/signin-with-chatgpt?return_to=%2F"
+                  target="_top"
+                  className="border-t border-border py-3 text-left font-semibold"
+                >
+                  登入帳號
+                </a>
+              )}
             </div>
           </div>
         )}
@@ -788,6 +832,34 @@ export default function SiteClient({
               </label>
             ))}
           </fieldset>
+        </Modal>
+      )}
+      {accountOpen && user && (
+        <Modal title="我的帳號" onClose={() => setAccountOpen(false)}>
+          <div className="flex items-center gap-4 border-b border-border pb-5">
+            <span className="grid size-12 shrink-0 place-items-center rounded-full bg-foreground font-semibold text-background">
+              {user.displayName.slice(0, 1).toUpperCase()}
+            </span>
+            <div className="min-w-0">
+              <strong className="block truncate text-lg">
+                {user.displayName}
+              </strong>
+              <span className="block truncate text-sm text-muted-foreground">
+                {user.email}
+              </span>
+            </div>
+          </div>
+          <p className="mt-5 text-sm leading-6 text-muted-foreground">
+            此瀏覽器會保留 ChatGPT 登入狀態，下次開啟網站時會自動辨識這個帳號；本站不會儲存你的密碼。
+          </p>
+          <a
+            href="/signout-with-chatgpt?return_to=%2F"
+            target="_top"
+            className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-full border border-border px-5 py-3 font-semibold hover:bg-secondary"
+          >
+            <LogOut className="size-4" />
+            登出
+          </a>
         </Modal>
       )}
       {subscribeOpen && (
