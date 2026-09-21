@@ -167,16 +167,23 @@ function deliveryWindowLabel(scheduledFor: string, timeZone: string) {
 }
 
 function digestSubject(scheduledFor: string) {
-  const count = articlesInDeliveryWindow(scheduledFor).length;
-  return `過去 24 小時 AI 情報｜${count} 則重點`;
+  const lead = articlesInDeliveryWindow(scheduledFor)[0];
+  return lead
+    ? `每日 AI 重點｜${lead.title}`
+    : '每日 AI 重點｜過去 24 小時暫無重要更新';
 }
 
 function renderEmail(subscription: SubscriptionRecord, scheduledFor: string) {
+  // Product rule: every digest keeps the full editorial format. The delivery
+  // window is the preceding 24 hours; the lead story receives a deep analysis,
+  // while every other verified story remains in the complete summary list.
+  // Do not replace this with a cards-only digest.
   const selected = articlesInDeliveryWindow(scheduledFor);
   const keywords = parseKeywords(subscription.keywords).map((item) =>
     item.toLowerCase(),
   );
   const unsubscribeUrl = `${SITE_URL}/api/subscriptions/unsubscribe?token=${encodeURIComponent(subscription.verification_token)}`;
+  const lead = selected[0];
   const categoryCounts = [...new Set(selected.map((article) => article.category))]
     .map(
       (category) =>
@@ -211,6 +218,44 @@ function renderEmail(subscription: SubscriptionRecord, scheduledFor: string) {
     scheduledFor,
     subscription.time_zone,
   );
+  const featureSections = lead
+    ? [
+        {
+          heading: '今日全貌',
+          text: `${lead.summary}\n\n${lead.body[0]?.text ?? ''}`,
+        },
+        {
+          heading: '為什麼值得注意？',
+          text: lead.body[1]?.text ?? lead.summary,
+        },
+        {
+          heading: '對企業與市場的影響',
+          text: lead.body[2]?.text ?? lead.summary,
+        },
+        {
+          heading: '尚未確定的地方',
+          text:
+            lead.evidenceNote ??
+            '目前仍需等待更多第一手資料與獨立來源交叉驗證。',
+        },
+      ]
+        .map(
+          (section) => `
+            <section style="margin:0 0 28px">
+              <h2 style="font-size:22px;line-height:1.4;margin:0 0 12px;color:#111">${escapeHtml(section.heading)}</h2>
+              ${section.text
+                .split('\n\n')
+                .filter(Boolean)
+                .map(
+                  (paragraph) =>
+                    `<p style="font-size:16px;line-height:1.75;margin:0 0 12px;color:#333">${escapeHtml(paragraph)}</p>`,
+                )
+                .join('')}
+            </section>`,
+        )
+        .join('')
+    : '';
+  const conclusion = lead?.body.at(-1)?.text ?? lead?.summary ?? '';
 
   return `<!doctype html>
   <html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width"><title>${escapeHtml(subject)}</title></head>
@@ -219,11 +264,13 @@ function renderEmail(subscription: SubscriptionRecord, scheduledFor: string) {
     <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background:#f3f3f3"><tr><td align="center" style="padding:28px 12px">
       <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="max-width:640px;background:#fff;border:1px solid #ddd">
         <tr><td style="padding:32px">
-          <p style="font-size:13px;letter-spacing:.08em;margin:0 0 12px;color:#666">24 小時 AI 情報總覽</p>
-          <h1 style="font-size:30px;line-height:1.35;margin:0 0 14px;color:#111">${selected.length} 則重要情報一次掌握</h1>
+          <p style="font-size:13px;letter-spacing:.08em;margin:0 0 12px;color:#666">每日 AI 重點・過去 24 小時</p>
+          <h1 style="font-size:30px;line-height:1.35;margin:0 0 14px;color:#111">${escapeHtml(lead?.title ?? '過去 24 小時暫無重要更新')}</h1>
           <p style="font-size:15px;line-height:1.7;margin:0 0 10px;color:#666">統計區間：${escapeHtml(windowLabel)}（${escapeHtml(subscription.time_zone)}）</p>
-          <p style="font-size:17px;line-height:1.75;margin:0 0 28px;color:#444">${selected.length > 0 ? `這 24 小時共有 ${selected.length} 則情報通過多來源驗證。${categoryCounts ? `涵蓋 ${escapeHtml(categoryCounts)}。` : ''}` : '這 24 小時內沒有通過多來源驗證門檻的新情報。'}</p>
-          <h2 style="font-size:22px;line-height:1.4;margin:0 0 4px;color:#111">完整情報摘要</h2>
+          <p style="font-size:17px;line-height:1.75;margin:0 0 28px;color:#444">${selected.length > 0 ? `這 24 小時共有 ${selected.length} 則情報通過多來源驗證。${categoryCounts ? `涵蓋 ${escapeHtml(categoryCounts)}。` : ''}${lead ? `以下先深入整理最重要的「${escapeHtml(lead.title)}」，再列出完整情報摘要。` : ''}` : '這 24 小時內沒有通過多來源驗證門檻的新情報。'}</p>
+          ${featureSections}
+          ${lead ? `<p style="font-size:17px;line-height:1.75;margin:4px 0 30px;padding:18px;background:#f4f4f4;color:#111"><strong>今日結論</strong><br>${escapeHtml(conclusion)}</p>` : ''}
+          <h2 style="font-size:22px;line-height:1.4;margin:0 0 4px;color:#111">你可能關注的情報</h2>
           <table role="presentation" width="100%" cellspacing="0" cellpadding="0">${cards}</table>
           <p style="margin:28px 0"><a href="${SITE_URL}" style="display:inline-block;background:#111;color:#fff;padding:13px 20px;border-radius:999px;text-decoration:none;font-weight:700">前往 AI 情報搜集網</a></p>
           <p style="font-size:12px;line-height:1.7;margin:24px 0 0;color:#777">你收到此信，是因為你已驗證每日 AI 情報訂閱。<a href="${unsubscribeUrl}" style="color:#555">取消訂閱</a></p>
