@@ -35,7 +35,7 @@ export async function POST(request: Request) {
     typeof payload?.timeZone === 'string' ? payload.timeZone : '';
   if (!EMAIL_PATTERN.test(email) || email.length > 254)
     return NextResponse.json({ error: 'invalid_email' }, { status: 400 });
-  if (!/^(?:[01]\d|2[0-3]):[0-5]\d$/.test(sendTime))
+  if (!/^(?:[01]\d|2[0-3]):00$/.test(sendTime))
     return NextResponse.json({ error: 'invalid_time' }, { status: 400 });
   try {
     new Intl.DateTimeFormat('zh-TW', { timeZone }).format();

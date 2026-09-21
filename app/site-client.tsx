@@ -30,7 +30,6 @@ type View =
   | 'home'
   | 'daily'
   | 'calendar'
-  | 'calendar-article'
   | 'search'
   | 'article'
   | 'admin';
@@ -64,6 +63,70 @@ const nav: { id: View; label: string }[] = [
   { id: 'home', label: '首頁' },
   { id: 'calendar', label: 'AI 日曆' },
 ];
+
+const calendarArticles: Article[] = calendarEvents.map((event) => ({
+  id: `calendar-${event.id}`,
+  image:
+    event.type === '政策'
+      ? '/news/ai-policy-regulation.png'
+      : event.type === '研究'
+        ? '/news/ai-robotics-research.png'
+        : event.type === '產業'
+          ? '/news/ai-compute-infrastructure.png'
+          : '/news/ai-agent-tools.png',
+  imageAlt: `${event.title}的 AI 情報主題圖`,
+  category: event.type,
+  title: event.title,
+  summary: calendarEventBrief(event),
+  publishedAt: `${event.date} 00:00`,
+  updatedAt: `${event.date} 00:00`,
+  tags: [event.company, event.type, event.format, 'AI 日曆'],
+  verified: event.status === '已確認',
+  evidenceLevel:
+    event.status === '已確認'
+      ? '官方確認'
+      : event.status === '預計'
+        ? '可信報導'
+        : '傳聞追蹤',
+  evidenceNote:
+    event.status === '已確認'
+      ? '目前列為已確認日程；日期與內容仍可能由主辦單位調整，請以原始來源的最新公告為準。'
+      : event.status === '預計'
+        ? '官方尚未公布完整日期或細節，目前內容屬預計時程。'
+        : '目前尚未獲得官方確認，請將此項視為追蹤線索，不宜當成已發生事實。',
+  body: [
+    {
+      heading: '日程情報',
+      text: `${event.company} 的「${event.title}」目前安排於 ${formatCalendarDate(event.date)}，形式為${event.format}。`,
+      citations: [1],
+    },
+    {
+      heading: '這項情報值得注意什麼',
+      text: calendarEventBrief(event),
+      citations: [1],
+    },
+    {
+      heading: '後續追蹤',
+      text: '日程前後可持續核對主辦單位公告、議程或產品文件；若日期、參與方式或內容有所調整，本篇情報也應同步更新。',
+      citations: [1],
+    },
+  ],
+  sources: [
+    {
+      id: 1,
+      name: event.company,
+      type: '官方公告',
+      title: event.title,
+      url: event.source,
+      date: event.date,
+      reliability: '第一手官方來源',
+      reliabilityNote: '用於核對日程日期、主辦單位與最新活動資訊。',
+    },
+  ],
+}));
+const calendarArticleByEventId = new Map(
+  calendarEvents.map((event, index) => [event.id, calendarArticles[index]]),
+);
 
 const searchCompanies = [
   '全部公司',
@@ -100,7 +163,7 @@ const featuredArticles = [...recentFeatured, ...earlierFeatured];
 const featuredIds = new Set(featuredArticles.map((article) => article.id));
 // 「更多情報」同時是歷史資料庫入口；保留早期尚未補齊三方來源的文章，
 // 避免它們因新版刊登門檻而從首頁消失。三方來源門檻仍用於焦點推薦與新文章。
-const moreArticles = [...articles]
+const moreArticles = [...articles, ...calendarArticles]
   .sort((a, b) => b.publishedAt.localeCompare(a.publishedAt))
   .filter((article) => !featuredIds.has(article.id));
 
@@ -161,8 +224,6 @@ export default function SiteClient({
   const isAdmin = user?.email.toLowerCase() === 'rox062212@gmail.com';
   const [view, setView] = useState<View>(initialView);
   const [selected, setSelected] = useState<Article>(articles[0]);
-  const [selectedCalendarEvent, setSelectedCalendarEvent] =
-    useState<CalendarEvent>(calendarEvents[0]);
   const [query, setQuery] = useState('');
   const [category, setCategory] = useState('全部');
   const [searchCompany, setSearchCompany] = useState('全部公司');
@@ -377,8 +438,8 @@ export default function SiteClient({
     go('article');
   };
   const openCalendarArticle = (event: CalendarEvent) => {
-    setSelectedCalendarEvent(event);
-    go('calendar-article');
+    const article = calendarArticleByEventId.get(event.id);
+    if (article) openArticle(article);
   };
 
   async function subscribe(event: React.FormEvent) {
@@ -581,12 +642,6 @@ export default function SiteClient({
           onEvent={openCalendarArticle}
         />
       )}
-      {view === 'calendar-article' && (
-        <CalendarArticleView
-          event={selectedCalendarEvent}
-          onBack={() => go('calendar')}
-        />
-      )}
       {view === 'search' && (
         <SearchView
           query={query}
@@ -695,13 +750,21 @@ export default function SiteClient({
                   <span className="mb-2 block text-sm font-semibold">
                     寄送時間
                   </span>
-                  <input
+                  <select
                     required
-                    type="time"
                     value={sendTime}
                     onChange={(event) => setSendTime(event.target.value)}
                     className="h-11 w-full rounded-lg border border-input bg-transparent px-3"
-                  />
+                  >
+                    {Array.from({ length: 24 }, (_, hour) => {
+                      const value = `${String(hour).padStart(2, '0')}:00`;
+                      return (
+                        <option key={value} value={value}>
+                          {value}
+                        </option>
+                      );
+                    })}
+                  </select>
                 </label>
                 <label className="block">
                   <span className="mb-2 block text-sm font-semibold">時區</span>
@@ -1330,106 +1393,6 @@ function CalendarView({
         <span>● 已確認：官方公布明確日期</span>
         <span>○ 預計：官方僅公布時間範圍</span>
         <span>△ 傳聞：至少兩個可信來源支持，尚未官宣</span>
-      </div>
-    </main>
-  );
-}
-
-function CalendarArticleView({
-  event,
-  onBack,
-}: {
-  event: CalendarEvent;
-  onBack: () => void;
-}) {
-  const credibility =
-    event.status === '已確認'
-      ? '目前列為已確認日程；日期與內容仍可能由主辦單位調整，請以原始來源的最新公告為準。'
-      : event.status === '預計'
-        ? '官方尚未公布完整日期或細節，目前內容屬預計時程。'
-        : '目前尚未獲得官方確認，請將此項視為追蹤線索，不宜當成已發生事實。';
-
-  return (
-    <main className="mx-auto max-w-7xl px-4 py-10 lg:px-8">
-      <button
-        onClick={onBack}
-        className="mb-7 text-sm font-semibold text-muted-foreground hover:text-foreground"
-      >
-        ← 返回 AI 日曆
-      </button>
-      <div className="max-w-5xl">
-        <div className="flex flex-wrap items-center gap-3 text-sm text-muted-foreground">
-          <span>{event.type}</span>
-          <span>・</span>
-          <span>{event.status}</span>
-          <span>・</span>
-          <span>{event.format}</span>
-        </div>
-        <h1 className="mt-4 font-serif text-4xl font-medium leading-tight tracking-tight sm:text-5xl">
-          {event.title}
-        </h1>
-        <p className="mt-5 text-xl leading-9 text-muted-foreground">
-          {calendarEventBrief(event)}
-        </p>
-        <p className="mt-4 text-sm text-muted-foreground">
-          日程 {formatCalendarDate(event.date)}・{event.company}
-        </p>
-        <div className="mt-5 rounded-xl border border-border bg-card px-4 py-3">
-          <strong>可信度判定：{event.status}</strong>
-          <p className="mt-1 text-sm leading-6 text-muted-foreground">
-            {credibility}
-          </p>
-        </div>
-      </div>
-
-      <div className="mt-10 grid gap-10 lg:grid-cols-[minmax(0,1fr)_320px]">
-        <article>
-          <div className="border-y border-foreground py-6">
-            <strong>情報摘要</strong>
-            <p className="mt-2 leading-7 text-muted-foreground">
-              {event.company} 的「{event.title}」目前安排於
-              {formatCalendarDate(event.date)}，活動形式為{event.format}。
-            </p>
-          </div>
-          <section className="py-8">
-            <h2 className="text-2xl font-semibold">這項日程值得注意什麼</h2>
-            <p className="mt-4 text-lg leading-9">{calendarEventBrief(event)}</p>
-          </section>
-          <section className="border-t border-border py-8">
-            <h2 className="text-2xl font-semibold">後續追蹤</h2>
-            <p className="mt-4 text-lg leading-9">
-              日程前後可持續核對主辦單位公告、議程或產品文件；若日期、參與方式或內容有所調整，本篇情報也應同步更新。
-            </p>
-          </section>
-        </article>
-
-        <aside>
-          <div className="sticky top-24 rounded-2xl border border-border bg-card p-5">
-            <h2 className="text-xl font-semibold">日程資料</h2>
-            <dl className="mt-4 space-y-4 text-sm">
-              <div className="border-t border-border pt-4 first:border-t-0 first:pt-0">
-                <dt className="text-muted-foreground">日期</dt>
-                <dd className="mt-1 font-semibold">{formatCalendarDate(event.date)}</dd>
-              </div>
-              <div className="border-t border-border pt-4">
-                <dt className="text-muted-foreground">主辦／公司</dt>
-                <dd className="mt-1 font-semibold">{event.company}</dd>
-              </div>
-              <div className="border-t border-border pt-4">
-                <dt className="text-muted-foreground">形式</dt>
-                <dd className="mt-1 font-semibold">{event.format}</dd>
-              </div>
-            </dl>
-            <a
-              href={event.source}
-              target="_blank"
-              rel="noreferrer"
-              className="mt-6 inline-flex items-center gap-2 font-semibold underline underline-offset-4"
-            >
-              查看原始來源 <ExternalLink className="size-4" />
-            </a>
-          </div>
-        </aside>
       </div>
     </main>
   );

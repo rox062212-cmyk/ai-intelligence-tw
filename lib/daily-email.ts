@@ -1,4 +1,4 @@
-import { articles, dailyBriefing } from '@/lib/content';
+import { articles } from '@/lib/content';
 
 const SITE_URL = 'https://ai-intelligence-tw.siri431695.chatgpt.site';
 
@@ -16,6 +16,14 @@ type RuntimeEnv = {
   DB: D1Database;
   RESEND_API_KEY?: string;
   EMAIL_FROM?: string;
+};
+
+type PreparedDelivery = {
+  id: number;
+  status: string;
+  attempts: number;
+  subject: string | null;
+  html: string | null;
 };
 
 function escapeHtml(value: string) {
@@ -124,69 +132,98 @@ function parseKeywords(raw: string) {
   }
 }
 
-function selectedArticles(rawKeywords: string) {
-  const keywords = parseKeywords(rawKeywords).map((item) => item.toLowerCase());
-  const publishable = articles.filter((article) => article.sources.length >= 3);
-  if (keywords.length === 0) return publishable.slice(0, 5);
-  const matched = publishable.filter((article) => {
-    const haystack = [
-      article.title,
-      article.summary,
-      article.category,
-      ...article.tags,
-    ]
-      .join(' ')
-      .toLowerCase();
-    return keywords.some((keyword) => haystack.includes(keyword));
-  });
-  return (matched.length > 0 ? matched : publishable).slice(0, 5);
+function articlePublishedAt(value: string) {
+  return new Date(`${value.replace(' ', 'T')}:00+08:00`);
 }
 
-function renderEmail(subscription: SubscriptionRecord) {
-  const selected = selectedArticles(subscription.keywords);
+function articlesInDeliveryWindow(scheduledFor: string) {
+  const end = new Date(scheduledFor);
+  const start = new Date(end.getTime() - 24 * 60 * 60_000);
+  return articles
+    .filter((article) => article.sources.length >= 3)
+    .filter((article) => {
+      const publishedAt = articlePublishedAt(article.publishedAt);
+      return publishedAt > start && publishedAt <= end;
+    })
+    .sort(
+      (left, right) =>
+        articlePublishedAt(right.publishedAt).getTime() -
+        articlePublishedAt(left.publishedAt).getTime(),
+    );
+}
+
+function deliveryWindowLabel(scheduledFor: string, timeZone: string) {
+  const end = new Date(scheduledFor);
+  const start = new Date(end.getTime() - 24 * 60 * 60_000);
+  const formatter = new Intl.DateTimeFormat('zh-TW', {
+    timeZone,
+    month: '2-digit',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+    hourCycle: 'h23',
+  });
+  return `${formatter.format(start)}～${formatter.format(end)}`;
+}
+
+function digestSubject(scheduledFor: string) {
+  const count = articlesInDeliveryWindow(scheduledFor).length;
+  return `過去 24 小時 AI 情報｜${count} 則重點`;
+}
+
+function renderEmail(subscription: SubscriptionRecord, scheduledFor: string) {
+  const selected = articlesInDeliveryWindow(scheduledFor);
+  const keywords = parseKeywords(subscription.keywords).map((item) =>
+    item.toLowerCase(),
+  );
   const unsubscribeUrl = `${SITE_URL}/api/subscriptions/unsubscribe?token=${encodeURIComponent(subscription.verification_token)}`;
-  const sections = dailyBriefing.sections
-    .slice(0, 4)
+  const categoryCounts = [...new Set(selected.map((article) => article.category))]
     .map(
-      (section) => `
-        <section style="margin:0 0 28px">
-          <h2 style="font-size:20px;line-height:1.4;margin:0 0 10px;color:#111">${escapeHtml(section.heading)}</h2>
-          ${section.paragraphs
-            .map(
-              (paragraph) =>
-                `<p style="font-size:16px;line-height:1.75;margin:0 0 12px;color:#333">${escapeHtml(paragraph.text)}</p>`,
-            )
-            .join('')}
-        </section>`,
+      (category) =>
+        `${category} ${selected.filter((article) => article.category === category).length} 則`,
     )
-    .join('');
+    .join('、');
   const cards = selected
-    .map(
-      (article) => `
+    .map((article) => {
+      const haystack = [
+        article.title,
+        article.summary,
+        article.category,
+        ...article.tags,
+      ]
+        .join(' ')
+        .toLowerCase();
+      const matched = keywords.some((keyword) => haystack.includes(keyword));
+      return `
         <tr>
           <td style="padding:18px 0;border-top:1px solid #ddd">
-            <p style="font-size:13px;line-height:1.5;margin:0 0 6px;color:#666">${escapeHtml(article.category)}・${escapeHtml(article.publishedAt)}</p>
+            <p style="font-size:13px;line-height:1.5;margin:0 0 6px;color:#666">${matched ? '符合你的關注・' : ''}${escapeHtml(article.category)}・${escapeHtml(article.publishedAt)}</p>
             <h3 style="font-size:18px;line-height:1.5;margin:0 0 8px;color:#111">${escapeHtml(article.title)}</h3>
             <p style="font-size:15px;line-height:1.7;margin:0 0 10px;color:#444">${escapeHtml(article.summary)}</p>
             <a href="${SITE_URL}/?article=${encodeURIComponent(article.id)}" style="font-size:15px;color:#111;font-weight:700">閱讀完整整理</a>
           </td>
-        </tr>`,
-    )
-    .join('');
+        </tr>`;
+    })
+    .join('') ||
+    '<tr><td style="padding:24px 0;border-top:1px solid #ddd;color:#555">這 24 小時內尚無通過多來源驗證門檻的新情報。</td></tr>';
+  const subject = digestSubject(scheduledFor);
+  const windowLabel = deliveryWindowLabel(
+    scheduledFor,
+    subscription.time_zone,
+  );
 
   return `<!doctype html>
-  <html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width"><title>${escapeHtml(dailyBriefing.title)}</title></head>
+  <html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width"><title>${escapeHtml(subject)}</title></head>
   <body style="margin:0;background:#f3f3f3;font-family:Arial,'Noto Sans TC',sans-serif;color:#111">
-    <div style="display:none;max-height:0;overflow:hidden">${escapeHtml(dailyBriefing.summary)}</div>
+    <div style="display:none;max-height:0;overflow:hidden">整理寄送時間往前 24 小時的重要 AI 情報。</div>
     <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background:#f3f3f3"><tr><td align="center" style="padding:28px 12px">
       <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="max-width:640px;background:#fff;border:1px solid #ddd">
         <tr><td style="padding:32px">
-          <p style="font-size:13px;letter-spacing:.08em;margin:0 0 12px;color:#666">每日 AI 重點・${escapeHtml(dailyBriefing.date)}</p>
-          <h1 style="font-size:30px;line-height:1.35;margin:0 0 14px;color:#111">${escapeHtml(dailyBriefing.title)}</h1>
-          <p style="font-size:17px;line-height:1.75;margin:0 0 28px;color:#444">${escapeHtml(dailyBriefing.lead)}</p>
-          ${sections}
-          <p style="font-size:17px;line-height:1.75;margin:4px 0 30px;padding:18px;background:#f4f4f4;color:#111"><strong>今日結論</strong><br>${escapeHtml(dailyBriefing.conclusion)}</p>
-          <h2 style="font-size:22px;line-height:1.4;margin:0 0 4px;color:#111">你可能關注的情報</h2>
+          <p style="font-size:13px;letter-spacing:.08em;margin:0 0 12px;color:#666">24 小時 AI 情報總覽</p>
+          <h1 style="font-size:30px;line-height:1.35;margin:0 0 14px;color:#111">${selected.length} 則重要情報一次掌握</h1>
+          <p style="font-size:15px;line-height:1.7;margin:0 0 10px;color:#666">統計區間：${escapeHtml(windowLabel)}（${escapeHtml(subscription.time_zone)}）</p>
+          <p style="font-size:17px;line-height:1.75;margin:0 0 28px;color:#444">${selected.length > 0 ? `這 24 小時共有 ${selected.length} 則情報通過多來源驗證。${categoryCounts ? `涵蓋 ${escapeHtml(categoryCounts)}。` : ''}` : '這 24 小時內沒有通過多來源驗證門檻的新情報。'}</p>
+          <h2 style="font-size:22px;line-height:1.4;margin:0 0 4px;color:#111">完整情報摘要</h2>
           <table role="presentation" width="100%" cellspacing="0" cellpadding="0">${cards}</table>
           <p style="margin:28px 0"><a href="${SITE_URL}" style="display:inline-block;background:#111;color:#fff;padding:13px 20px;border-radius:999px;text-decoration:none;font-weight:700">前往 AI 情報搜集網</a></p>
           <p style="font-size:12px;line-height:1.7;margin:24px 0 0;color:#777">你收到此信，是因為你已驗證每日 AI 情報訂閱。<a href="${unsubscribeUrl}" style="color:#555">取消訂閱</a></p>
@@ -200,7 +237,7 @@ async function sendOne(
   env: RuntimeEnv,
   subscription: SubscriptionRecord,
   digestDate: string,
-  deliveryId: number,
+  delivery: PreparedDelivery,
 ) {
   const now = new Date().toISOString();
   const claim = await env.DB.prepare(
@@ -208,7 +245,7 @@ async function sendOne(
        SET status = 'sending', attempts = attempts + 1, updated_at = ?
      WHERE id = ? AND status IN ('pending', 'failed') AND attempts < 3`,
   )
-    .bind(now, deliveryId)
+    .bind(now, delivery.id)
     .run();
   if ((claim.meta.changes ?? 0) === 0) return 'skipped';
 
@@ -224,8 +261,10 @@ async function sendOne(
       body: JSON.stringify({
         from: env.EMAIL_FROM,
         to: [subscription.email],
-        subject: `每日 AI 重點｜${dailyBriefing.title}`,
-        html: renderEmail(subscription),
+        subject: delivery.subject ?? digestSubject(subscription.next_send_at),
+        html:
+          delivery.html ??
+          renderEmail(subscription, subscription.next_send_at),
         headers: {
           'List-Unsubscribe': `<${unsubscribeUrl}>`,
           'List-Unsubscribe-Post': 'List-Unsubscribe=One-Click',
@@ -249,7 +288,7 @@ async function sendOne(
             500,
           ),
           new Date().toISOString(),
-          deliveryId,
+          delivery.id,
         )
         .run();
       return 'failed';
@@ -260,7 +299,7 @@ async function sendOne(
          SET status = 'sent', resend_email_id = ?, last_error = NULL,
              sent_at = ?, updated_at = ? WHERE id = ?`,
     )
-      .bind(result?.id ?? null, sentAt, sentAt, deliveryId)
+      .bind(result?.id ?? null, sentAt, sentAt, delivery.id)
       .run();
     return 'sent';
   } catch (error) {
@@ -270,7 +309,7 @@ async function sendOne(
       .bind(
         String(error).slice(0, 500),
         new Date().toISOString(),
-        deliveryId,
+        delivery.id,
       )
       .run();
     return 'failed';
@@ -313,6 +352,49 @@ export async function dispatchDueDailyEmails(env: RuntimeEnv, now = new Date()) 
       .run();
   }
 
+  const preparationDeadline = new Date(now.getTime() + 30 * 60_000).toISOString();
+  const { results: upcoming = [] } = await env.DB.prepare(
+    `SELECT id, email, keywords, send_time, time_zone, next_send_at,
+            verification_token
+     FROM subscriptions
+     WHERE status = 'active' AND next_send_at <= ?
+     ORDER BY next_send_at ASC LIMIT 500`,
+  )
+    .bind(preparationDeadline)
+    .all<SubscriptionRecord>();
+  let prepared = 0;
+  for (const subscription of upcoming) {
+    let digestDate: string;
+    try {
+      digestDate = localDateTime(
+        new Date(subscription.next_send_at),
+        subscription.time_zone,
+      ).date;
+    } catch {
+      continue;
+    }
+    const preparedAt = now.toISOString();
+    const result = await env.DB.prepare(
+      `INSERT INTO email_deliveries
+        (subscription_id, digest_date, status, attempts, scheduled_for,
+         subject, html, prepared_at, created_at, updated_at)
+       VALUES (?, ?, 'pending', 0, ?, ?, ?, ?, ?, ?)
+       ON CONFLICT(subscription_id, digest_date) DO NOTHING`,
+    )
+      .bind(
+        subscription.id,
+        digestDate,
+        subscription.next_send_at,
+        digestSubject(subscription.next_send_at),
+        renderEmail(subscription, subscription.next_send_at),
+        preparedAt,
+        preparedAt,
+        preparedAt,
+      )
+      .run();
+    prepared += result.meta.changes ?? 0;
+  }
+
   const { results = [] } = await env.DB.prepare(
     `SELECT id, email, keywords, send_time, time_zone, next_send_at,
             verification_token
@@ -326,6 +408,7 @@ export async function dispatchDueDailyEmails(env: RuntimeEnv, now = new Date()) 
   const summary = {
     checked: results.length,
     initialized: missingSchedule.length,
+    prepared,
     due: results.length,
     sent: 0,
     failed: 0,
@@ -343,18 +426,28 @@ export async function dispatchDueDailyEmails(env: RuntimeEnv, now = new Date()) 
     const createdAt = now.toISOString();
     await env.DB.prepare(
       `INSERT INTO email_deliveries
-        (subscription_id, digest_date, status, attempts, created_at, updated_at)
-       VALUES (?, ?, 'pending', 0, ?, ?)
+        (subscription_id, digest_date, status, attempts, scheduled_for,
+         subject, html, prepared_at, created_at, updated_at)
+       VALUES (?, ?, 'pending', 0, ?, ?, ?, ?, ?, ?)
        ON CONFLICT(subscription_id, digest_date) DO NOTHING`,
     )
-      .bind(subscription.id, digestDate, createdAt, createdAt)
+      .bind(
+        subscription.id,
+        digestDate,
+        subscription.next_send_at,
+        digestSubject(subscription.next_send_at),
+        renderEmail(subscription, subscription.next_send_at),
+        createdAt,
+        createdAt,
+        createdAt,
+      )
       .run();
     const delivery = await env.DB.prepare(
-      `SELECT id, status, attempts FROM email_deliveries
+      `SELECT id, status, attempts, subject, html FROM email_deliveries
        WHERE subscription_id = ? AND digest_date = ?`,
     )
       .bind(subscription.id, digestDate)
-      .first<{ id: number; status: string; attempts: number }>();
+      .first<PreparedDelivery>();
     const advanceSchedule = async () => {
       const nextSendAt = computeNextSendAt(
         subscription.time_zone,
@@ -376,7 +469,7 @@ export async function dispatchDueDailyEmails(env: RuntimeEnv, now = new Date()) 
       env,
       subscription,
       digestDate,
-      delivery.id,
+      delivery,
     );
     if (outcome === 'sent') summary.sent += 1;
     if (outcome === 'failed') summary.failed += 1;
