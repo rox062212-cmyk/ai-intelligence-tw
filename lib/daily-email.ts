@@ -166,14 +166,17 @@ function deliveryWindowLabel(scheduledFor: string, timeZone: string) {
   return `${formatter.format(start)}～${formatter.format(end)}`;
 }
 
-function digestSubject(scheduledFor: string) {
+export function digestSubject(scheduledFor: string) {
   const lead = articlesInDeliveryWindow(scheduledFor)[0];
   return lead
     ? `每日 AI 重點｜${lead.title}`
     : '每日 AI 重點｜過去 24 小時暫無重要更新';
 }
 
-function renderEmail(subscription: SubscriptionRecord, scheduledFor: string) {
+export function renderEmail(
+  subscription: SubscriptionRecord,
+  scheduledFor: string,
+) {
   // Product rule: every digest keeps the full editorial format. The delivery
   // window is the preceding 24 hours; the lead story receives a deep analysis,
   // while every other verified story remains in the complete summary list.
