@@ -29,6 +29,295 @@ export type Article = {
 
 export const articles: Article[] = [
   {
+    id: 'alibaba-full-stack-ai-roadmap-2026-09-22',
+    image: '/news/alibaba-ai-stack.png',
+    imageAlt: '自研 AI 晶片連結雲端超級節點與大型資料中心的彩色概念圖',
+    category: '晶片與基礎設施',
+    title: '阿里巴巴公布真武 V900、Qwen 4 與 20GW 資料中心路線圖，關鍵效能仍待外部驗證',
+    summary:
+      '阿里巴巴把自研晶片、模型、雲端與資料中心放進同一套全棧策略；多家媒體確認主要時程與規模，但「中國最強」及自我改進成效目前仍主要來自公司數據。',
+    publishedAt: '2026-09-22 17:55',
+    updatedAt: '2026-09-22 17:55',
+    tags: ['Alibaba', 'Qwen', '真武 V900', 'AI 晶片', '資料中心', '中國'],
+    verified: true,
+    evidenceLevel: '多方證實',
+    evidenceNote:
+      '阿里巴巴透過正式新聞稿公布真武 V900、Qwen 4 系列與 2032 年資料中心容量目標；AP、Reuters 與 Dow Jones 分別由 Apsara Conference 報導並核對主要數字、量產時程與市場反應。晶片三倍效能、模型自我改進與「中國最強」等敘述尚無公開第三方基準，因此僅視為公司主張。',
+    body: [
+      {
+        heading: '四個來源共同確認的發布內容',
+        text: '阿里巴巴 9 月 22 日在杭州 Apsara Conference 公布新一代真武 V900 AI 晶片、正在訓練的 Qwen 4，以及未來 Qwen 4.5、Qwen 5 擴大到 5 兆至 10 兆參數的路線圖。公司也設定 2032 年全球資料中心容量超過 20GW 的目標。官方新聞稿、AP、Reuters 與 Dow Jones 對這些核心項目與數字描述一致。[1][2][3][4]',
+        citations: [1, 2, 3, 4],
+      },
+      {
+        heading: '公司主張：從晶片到代理形成完整堆疊',
+        text: '阿里巴巴表示，真武 V900 的效能是前代 M890 的三倍，可組成大規模叢集；Qwen3.8-Max 則在一個月自動化流程中完成 33 輪迭代，並用超過 1 萬次 EDA 工具呼叫完成晶片匯流排模組。公司把這些成果與模型、雲端超級節點、手機代理及資料中心串成一套垂直整合策略。[1][3]',
+        citations: [1, 3],
+      },
+      {
+        heading: '媒體補充的時程、市場與限制',
+        text: 'Reuters 與 Dow Jones 報導，V900 預定於 2027 年第一季量產與商用，阿里巴巴港股在消息公布後走高；Reuters 同時指出供應鏈限制仍壓縮擴建速度。AP 把這次發布放在美國出口管制與中國技術自主的背景中，但也保留「中國最強」是阿里巴巴自己的說法。[2][3][4]',
+        citations: [2, 3, 4],
+      },
+      {
+        heading: '對產業的影響：競爭從單一模型轉向整體系統',
+        text: '如果 V900、Qwen 與雲端超級節點能按時量產，阿里巴巴將更能控制晶片供應、模型成本、雲端服務與終端代理的整條鏈，降低對受出口限制硬體的依賴。對雲端客戶而言，這可能增加中國本地替代方案；對 NVIDIA 與其他供應商而言，競爭焦點則從單卡跑分轉向互連、能源、軟體與可交付容量。[1][2][3]',
+        citations: [1, 2, 3],
+      },
+      {
+        heading: '綜合判讀',
+        text: '今天可以確認的是阿里巴巴公布了完整的產品與容量路線圖，不是其效能承諾已被獨立證實。參數量也只是模型規模的粗略指標，不能直接等同能力或成本效率。後續應看 V900 的公開基準、功耗與客戶部署、2027 年量產進度、Qwen 4 的實際測試，以及 20GW 擴建所需的電力、冷卻與資本是否落地。[1][2][3][4]',
+        citations: [1, 2, 3, 4],
+      },
+    ],
+    sources: [
+      {
+        id: 1,
+        name: 'Alibaba／Media OutReach',
+        type: '官方公告',
+        title: 'Alibaba Unveils Roadmap on Full-Stack AI Strategy from Chips, Cloud Infrastructure, Models to Agents',
+        url: 'https://www.aseangazette.com/newswires/media-outreach/2026/09/22/alibaba-unveils-roadmap-on-full-stack-ai-strategy-from-chips-cloud-infrastructure-models-to-agents/124888/',
+        date: '2026-09-22',
+        reliability: '第一手官方來源',
+        reliabilityNote:
+          '阿里巴巴透過新聞通訊社發布的完整官方稿，可核對產品名稱、公司引言、模型與資料中心路線圖；效能與自我改進數據由公司提供，未代表第三方驗證。',
+      },
+      {
+        id: 2,
+        name: 'Associated Press',
+        type: '新聞',
+        title: 'Alibaba unveils new AI technologies in challenge to the US',
+        url: 'https://apnews.com/article/alibaba-ai-chip-qwen-zhenwu-china-us-b29908e516faff9f5a82b201ba954aab',
+        date: '2026-09-22',
+        reliability: '可信媒體',
+        reliabilityNote:
+          '具署名與編輯制度，獨立報導會議發布內容，並補充美中科技競爭、出口限制及其他中國模型規模作為比較。',
+      },
+      {
+        id: 3,
+        name: 'Reuters／Investing.com',
+        type: '新聞',
+        title: 'Alibaba deepens AI push with new chip, bigger model; shares jump 5%',
+        url: 'https://www.investing.com/news/stock-market-news/alibaba-plans-ai-model-with-5-trillion-to-10-trillion-parameters-unveils-new-chip-4909839',
+        date: '2026-09-22',
+        reliability: '可信媒體',
+        reliabilityNote:
+          'Reuters 由北京報導，補充 V900 量產時程、晶片叢集規模、供應限制、股價與 Qwen 後續型號規劃；Investing.com 提供免費全文。',
+      },
+      {
+        id: 4,
+        name: 'Dow Jones／MarketScreener',
+        type: '新聞',
+        title: 'Alibaba Unveils New AI Chip, Outlines Plan for Larger Model',
+        url: 'https://www.marketscreener.com/news/alibaba-unveils-new-ai-chip-outlines-plan-for-larger-model-ce785ad8d988f52d',
+        date: '2026-09-22',
+        reliability: '可信媒體',
+        reliabilityNote:
+          'Dow Jones 具名記者獨立整理晶片精度範圍、2027 年第一季商用時程、模型規模與市場反應；MarketScreener 提供免費完整轉載。',
+      },
+    ],
+  },
+  {
+    id: 'openai-math-advisory-group-2026-09-22',
+    image: '/news/ai-math-advisory.png',
+    imageAlt: '獨立數學顧問團審閱大量 AI 生成證明的彩色概念圖',
+    category: '研究與治理',
+    title: 'OpenAI 與獨立數學顧問團合作審閱大量成果，但「解決 100 題」尚未公開驗證',
+    summary:
+      '九名數學家成立 AGMAI，將協助審閱與安排發布 AI 生成的數學成果；組織可公開異議且不收 OpenAI 報酬，但無權決定公司研發速度。',
+    publishedAt: '2026-09-22 17:54',
+    updatedAt: '2026-09-22 17:54',
+    tags: ['OpenAI', '數學', 'AGMAI', '研究治理', '學術倫理', 'AI 研究'],
+    verified: true,
+    evidenceLevel: '多方證實',
+    evidenceNote:
+      'OpenAI、獨立顧問團 AGMAI、TechCrunch 與 ITmedia 均確認組織成立、成員、職責與獨立性設計；數學界公開信提供受影響方的批評。OpenAI 所稱內部模型已解決逾 100 個長期開放問題，尚未公布完整題目、證明與逐案同儕驗證，故不視為已確認的研究突破。',
+    body: [
+      {
+        heading: '共同確認：獨立顧問團已成立並接受 OpenAI 諮詢',
+        text: 'OpenAI 9 月 21 日宣布與 Advisory Group on Mathematics and Artificial Intelligence（AGMAI）合作。OpenAI、AGMAI、TechCrunch 與 ITmedia 都確認，九名數學家將協助判斷新成果的重要性、安排發布方式並提出專業標準。AGMAI 由 Institute for Advanced Study 承載，但組織本身強調可向任何 AI 公司提供建議。[1][2][3][4]',
+        citations: [1, 2, 3, 4],
+      },
+      {
+        heading: '獨立性有明確設計，也有明確邊界',
+        text: 'AGMAI 成員不接受 OpenAI 付款，可以提出未被要求的建議、公開評論 OpenAI 對數學界的影響，並自行調整成員。這些安排降低顧問被公司完全控制的風險；但 AGMAI 也明說，它在任何 AI 公司都沒有決策權，OpenAI 亦表示顧問團不負責建議公司應以多快速度推進內部數學研究。[1][2]',
+        citations: [1, 2],
+      },
+      {
+        heading: '最醒目的「100 題」目前仍是公司陳述',
+        text: 'OpenAI 表示，自 8 月 28 日開始訓練的內部模型，除先前公布的 Navier–Stokes 結果外，已解決逾 100 個跨領域長期開放問題。TechCrunch、ITmedia 與其他報導都把這句話標為 OpenAI 的主張；目前沒有完整題目清單、全部證明、難度分類或逐案獨立審查可供外界確認，因此不能把「逾 100 題」直接寫成數學界已接受的定論。[1][3][4]',
+        citations: [1, 3, 4],
+      },
+      {
+        heading: '數學界的反方：答案數量不等於理解、歸因與傳承',
+        text: 'AGMAI 的成立回應了 27 名菲爾茲獎得主簽署的公開信。信中批評，以解題數量作為模型競賽基準，可能壓縮正常寫作、歸因、討論與把新方法納入知識體系的時間，也可能消耗原本能培養學生和新想法的問題。OpenAI 接受需要更審慎互動，但沒有把內部研究速度交由外部顧問決定。[1][3][5]',
+        citations: [1, 3, 5],
+      },
+      {
+        heading: '綜合判讀',
+        text: '這是一個比單次公關回應更具體的研究治理實驗：外部數學家取得公開發聲與發布建議的渠道，但公司仍保留最後決策。成效要看 AGMAI 是否真的公開建議、OpenAI 是否依建議調整發布、題目與證明能否被逐案審查，以及對人類作者、訓練資料與既有工作的歸因是否完整。現階段最可靠的結論是顧問機制成立，而不是 100 多個問題已被數學界正式解決。[1][2][3][4][5]',
+        citations: [1, 2, 3, 4, 5],
+      },
+    ],
+    sources: [
+      {
+        id: 1,
+        name: 'OpenAI',
+        type: '官方公告',
+        title: 'Advisory Group on Mathematics and Artificial Intelligence',
+        url: 'https://openai.com/index/advisory-group-on-mathematics-and-ai/',
+        date: '2026-09-21',
+        reliability: '第一手官方來源',
+        reliabilityNote:
+          '可核對 OpenAI 對模型成果、顧問團職責、成員與不介入研發速度的正式說法；逾 100 題是公司尚未完整公開材料的主張。',
+      },
+      {
+        id: 2,
+        name: 'AGMAI',
+        type: '官方公告',
+        title: 'Advisory Group on Mathematics and Artificial Intelligence',
+        url: 'https://agmai.org/',
+        date: '2026-09-21',
+        reliability: '第一手官方來源',
+        reliabilityNote:
+          '顧問團自身網站說明獨立性、不收公司報酬、沒有決策權、形成過程與目前正在處理的 OpenAI 大量結果發布問題。',
+      },
+      {
+        id: 3,
+        name: 'TechCrunch',
+        type: '新聞',
+        title: 'OpenAI forms math advisory group as its AI resolves more than 100 open problems',
+        url: 'https://techcrunch.com/2026/09/21/openai-forms-math-advisory-group-as-its-ai-resolves-more-than-100-open-problems/',
+        date: '2026-09-21',
+        reliability: '可信媒體',
+        reliabilityNote:
+          '具名報導，核對顧問團架構並把事件放進 Navier–Stokes 發布與數學界公開信的脈絡，明確把 100 題標為 OpenAI 的主張。',
+      },
+      {
+        id: 4,
+        name: 'ITmedia NEWS',
+        type: '新聞',
+        title: 'OpenAI、数学者の独立諮問グループと連携　内部モデルは「100件超の未解決問題を解決」',
+        url: 'https://www.itmedia.co.jp/news/article/2609/22/2000001671/',
+        date: '2026-09-22',
+        reliability: '可信媒體',
+        reliabilityNote:
+          '日本科技媒體以獨立編輯稿核對合作宣布、組織所在地與職責，並保留模型成果為 OpenAI 尚待外部評估的說法。',
+      },
+      {
+        id: 5,
+        name: 'Math and AI',
+        type: '研究',
+        title: 'A Severe Misalignment of AI in Mathematics',
+        url: 'https://mathandai.org/',
+        date: '2026-09-11',
+        reliability: '研究或技術來源',
+        reliabilityNote:
+          '27 名菲爾茲獎得主具名簽署並有 DOI 的公開聲明，提供受影響數學界對歸因、發布速度、學生培養與人類理解的直接立場。',
+      },
+    ],
+  },
+  {
+    id: 'openai-global-technical-standards-2026-09-22',
+    image: '/news/global-ai-standards.png',
+    imageAlt: '全球研究機構共同連結到 AI 安全框架的彩色概念圖',
+    category: '安全與治理',
+    title: 'OpenAI 提議由美國串聯各國 AI 安全機構，建立共同量測與事故通報標準',
+    summary:
+      '提案涵蓋前沿能力量測、自動化 AI 研究的人類監督、事故分級與通報；它主張用國際技術底座協調各國規則，但不是已通過的條約或強制審查制度。',
+    publishedAt: '2026-09-22 17:53',
+    updatedAt: '2026-09-22 17:53',
+    tags: ['OpenAI', 'AI 標準', 'CAISI', '事故通報', 'RSI', '國際治理'],
+    verified: true,
+    evidenceLevel: '多方證實',
+    evidenceNote:
+      'OpenAI 原始政策文完整列出提案；Reuters、Axios、Semafor 與 Bloomberg 分別核對美國主導、各國安全機構網路、共同量測與事故通報等核心內容。所有來源一致指出這是公司政策倡議，尚無政府採納、國際協議或具約束力文本。',
+    body: [
+      {
+        heading: '多方共同確認的提案核心',
+        text: 'OpenAI 9 月 21 日主張，由美國帶頭與各國建立前沿 AI 全球技術標準，重點包括能力量測、風險評估、自動化 AI 研究的人類監督，以及失準或研究事故的共同分級、追蹤、通報與回應。Reuters、Axios、Semafor 與 Bloomberg 都確認這些核心方向。[1][2][3][4][5]',
+        citations: [1, 2, 3, 4, 5],
+      },
+      {
+        heading: '制度設計：利用既有安全機構，不建立全球模型許可證',
+        text: 'OpenAI 建議以美國商務部下的 Center for AI Standards and Innovation（CAISI）為樞紐，連結澳洲、加拿大、歐洲、亞洲與非洲既有 AI 安全機構，再與 ISO 等標準組織合作。官方文件特別說明，這套技術標準本身不是模型上市許可、強制預審或全球監管機關；各國仍自行決定是否寫入法律。[1][3]',
+        citations: [1, 3],
+      },
+      {
+        heading: '不同來源的觀點：安全合作也帶有地緣與產業利益',
+        text: 'Reuters 與 Semafor 把提案放在聯合國大會、美中 AI 風險對話與產業要求放慢能力競賽的背景；Axios 強調美中通報機制及測試期、上線後事故都需要共同定義；Bloomberg 則指出，標準也會處理算力取得與跨國協作。換言之，提案同時是安全倡議、產業規則與美國爭取制度主導權的政策工具。[2][3][4][5]',
+        citations: [2, 3, 4, 5],
+      },
+      {
+        heading: '限制與矛盾：倡議者也是被規範者',
+        text: 'OpenAI 表示完全自主的遞迴自我改進目前尚未發生，也不應在無法確保安全前追求；但公司同時把自動化 AI 研究者列為核心目標。由企業提出共同標準可以快速累積技術細節，卻也可能讓前沿公司影響門檻設計。提案尚未說明誰有最終稽核權、如何處理未通報事件，或如何避免規則提高新進與開放權重開發者的成本。[1][2][3]',
+        citations: [1, 2, 3],
+      },
+      {
+        heading: '綜合判讀',
+        text: '這份提案把本月的模型失準通報與美中危機溝通進一步接到國際技術標準，方向比抽象安全宣言更具體；但今天得到確認的只有 OpenAI 公開倡議，而不是各國已同意。真正進展應以 CAISI 或其他政府機構是否啟動正式程序、是否公布共同事故分級、是否納入獨立稽核與受影響方，以及美中是否建立安全通道來判斷。[1][2][3][4][5]',
+        citations: [1, 2, 3, 4, 5],
+      },
+    ],
+    sources: [
+      {
+        id: 1,
+        name: 'OpenAI',
+        type: '官方公告',
+        title: 'Building standards for the next phase of AI',
+        url: 'https://openai.com/index/building-standards-next-phase-ai/',
+        date: '2026-09-21',
+        reliability: '第一手官方來源',
+        reliabilityNote:
+          '完整原始政策文，可核對 RSI、安全機構網路、共同量測、事故通報及非許可制度等設計；屬倡議者自身立場，並非政府承諾。',
+      },
+      {
+        id: 2,
+        name: 'Reuters／MarketScreener',
+        type: '新聞',
+        title: 'OpenAI calls for US to take lead in global efforts to develop technical standards',
+        url: 'https://uk.marketscreener.com/news/openai-calls-for-us-to-take-lead-in-global-efforts-to-develop-technical-standards-ce785adbde8bff27',
+        date: '2026-09-21',
+        reliability: '可信媒體',
+        reliabilityNote:
+          'Reuters 聯合國現場報導，核對提案發布時點、國際政治背景與共同量測／事故通報重點；MarketScreener 提供免費全文。',
+      },
+      {
+        id: 3,
+        name: 'Axios',
+        type: '新聞',
+        title: 'OpenAI releases AI safety standards amid US-China talks',
+        url: 'https://www.axios.com/2026/09/21/openai-ai-safety-standards-us-china',
+        date: '2026-09-21',
+        reliability: '可信媒體',
+        reliabilityNote:
+          '具署名與編輯制度，取得 OpenAI 官員補充，確認標準希望涵蓋測試環境與真實世界事故，並連結美中政策對話。',
+      },
+      {
+        id: 4,
+        name: 'Semafor',
+        type: '新聞',
+        title: 'OpenAI calls for global US-led coalition on AI safety',
+        url: 'https://www.semafor.com/article/09/21/2026/openai-calls-for-global-us-led-coalition-on-ai-safety',
+        date: '2026-09-21',
+        reliability: '可信媒體',
+        reliabilityNote:
+          '具名編輯報導，從國際聯盟與聯合國議程角度描述提案，提供與 Reuters、Axios 不同的外交政策框架。',
+      },
+      {
+        id: 5,
+        name: 'Bloomberg／Yahoo Finance',
+        type: '新聞',
+        title: 'OpenAI Pushes US to Lead Effort to Set Global Standards for AI',
+        url: 'https://ca.finance.yahoo.com/news/openai-pushes-us-lead-effort-170204302.html',
+        date: '2026-09-21',
+        reliability: '可信媒體',
+        reliabilityNote:
+          'Bloomberg 具名報導，補充事件通報、各國 AI 安全機構與算力取得等政策範圍；Yahoo Finance 提供免費完整轉載。',
+      },
+    ],
+  },
+  {
     id: 'us-china-ai-incident-notification-2026-09-21',
     image: '/news/us-china-ai-notification.png',
     imageAlt: '美中兩端 AI 系統透過安全通報線路連結的彩色概念圖',
@@ -1326,6 +1615,37 @@ export const articles: Article[] = [
 
 export const calendarEvents = [
   {
+    id: 45,
+    date: '2026-09-21',
+    title: 'OpenAI 提出前沿 AI 全球技術標準與共同事故通報框架',
+    type: '政策',
+    company: 'OpenAI',
+    status: '已確認',
+    format: '線上',
+    source: 'https://openai.com/index/building-standards-next-phase-ai/',
+  },
+  {
+    id: 46,
+    date: '2026-09-21',
+    title: '獨立數學顧問團 AGMAI 成立並開始協助 OpenAI 審閱成果',
+    type: '研究',
+    company: 'AGMAI／OpenAI',
+    status: '已確認',
+    format: '線上',
+    source: 'https://agmai.org/',
+  },
+  {
+    id: 47,
+    date: '2026-09-22',
+    title: '阿里巴巴公布真武 V900、Qwen 4 與 20GW AI 基礎設施路線圖',
+    type: '產業',
+    company: 'Alibaba',
+    status: '已確認',
+    format: '實體',
+    source:
+      'https://www.aseangazette.com/newswires/media-outreach/2026/09/22/alibaba-unveils-roadmap-on-full-stack-ai-strategy-from-chips-cloud-infrastructure-models-to-agents/124888/',
+  },
+  {
     id: 24,
     date: '2026-03-31',
     title: 'OpenAI 完成 1,220 億美元新一輪融資',
@@ -1782,9 +2102,19 @@ export const calendarEvents = [
 
 export const dailyPoints = [
   {
-    title: '美中開始談 AI 重大事故通報，但尚未形成共同規則',
-    text: '四家獨立通訊社確認美方提出國安級事件通知機制；中方是否接受、通報門檻與驗證方式仍待領袖會談。',
-    articleId: 'us-china-ai-incident-notification-2026-09-21',
+    title: '阿里巴巴把晶片、模型、雲端與 20GW 資料中心綁成一套競爭策略',
+    text: '四個來源確認真武 V900、Qwen 4 與擴建路線圖；效能、自我改進與「中國最強」仍待第三方驗證。',
+    articleId: 'alibaba-full-stack-ai-roadmap-2026-09-22',
+  },
+  {
+    title: '數學界開始建立 AI 成果發布治理，但沒有接管公司決策',
+    text: 'AGMAI 可公開建議且不收 OpenAI 報酬；「解決逾 100 個問題」尚未公布完整材料，不能視為已驗證定論。',
+    articleId: 'openai-math-advisory-group-2026-09-22',
+  },
+  {
+    title: 'OpenAI 把事故通報推向國際共同標準，仍停在政策倡議階段',
+    text: '提案涵蓋共同量測、事故分級與人類監督，但各國尚未採納，也沒有具約束力的稽核或執行機制。',
+    articleId: 'openai-global-technical-standards-2026-09-22',
   },
 ];
 
@@ -2090,7 +2420,7 @@ export const dailyBriefing20260918 = {
   ],
 };
 
-export const dailyBriefing = {
+export const dailyBriefing20260921 = {
   date: '2026 年 9 月 21 日',
   updatedAt: '10:47',
   readingMinutes: 5,
@@ -2208,6 +2538,178 @@ export const dailyBriefing = {
       name: 'Axios',
       title: 'Scoop: U.S. open to discuss AI shared risks with China, Bessent says',
       url: 'https://www.axios.com/2026/09/16/us-open-ai-shared-risks-china-bessent',
+      type: '新聞',
+    },
+  ],
+};
+
+export const dailyBriefing = {
+  date: '2026 年 9 月 22 日',
+  updatedAt: '17:55',
+  readingMinutes: 5,
+  title: 'AI 競爭從單一模型擴張到「誰制定規則、誰驗證知識、誰掌握整套基礎設施」',
+  summary:
+    '今天三件通過多來源門檻的消息構成同一張圖：OpenAI 要把前沿 AI 事故與能力量測變成國際共同標準，數學界用獨立顧問團回應 AI 大量產出研究成果，而阿里巴巴則把晶片、模型、雲端與資料中心整合成全棧競爭。',
+  lead: '過去 24 小時沒有一個已獨立驗證、足以單獨改寫產業的模型突破，卻出現三個更結構性的動作。OpenAI 呼籲由美國串聯各國 AI 安全機構，建立前沿能力量測、事故分級與通報標準；九名數學家成立獨立顧問團，準備處理 OpenAI 所稱由內部模型大量產出的數學成果；阿里巴巴在杭州公布真武 V900、Qwen 4 系列與 2032 年超過 20GW 的資料中心目標。它們分別回答治理、知識與基礎設施問題，也共同說明下一階段的 AI 競爭不只比模型跑分，而是比誰能決定可信的證據、控制發布節奏並把算力真正交付出去。',
+  sections: [
+    {
+      heading: '今日全貌：能力擴張之後，標準、審查與供應鏈同時成為瓶頸',
+      paragraphs: [
+        {
+          text: 'OpenAI 的政策文把自動化 AI 研究、遞迴自我改進與事故治理放在同一套框架中，主張由美國 CAISI 連結各國 AI 安全機構，建立共同量測、風險評估、人類監督與事故通報標準。Reuters、Axios、Semafor 與 Bloomberg 都確認這是一份國際政策倡議，而不是已簽署的多國協議。[1][2][3][4][5]',
+          citations: [1, 2, 3, 4, 5],
+        },
+        {
+          text: '同一時間，數學界面對的不是抽象未來風險，而是如何審閱一批據稱已由內部模型完成的成果。OpenAI 與 AGMAI 確認，九名數學家將協助判斷重要性、安排公開與提出學術標準；但顧問團沒有公司決策權，也不介入 OpenAI 內部研究速度。[6][7][8][9]',
+          citations: [6, 7, 8, 9],
+        },
+      ],
+    },
+    {
+      heading: '消息關聯：國際事故標準與數學成果審閱，其實都在回答「什麼才算可信」',
+      paragraphs: [
+        {
+          text: '前沿 AI 的共同難題已從「模型能不能做到」轉成「外界如何知道它真的做到、風險是否可控」。事故治理需要一致的嚴重度、證據欄位與通報門檻；數學成果則需要題目、證明、先前工作、作者歸因與逐案審閱。兩者都要求把公司內部陳述轉成外部可比較、可追溯的證據，而不是只靠品牌或發布速度。[1][3][6][7]',
+          citations: [1, 3, 6, 7],
+        },
+        {
+          text: '這也是今天最需要保留的懷疑。OpenAI 所稱「解決逾 100 個長期開放問題」尚未公布完整清單與證明；阿里巴巴所稱 V900 效能三倍、模型自我改進與「中國最強」也仍主要來自公司測試。這些主張值得追蹤，卻不能在獨立驗證前與已確認產品時程混為一談。[6][8][10][11][12]',
+          citations: [6, 8, 10, 11, 12],
+        },
+      ],
+    },
+    {
+      heading: '市場、產業與企業影響：全棧能力與規則影響力開始互相強化',
+      paragraphs: [
+        {
+          text: '阿里巴巴把真武 V900、Qwen 4、雲端超級節點、手機代理與資料中心容量放在同一張路線圖，表示中國大型平台正在爭取從晶片到應用的成本與供應自主。Reuters 報導 V900 預定 2027 年第一季量產，阿里巴巴也承認供應鏈限制仍約束擴建；因此短期市場反應不能取代實際交付、功耗與客戶採用數據。[10][11][12][13]',
+          citations: [10, 11, 12, 13],
+        },
+        {
+          text: '對企業採購者而言，未來比較的不只是單一模型價格，還包括晶片供應、互連、電力、雲端容量、代理平台與治理證據能否一起交付。對政策制定者而言，OpenAI 的提案也顯示前沿公司希望參與定義全球標準；這能帶來技術細節，卻可能讓既有大公司把自身做法變成進入門檻，因此開放模型、新創、學界與受影響方是否有實質席位很重要。[1][2][5][10][11]',
+          citations: [1, 2, 5, 10, 11],
+        },
+      ],
+    },
+    {
+      heading: '未確定處：今天的三件事都還沒有完成外部驗證閉環',
+      paragraphs: [
+        {
+          text: 'OpenAI 的國際標準尚未被 CAISI、其他政府或國際組織正式採納，誰負責稽核、未通報如何處理、各國法律如何接軌都沒有答案。AGMAI 雖具備公開發聲與不受薪設計，卻沒有強制權；它是否能在公司發布前取得充分材料、是否會公布分歧，以及 OpenAI 是否照建議行動，都要等待第一批案例。[1][2][6][7]',
+          citations: [1, 2, 6, 7],
+        },
+        {
+          text: '阿里巴巴的 20GW 是 2032 年容量目標，不是今天已建成的算力；5 兆至 10 兆參數是未來 Qwen 系列規模，也不能直接等同推理能力或商業價值。最關鍵的缺口是 V900 公開基準、功耗、良率、量產進度與可供客戶使用的實際時間，以及 Qwen 4 在獨立評測下的成本與穩定性。[10][11][12][13]',
+          citations: [10, 11, 12, 13],
+        },
+      ],
+    },
+    {
+      heading: '後續觀察：看制度是否有權、審閱是否公開、路線圖是否能交付',
+      paragraphs: [
+        {
+          text: '治理線應追蹤 CAISI 或其他國家 AI 安全機構是否啟動正式標準程序，是否公布共同事故分級與安全通道，以及美中 9 月 24 日會談是否把先前的事件通報提案變成雙方確認的工作機制。只有出現主管機關、文本、時限與驗證程序，政策倡議才會變成可執行制度。[1][2][3][4]',
+          citations: [1, 2, 3, 4],
+        },
+        {
+          text: '研究線要看 AGMAI 首份公開建議、OpenAI 是否發布完整題目與證明、外部數學家能否逐案重現。基礎設施線則看 V900 的第三方基準與 2027 年第一季量產、Qwen 4 的公開版本，以及阿里巴巴資料中心容量是否按年度形成可查證的增量。這三條線都應以外部可驗證進度，而不是宣示或估值，作為下一次更新的門檻。[6][7][8][10][11][12]',
+          citations: [6, 7, 8, 10, 11, 12],
+        },
+      ],
+    },
+  ],
+  conclusion:
+    '今天的共同主題是「可驗證性」。OpenAI 想把模型能力與事故變成跨國可比較的標準，數學家想把 AI 產出的證明帶回正常的審閱、歸因與知識傳承，阿里巴巴則要證明自研晶片、模型與資料中心能按計畫形成可交付系統。三件事都已具有可確認的組織或產品動作，但最醒目的能力數字仍未完成外部驗證。對讀者最有用的做法，是把已宣布的制度與路線圖記下來，等下一步用公開文本、獨立審查與實際部署來驗收。',
+  sources: [
+    {
+      id: 1,
+      name: 'OpenAI',
+      title: 'Building standards for the next phase of AI',
+      url: 'https://openai.com/index/building-standards-next-phase-ai/',
+      type: '官方公告',
+    },
+    {
+      id: 2,
+      name: 'Reuters／MarketScreener',
+      title: 'OpenAI calls for US to take lead in global efforts to develop technical standards',
+      url: 'https://uk.marketscreener.com/news/openai-calls-for-us-to-take-lead-in-global-efforts-to-develop-technical-standards-ce785adbde8bff27',
+      type: '新聞',
+    },
+    {
+      id: 3,
+      name: 'Axios',
+      title: 'OpenAI releases AI safety standards amid US-China talks',
+      url: 'https://www.axios.com/2026/09/21/openai-ai-safety-standards-us-china',
+      type: '新聞',
+    },
+    {
+      id: 4,
+      name: 'Semafor',
+      title: 'OpenAI calls for global US-led coalition on AI safety',
+      url: 'https://www.semafor.com/article/09/21/2026/openai-calls-for-global-us-led-coalition-on-ai-safety',
+      type: '新聞',
+    },
+    {
+      id: 5,
+      name: 'Bloomberg／Yahoo Finance',
+      title: 'OpenAI Pushes US to Lead Effort to Set Global Standards for AI',
+      url: 'https://ca.finance.yahoo.com/news/openai-pushes-us-lead-effort-170204302.html',
+      type: '新聞',
+    },
+    {
+      id: 6,
+      name: 'OpenAI',
+      title: 'Advisory Group on Mathematics and Artificial Intelligence',
+      url: 'https://openai.com/index/advisory-group-on-mathematics-and-ai/',
+      type: '官方公告',
+    },
+    {
+      id: 7,
+      name: 'AGMAI',
+      title: 'Advisory Group on Mathematics and Artificial Intelligence',
+      url: 'https://agmai.org/',
+      type: '官方公告',
+    },
+    {
+      id: 8,
+      name: 'TechCrunch',
+      title: 'OpenAI forms math advisory group as its AI resolves more than 100 open problems',
+      url: 'https://techcrunch.com/2026/09/21/openai-forms-math-advisory-group-as-its-ai-resolves-more-than-100-open-problems/',
+      type: '新聞',
+    },
+    {
+      id: 9,
+      name: 'ITmedia NEWS',
+      title: 'OpenAI、数学者の独立諮問グループと連携　内部モデルは「100件超の未解決問題を解決」',
+      url: 'https://www.itmedia.co.jp/news/article/2609/22/2000001671/',
+      type: '新聞',
+    },
+    {
+      id: 10,
+      name: 'Alibaba／Media OutReach',
+      title: 'Alibaba Unveils Roadmap on Full-Stack AI Strategy from Chips, Cloud Infrastructure, Models to Agents',
+      url: 'https://www.aseangazette.com/newswires/media-outreach/2026/09/22/alibaba-unveils-roadmap-on-full-stack-ai-strategy-from-chips-cloud-infrastructure-models-to-agents/124888/',
+      type: '官方公告',
+    },
+    {
+      id: 11,
+      name: 'Associated Press',
+      title: 'Alibaba unveils new AI technologies in challenge to the US',
+      url: 'https://apnews.com/article/alibaba-ai-chip-qwen-zhenwu-china-us-b29908e516faff9f5a82b201ba954aab',
+      type: '新聞',
+    },
+    {
+      id: 12,
+      name: 'Reuters／Investing.com',
+      title: 'Alibaba deepens AI push with new chip, bigger model; shares jump 5%',
+      url: 'https://www.investing.com/news/stock-market-news/alibaba-plans-ai-model-with-5-trillion-to-10-trillion-parameters-unveils-new-chip-4909839',
+      type: '新聞',
+    },
+    {
+      id: 13,
+      name: 'Dow Jones／MarketScreener',
+      title: 'Alibaba Unveils New AI Chip, Outlines Plan for Larger Model',
+      url: 'https://www.marketscreener.com/news/alibaba-unveils-new-ai-chip-outlines-plan-for-larger-model-ce785ad8d988f52d',
       type: '新聞',
     },
   ],
