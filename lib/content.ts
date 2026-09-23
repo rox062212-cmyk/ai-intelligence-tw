@@ -29,6 +29,273 @@ export type Article = {
 
 export const articles: Article[] = [
   {
+    id: 'frontier-ai-international-oversight-call-2026-09-23',
+    image: '/news/frontier-ai-oversight.png',
+    imageAlt: '多國代表共同監督前沿 AI 核心與驗證框架的彩色概念圖',
+    category: '政策與治理',
+    title: '20 國與歐盟領袖倡議前沿 AI 強制測試與國際監督，美中未加入',
+    summary:
+      '22 名領袖與高階官員要求公司接受部署前測試、獨立評估與重大事故共享，並探索能設定標準與驗證的國際機構；但聲明沒有法律拘束力，主要 AI 強國也未簽署。',
+    publishedAt: '2026-09-23 08:38',
+    updatedAt: '2026-09-23 08:38',
+    tags: ['前沿 AI', '國際治理', '獨立評估', '事故通報', '聯合國', '人類控制'],
+    verified: true,
+    evidenceLevel: '多方證實',
+    evidenceNote:
+      '荷蘭與挪威政府公布聲明全文及簽署人；Al Jazeera 與 The Next Web 分別核對簽署規模、政策要求與美中缺席。可確認的是跨國倡議與三項要求，不能把它寫成已成立監管機構、已通過國際條約或已獲主要 AI 強國接受。',
+    body: [
+      {
+        heading: '共同確認：聲明把企業測試、政府標準與國際驗證連成三層',
+        text: '由芬蘭總統 Alexander Stubb 與挪威總理 Jonas Gahr Støre 發起的聲明獲 22 名領袖與高階官員支持，代表 20 個國家與歐盟執委會。荷蘭政府公布的全文要求前沿 AI 保持在人類指揮、監督與控制下，並分別對公司、政府與聯合國會員國提出三層行動。[1][2][3][4]',
+        citations: [1, 2, 3, 4],
+      },
+      {
+        heading: '公司端：部署前測試與獨立評估不再只是自願加分',
+        text: '聲明要求公司建立透明安全程序，包含部署前強制測試、獨立評估，以及讓合格評估者取得足以判斷風險的系統存取。這比一般「負責任 AI」宣言更具體，因為它直接碰觸外部評估者能否看到模型、工具軌跡與風險證據；但文件沒有定義適用門檻、評估者資格或不合格時的停止權。[1][2][3]',
+        citations: [1, 2, 3],
+      },
+      {
+        heading: '政府與國際層：重大事故共享，並探索新的監督機構',
+        text: '第二層要求各國協調共同標準、共享嚴重安全事故並擴大各地科學與評估能力；第三層則邀請聯合國會員國在既有機制上，探索一個能制定標準、促成驗證，並在能力跨越門檻時召集各國的國際機構。The Next Web 指出，這已超出單純資訊交換，碰到強制測試與跨國監督的制度設計。[1][3][4]',
+        citations: [1, 3, 4],
+      },
+      {
+        heading: '限制與矛盾：倡議者多，主要模型強國卻缺席',
+        text: '美國與中國都沒有簽署，而兩國掌握大量前沿模型、晶片與雲端能力。聲明仍開放其他領袖加入，也沒有法律拘束力、執行機關、資金或制裁條款。Al Jazeera 把它放在聯合國大會與近期代理越界事件的背景中；這提高政治能見度，卻不代表各國已同意共同的能力門檻或驗證權。[2][3][4]',
+        citations: [2, 3, 4],
+      },
+      {
+        heading: '綜合判讀',
+        text: '這份聲明的重要性在於多國領袖首次把部署前測試、評估者存取、事故共享與國際驗證放進同一份政治倡議；它的弱點則是缺少美中、具體門檻與執行權。後續應追蹤新增簽署國、聯合國是否啟動正式程序、企業是否接受足夠深入的外部評估，以及「能力跨越門檻」能否被技術上定義與跨國驗證。[1][2][3][4]',
+        citations: [1, 2, 3, 4],
+      },
+    ],
+    sources: [
+      {
+        id: 1,
+        name: '荷蘭政府',
+        type: '官方公告',
+        title: 'A Call for Control of Frontier AI Models',
+        url: 'https://www.government.nl/documents/2026/09/22/a-call-for-control-of-frontier-ai-models',
+        date: '2026-09-22',
+        reliability: '第一手官方來源',
+        reliabilityNote:
+          '公布完整聲明、三項要求與全部簽署人，可核對文字與簽署規模；文件本身是政治倡議，不等於已生效法律。',
+      },
+      {
+        id: 2,
+        name: '挪威首相府',
+        type: '官方公告',
+        title: 'International call for enhanced control of AI development',
+        url: 'https://www.regjeringen.no/en/whats-new/international-call-for-enhanced-control-of-ai-development/id3173324/',
+        date: '2026-09-21',
+        reliability: '第一手官方來源',
+        reliabilityNote:
+          '說明倡議發起人、22 名支持者與政策理由，並重列公司測試、政府協調及國際機構三層要求。',
+      },
+      {
+        id: 3,
+        name: 'Al Jazeera',
+        type: '新聞',
+        title: '20 countries propose global oversight body to manage AI dangers',
+        url: 'https://www.aljazeera.com/amp/economy/2026/9/22/20-countries-propose-global-oversight-body-to-manage-ai-dangers',
+        date: '2026-09-22',
+        reliability: '可信媒體',
+        reliabilityNote:
+          '具名編輯報導，核對參與國、國際機構構想與聯合國大會背景，並補充美中未簽署等政治限制。',
+      },
+      {
+        id: 4,
+        name: 'The Next Web',
+        type: '新聞',
+        title: 'Dutch government publishes call from 21 countries and the EU for international oversight of frontier AI',
+        url: 'https://thenextweb.com/news/frontier-ai-joint-statement-21-countries-eu',
+        date: '2026-09-22',
+        reliability: '可信媒體',
+        reliabilityNote:
+          '具編輯制度的歐洲科技媒體，獨立整理強制部署前測試、評估存取與國際監督機構等制度含義。',
+      },
+    ],
+  },
+  {
+    id: 'palo-alto-continuous-frontier-ai-defense-2026-09-23',
+    image: '/news/continuous-ai-defense.png',
+    imageAlt: '多個專用 AI 模型協同尋找與修補企業網路弱點的彩色概念圖',
+    category: '資安與企業',
+    title: 'Palo Alto 推出多模型持續攻防服務，把受限前沿模型接進企業弱點管理',
+    summary:
+      'Unit 42 新服務結合 Claude Mythos 5、GPT‑5.6‑Cyber 與開放權重模型，持續尋找、驗證與協助修補攻擊路徑；「單一模型最多抓到 40%」及 97% 攻擊週期縮短仍是公司數據。',
+    publishedAt: '2026-09-23 08:37',
+    updatedAt: '2026-09-23 08:37',
+    tags: ['Palo Alto Networks', 'Unit 42', 'GPT-5.6-Cyber', 'Claude Mythos 5', '資安代理'],
+    verified: true,
+    evidenceLevel: '多方證實',
+    evidenceNote:
+      'Palo Alto Networks 正式新聞稿、Axios、Reuters 與 The Next Web 共同確認服務名稱、模型組合、持續測試定位與推出日期。效能百分比、漏洞覆蓋與攻擊週期縮短來自供應商測試，尚無公開客戶資料或第三方比較，因此不視為獨立驗證。',
+    body: [
+      {
+        heading: '共同確認：不是單一掃描器，而是一套持續運作的多模型服務',
+        text: 'Palo Alto Networks 9 月 22 日推出 Unit 42 Continuous Frontier AI Defense，讓受管制的 Claude Mythos 5、OpenAI GPT‑5.6‑Cyber 與開放權重模型，在企業授權範圍內持續尋找漏洞、驗證實際可利用性、串連攻擊路徑並提出修復建議。官方、Axios、Reuters 與 The Next Web 對產品定位與模型組合描述一致。[1][2][3][4]',
+        citations: [1, 2, 3, 4],
+      },
+      {
+        heading: '為什麼使用多模型：供應商稱能力分散，沒有一個模型涵蓋全部弱點',
+        text: '公司告訴 Axios，其內部測試中沒有任何單一模型能找出複雜環境超過 40% 的弱點，因此以專有調度層把不同任務分派給不同模型，再由 Unit 42 威脅情報與攻防專家驗證。這個設計顯示企業資安產品正把模型視為可替換的專長模組，而不是一個全能代理。[1][2][4]',
+        citations: [1, 2, 4],
+      },
+      {
+        heading: '產業影響：資安從定期滲透測試轉向長時間代理作業',
+        text: 'Reuters 將它視為資安供應商以 AI 對抗 AI 攻擊速度的最新例子。若服務能持續執行並把已驗證的弱點接回修復流程，企業採購重點會從一次性報告轉向長期權限、日誌、成本與誤報管理；資安團隊也需要清楚區分模型找出的可能弱點、實際可利用證據與已完成修復。[2][3]',
+        citations: [2, 3],
+      },
+      {
+        heading: '限制與風險：高能力資安模型本身也需要嚴格隔離',
+        text: '服務使用能進行進階漏洞研究與攻擊路徑推理的受限模型，因此授權範圍、憑證代理、網路出口、人工核准與完整軌跡紀錄比一般聊天工具更重要。新聞稿沒有公開價格、客戶成功率、誤報率或跨模型比較方法；97% 的攻擊週期縮短與漏洞覆蓋數字也由公司提供，尚不能推論所有環境都能得到相同效果。[1][2][3][4]',
+        citations: [1, 2, 3, 4],
+      },
+      {
+        heading: '綜合判讀',
+        text: '可以確認的是前沿資安模型已被包進一項可購買、持續執行且有人類專家介入的企業服務；不能確認的是它是否比既有紅隊、暴露管理或單模型工具更有效、更便宜。後續應看公開客戶案例、第三方測試、漏洞誤報與修復完成率，以及模型是否曾越出授權範圍。企業試用時應先限制資產範圍並保留人工核准，不應把「持續」誤解為「完全自主」。[1][2][3][4]',
+        citations: [1, 2, 3, 4],
+      },
+    ],
+    sources: [
+      {
+        id: 1,
+        name: 'Palo Alto Networks',
+        type: '官方公告',
+        title: "Palo Alto Networks Delivers Anthropic's Mythos and OpenAI's GPT-5.6 to Customers with Unit 42 Continuous Frontier AI Defense",
+        url: 'https://origin-www.paloaltonetworks.com/company/press/2026/palo-alto-networks-delivers-anthropic-s-mythos-and-openai-s-gpt-5-6-to-customers-with-unit-42-continuous-frontier-ai-defense',
+        date: '2026-09-22',
+        reliability: '第一手官方來源',
+        reliabilityNote:
+          '可核對產品名稱、功能、模型組合與公司數據；攻擊週期、覆蓋率與成效由供應商自行測試。',
+      },
+      {
+        id: 2,
+        name: 'Axios',
+        type: '新聞',
+        title: "Palo Alto Networks' new service to fight AI hacks",
+        url: 'https://www.axios.com/2026/09/22/palo-alto-networks-cyber-defense-ai-agents',
+        date: '2026-09-22',
+        reliability: '可信媒體',
+        reliabilityNote:
+          '具名獨家採訪，取得公司對多模型調度、40% 覆蓋限制與人類專家角色的補充說明。',
+      },
+      {
+        id: 3,
+        name: 'Reuters／Investing.com',
+        type: '新聞',
+        title: 'Palo Alto Networks unveils AI-powered cybersecurity service using Claude, GPT models',
+        url: 'https://www.investing.com/news/stock-market-news/palo-alto-networks-unveils-aipowered-cybersecurity-service-using-claude-gpt-models-4911064',
+        date: '2026-09-22',
+        reliability: '可信媒體',
+        reliabilityNote:
+          'Reuters 獨立核對服務推出、企業用途與模型組合；Investing.com 提供免費全文。',
+      },
+      {
+        id: 4,
+        name: 'The Next Web',
+        type: '新聞',
+        title: 'Palo Alto Networks launches always-on AI security testing built on Claude Mythos and GPT-5.6-Cyber',
+        url: 'https://thenextweb.com/news/palo-alto-networks-unit-42',
+        date: '2026-09-22',
+        reliability: '可信媒體',
+        reliabilityNote:
+          '獨立科技媒體整理產品架構、受限模型存取與持續攻防的實務意義。',
+      },
+    ],
+  },
+  {
+    id: 'xiaomi-mimo-v26-open-weights-2026-09-23',
+    image: '/news/mimo-v26-open-model.png',
+    imageAlt: '開放模型權重從多模態 AI 核心流向稀疏專家模組的彩色概念圖',
+    category: '模型與開源',
+    title: 'Xiaomi 發布 MiMo‑V2.6 開放權重模型，獨立綜合基準暫列同類第一',
+    summary:
+      '旗艦 Pro 採 1.02 兆總參數、每 token 啟用 420 億參數，支援文字、影像、影音與百萬 token；Artificial Analysis 給出 46 分，但多數細項仍是廠商自測。',
+    publishedAt: '2026-09-23 08:36',
+    updatedAt: '2026-09-23 08:36',
+    tags: ['Xiaomi', 'MiMo-V2.6', '開放權重', '多模態', '模型評測', 'MIT 授權'],
+    verified: true,
+    evidenceLevel: '多方證實',
+    evidenceNote:
+      'Xiaomi 的 Hugging Face 模型卡與權重可直接核對架構、模態、授權與檔案；Artificial Analysis 獨立執行綜合指數並給出 46 分，VentureBeat 與 The Model Gap 分別核對排名、成本與目前獨立評測仍少的限制。除 Artificial Analysis 外，多數能力數字仍來自 Xiaomi 模型卡。',
+    body: [
+      {
+        heading: '共同確認：Pro 與 Flash 權重公開，旗艦是大型稀疏多模態模型',
+        text: 'Xiaomi MiMo 團隊公開 MiMo‑V2.6‑Pro‑RL 與 Flash‑RL 權重，旗艦 Pro 模型卡列出 1.02 兆總參數、每個 token 啟用 420 億參數、100 萬 token 上下文，以及文字、影像、影片與音訊輸入。Hugging Face 顯示 MIT 授權與實際模型檔案，VentureBeat 也核對兩個主要版本、API 與發布資訊。[1][2]',
+        citations: [1, 2],
+      },
+      {
+        heading: '獨立結果：Artificial Analysis 綜合指數 46 分，但只代表一套測法',
+        text: 'Artificial Analysis 對 Pro 版跑出的 Intelligence Index 為 46，暫列其 114 個可比較模型第一，並測得約每秒 110.8 個輸出 token、每項指數任務成本 0.13 美元。這提供了第一個外部訊號，但它是多項測試加權後的單一綜合指數，不能代表所有語言、程式、代理或多模態工作都同樣領先。[2][3]',
+        citations: [2, 3],
+      },
+      {
+        heading: '廠商主張：一次混合強化學習跨越程式、代理、視覺與資安',
+        text: 'Xiaomi 表示，MiMo‑V2.6 用一次混合強化學習流程同時處理程式、一般代理、視覺與資安任務，並用群組式評分器比較多條軌跡。這是一項值得研究的訓練設計，但模型卡中的 DeepSWE、CyberGym 等細項分數主要由開發者提供，尚不能和獨立重現畫上等號。[1][4]',
+        citations: [1, 4],
+      },
+      {
+        heading: '開放與限制：MIT 授權降低採用門檻，硬體與驗證成本仍高',
+        text: 'MIT 授權讓企業可下載、修改與商用權重，對需要本地部署或避免單一 API 鎖定的團隊具有吸引力。不過旗艦模型龐大，模型卡建議多 GPU、張量與專家平行設定；The Model Gap 也指出，目前追蹤的多數能力分數仍是官方資料，其他獨立排行榜尚未跟上。開放權重不等於低部署成本，也不等於安全與品質已被完整審查。[1][4]',
+        citations: [1, 4],
+      },
+      {
+        heading: '綜合判讀',
+        text: 'MiMo‑V2.6 最可靠的新事實是權重與技術材料已公開，且一個第三方綜合基準確認它進入開放權重第一梯隊。現在還不能斷言它全面超越封閉模型或其他開放模型。後續應看更多獨立程式、長任務、多語言與多模態測試、實際顯存與吞吐成本、社群能否順利部署，以及公開權重在安全微調與供應鏈驗證上的表現。[1][2][3][4]',
+        citations: [1, 2, 3, 4],
+      },
+    ],
+    sources: [
+      {
+        id: 1,
+        name: 'Xiaomi MiMo／Hugging Face',
+        type: '技術文件',
+        title: 'MiMo-V2.6-Pro-RL model card and weights',
+        url: 'https://huggingface.co/XiaomiMiMo/MiMo-V2.6-Pro-RL',
+        date: '2026-09-22',
+        reliability: '第一手官方來源',
+        reliabilityNote:
+          '官方模型卡、技術報告與權重檔，可直接核對架構、模態、上下文、MIT 授權與官方評測；能力細項由 Xiaomi 自測。',
+      },
+      {
+        id: 2,
+        name: 'VentureBeat',
+        type: '新聞',
+        title: "'Better than DeepSeek': Xiaomi's MiMo-V2.6-Pro debuts as the top open weights model in the world alongside cheaper V2.6-Flash",
+        url: 'https://venturebeat.com/technology/better-than-deepseek-xiaomis-mimo-v2-6-pro-debuts-as-the-top-open-weights-model-in-the-world-alongside-cheaper-v2-6-flash',
+        date: '2026-09-22',
+        reliability: '可信媒體',
+        reliabilityNote:
+          '具名科技報導，核對版本、開放權重、價格與 Artificial Analysis 排名，並將結果放進同類模型比較。',
+      },
+      {
+        id: 3,
+        name: 'Artificial Analysis',
+        type: '技術文件',
+        title: 'MiMo-V2.6-Pro — Intelligence, Performance & Price Analysis',
+        url: 'https://artificialanalysis.ai/models/mimo-v2-6-pro',
+        date: '2026-09-22',
+        reliability: '研究或技術來源',
+        reliabilityNote:
+          '第三方模型分析平台實際執行綜合指數、速度與成本測試；仍只代表其測試集、權重與供應端條件。',
+      },
+      {
+        id: 4,
+        name: 'The Model Gap',
+        type: '技術文件',
+        title: 'MiMo-V2.6-Pro benchmarks & pricing',
+        url: 'https://themodelgap.com/models/mimo-v2-6-pro',
+        date: '2026-09-22',
+        reliability: '研究或技術來源',
+        reliabilityNote:
+          '逐項區分官方分數與獨立結果，指出當日只有 Artificial Analysis 提供完整外部跑分，適合作為證據限制說明。',
+      },
+    ],
+  },
+  {
     id: 'alibaba-full-stack-ai-roadmap-2026-09-22',
     image: '/news/alibaba-ai-stack.png',
     imageAlt: '自研 AI 晶片連結雲端超級節點與大型資料中心的彩色概念圖',
@@ -1615,6 +1882,48 @@ export const articles: Article[] = [
 
 export const calendarEvents = [
   {
+    id: 48,
+    date: '2026-09-21',
+    title: '20 國與歐盟領袖發起前沿 AI 人類控制與國際監督倡議',
+    type: '政策',
+    company: '芬蘭／挪威等 20 國與歐盟執委會',
+    status: '已確認',
+    format: '混合',
+    source:
+      'https://www.government.nl/documents/2026/09/22/a-call-for-control-of-frontier-ai-models',
+  },
+  {
+    id: 49,
+    date: '2026-09-22',
+    title: 'Palo Alto Networks 推出 Unit 42 持續前沿 AI 攻防服務',
+    type: '安全',
+    company: 'Palo Alto Networks',
+    status: '已確認',
+    format: '線上',
+    source:
+      'https://origin-www.paloaltonetworks.com/company/press/2026/palo-alto-networks-delivers-anthropic-s-mythos-and-openai-s-gpt-5-6-to-customers-with-unit-42-continuous-frontier-ai-defense',
+  },
+  {
+    id: 50,
+    date: '2026-09-22',
+    title: 'Xiaomi 公開 MiMo-V2.6 Pro／Flash 模型權重與技術報告',
+    type: '模型',
+    company: 'Xiaomi MiMo',
+    status: '已確認',
+    format: '線上',
+    source: 'https://huggingface.co/XiaomiMiMo/MiMo-V2.6-Pro-RL',
+  },
+  {
+    id: 51,
+    date: '2026-09-23',
+    title: 'Meta Connect 2026（9/23–24）',
+    type: '產品更新',
+    company: 'Meta',
+    status: '已確認',
+    format: '混合',
+    source: 'https://developers.meta.com/',
+  },
+  {
     id: 45,
     date: '2026-09-21',
     title: 'OpenAI 提出前沿 AI 全球技術標準與共同事故通報框架',
@@ -2543,7 +2852,7 @@ export const dailyBriefing20260921 = {
   ],
 };
 
-export const dailyBriefing = {
+export const dailyBriefing20260922 = {
   date: '2026 年 9 月 22 日',
   updatedAt: '17:55',
   readingMinutes: 5,
@@ -2711,6 +3020,171 @@ export const dailyBriefing = {
       title: 'Alibaba Unveils New AI Chip, Outlines Plan for Larger Model',
       url: 'https://www.marketscreener.com/news/alibaba-unveils-new-ai-chip-outlines-plan-for-larger-model-ce785ad8d988f52d',
       type: '新聞',
+    },
+  ],
+};
+
+export const dailyBriefing = {
+  date: '2026 年 9 月 23 日',
+  updatedAt: '08:38',
+  readingMinutes: 5,
+  title: 'AI 進入「要被誰驗證、如何持續執行、能否自行部署」的新競爭',
+  summary:
+    '今天通過門檻的三件事從治理、企業安全與開放模型三個方向交會：20 國與歐盟要求前沿 AI 接受外部測試，Palo Alto 把多個受限模型接進持續攻防服務，Xiaomi 則用 MIT 授權公開大型多模態模型權重。',
+  lead: '過去 24 小時最值得注意的不是單一跑分，而是 AI 能力如何被外界檢查、包裝成長時間服務，並移到企業自己的部署環境。芬蘭與挪威發起的跨國聲明要求前沿模型在部署前接受測試與獨立評估，並探索可設定標準與驗證的國際機構；Palo Alto Networks 把 Claude Mythos 5、GPT‑5.6‑Cyber 與開放權重模型組成持續尋找弱點的企業服務；Xiaomi 公開 MiMo‑V2.6 權重，並在 Artificial Analysis 的綜合指數暫列開放權重模型第一。三件事共同指出：前沿 AI 的下一輪競爭不只比能力，還要比誰能取得證據、控制代理的長時間行動，並負擔實際部署與治理成本。',
+  sections: [
+    {
+      heading: '今日全貌：驗證、執行與部署開始變成同一個問題',
+      paragraphs: [
+        {
+          text: '20 國與歐盟執委會領袖支持的聲明，要求公司建立透明安全程序、在部署前進行強制測試與獨立評估，並讓合格評估者取得足夠存取。它也要求政府共享嚴重事故、協調共同標準，並請聯合國會員國探索能設定標準、促成驗證、在能力跨越門檻時召集各國的國際機構。[1][2][3][4]',
+          citations: [1, 2, 3, 4],
+        },
+        {
+          text: '企業端則已經把高能力模型從一次性工具變成長時間運作的服務。Palo Alto Networks 的 Unit 42 服務會讓多個資安模型持續尋找、驗證與協助修補弱點；Xiaomi 則讓企業能直接下載 MiMo‑V2.6 權重，在自己的硬體與治理邊界內部署。外部驗證、代理授權與本地運算因此不再是三個獨立議題。[5][6][7][9][10]',
+          citations: [5, 6, 7, 9, 10],
+        },
+      ],
+    },
+    {
+      heading: '消息關聯：模型愈能行動，證據與權限就愈重要',
+      paragraphs: [
+        {
+          text: '國際聲明要求評估者取得充分存取，背後原因是只看供應商給出的分數，已不足以判斷一個會用工具、碰觸真實系統的模型。Palo Alto 的服務正好展示這個矛盾：公司稱沒有任何單一模型能找出複雜環境超過 40% 的弱點，因此要用多模型調度和人類專家驗證；但這個 40% 本身仍是公司資料，尚未經公開第三方重現。[1][5][6][8]',
+          citations: [1, 5, 6, 8],
+        },
+        {
+          text: 'MiMo‑V2.6 讓外界取得權重、模型卡與技術報告，確實提高可檢查性。Artificial Analysis 的 46 分提供第一個外部能力訊號，但其他多數細項仍依賴 Xiaomi 自測，且一個綜合指數不能取代多語言、長任務、安全與實際部署測試。開放權重讓驗證更可能發生，並不等於驗證已經完成。[9][10][11][12]',
+          citations: [9, 10, 11, 12],
+        },
+      ],
+    },
+    {
+      heading: '市場、產業與企業影響：採購重點從 API 價格轉向整套風險成本',
+      paragraphs: [
+        {
+          text: '資安產品若能持續執行滲透與暴露驗證，企業可能減少等待定期測試的時間，但也會新增高權限模型的隔離、憑證代理、網路出口、人工核准與軌跡保存成本。真正的採購問題不是模型能否找到一個漏洞，而是誤報率、修復完成率、每次驗證成本，以及出現越界時能否立即停止並追溯。[5][6][7][8]',
+          citations: [5, 6, 7, 8],
+        },
+        {
+          text: 'MiMo‑V2.6 的 MIT 授權與低 API 價格，會增加企業對可自託管多模態模型的選擇，也給封閉供應商更多價格壓力；不過 Pro 版是 1.02 兆總參數的稀疏模型，模型卡建議多 GPU 與平行化設定。權重免費不代表硬體、工程、監控與安全更新免費，較小的 Flash 版是否更符合企業成本仍需實測。[9][10][11][12]',
+          citations: [9, 10, 11, 12],
+        },
+      ],
+    },
+    {
+      heading: '未確定處：政治倡議、供應商成效與排行榜都還不是定論',
+      paragraphs: [
+        {
+          text: '前沿 AI 監督聲明沒有法律拘束力，美國與中國也未加入；它尚未定義哪些模型必須測試、能力門檻如何計算、評估者能拿到什麼，以及不合格時誰能阻止部署。缺少主要 AI 強國與可執行權限，讓它目前更像政治方向，而不是全球監管制度。[1][2][3][4]',
+          citations: [1, 2, 3, 4],
+        },
+        {
+          text: 'Palo Alto 沒有公開價格、客戶成功率、誤報率或跨模型比較方法；Xiaomi 的多數細項基準也還沒有被多個獨立團隊重現。兩件產品消息都已確認存在，但不能把「推出」直接寫成「效果已證明」。Meta Muse 的人工客服測試、中國監管機關調查 DeepSeek／Moonshot、DigitalOcean 託管代理等線索，因獨立來源不足而未進入正式文章。[5][9][12]',
+          citations: [5, 9, 12],
+        },
+      ],
+    },
+    {
+      heading: '後續觀察：看誰拿得到模型、誰能驗證、誰為失敗負責',
+      paragraphs: [
+        {
+          text: '治理線應追蹤聲明是否增加美中或其他模型強國簽署、聯合國是否啟動正式程序，以及獨立評估者是否真的取得模型、工具軌跡與部署條件。只有在門檻、權限、時限與不合格處置被寫清楚後，跨國倡議才會變成可執行的監督。[1][2][3][4]',
+          citations: [1, 2, 3, 4],
+        },
+        {
+          text: '企業線應看 Unit 42 公開客戶案例、第三方驗證、模型越界紀錄與實際修復率；開放模型線則看 MiMo‑V2.6 在不同硬體、語言、代理框架與安全測試下能否重現官方數據。今天最合理的結論是三條路都已進入可操作階段，但證據品質仍落後於能力與產品發布速度。[5][6][7][8][9][10][11][12]',
+          citations: [5, 6, 7, 8, 9, 10, 11, 12],
+        },
+      ],
+    },
+  ],
+  conclusion:
+    '今天的共同主題是「誰能驗證」。多國領袖希望把獨立評估與事故共享變成制度；資安供應商把多個高能力模型放進持續攻防流程；開放權重開發者則讓外界有機會自行部署與測試。三者都讓 AI 從展示走向可操作的基礎設施，也同時擴大失敗成本。接下來不應只追逐聲明、服務名稱或排行榜第一，而要看評估者取得了多少真實存取、代理是否受到可追溯授權、外部團隊能否重現結果，以及出了問題時誰有權停止與負責。',
+  sources: [
+    {
+      id: 1,
+      name: '荷蘭政府',
+      title: 'A Call for Control of Frontier AI Models',
+      url: 'https://www.government.nl/documents/2026/09/22/a-call-for-control-of-frontier-ai-models',
+      type: '官方公告',
+    },
+    {
+      id: 2,
+      name: '挪威首相府',
+      title: 'International call for enhanced control of AI development',
+      url: 'https://www.regjeringen.no/en/whats-new/international-call-for-enhanced-control-of-ai-development/id3173324/',
+      type: '官方公告',
+    },
+    {
+      id: 3,
+      name: 'Al Jazeera',
+      title: '20 countries propose global oversight body to manage AI dangers',
+      url: 'https://www.aljazeera.com/amp/economy/2026/9/22/20-countries-propose-global-oversight-body-to-manage-ai-dangers',
+      type: '新聞',
+    },
+    {
+      id: 4,
+      name: 'The Next Web',
+      title: 'Dutch government publishes call from 21 countries and the EU for international oversight of frontier AI',
+      url: 'https://thenextweb.com/news/frontier-ai-joint-statement-21-countries-eu',
+      type: '新聞',
+    },
+    {
+      id: 5,
+      name: 'Palo Alto Networks',
+      title: "Palo Alto Networks Delivers Anthropic's Mythos and OpenAI's GPT-5.6 to Customers with Unit 42 Continuous Frontier AI Defense",
+      url: 'https://origin-www.paloaltonetworks.com/company/press/2026/palo-alto-networks-delivers-anthropic-s-mythos-and-openai-s-gpt-5-6-to-customers-with-unit-42-continuous-frontier-ai-defense',
+      type: '官方公告',
+    },
+    {
+      id: 6,
+      name: 'Axios',
+      title: "Palo Alto Networks' new service to fight AI hacks",
+      url: 'https://www.axios.com/2026/09/22/palo-alto-networks-cyber-defense-ai-agents',
+      type: '新聞',
+    },
+    {
+      id: 7,
+      name: 'Reuters／Investing.com',
+      title: 'Palo Alto Networks unveils AI-powered cybersecurity service using Claude, GPT models',
+      url: 'https://www.investing.com/news/stock-market-news/palo-alto-networks-unveils-aipowered-cybersecurity-service-using-claude-gpt-models-4911064',
+      type: '新聞',
+    },
+    {
+      id: 8,
+      name: 'The Next Web',
+      title: 'Palo Alto Networks launches always-on AI security testing built on Claude Mythos and GPT-5.6-Cyber',
+      url: 'https://thenextweb.com/news/palo-alto-networks-unit-42',
+      type: '新聞',
+    },
+    {
+      id: 9,
+      name: 'Xiaomi MiMo／Hugging Face',
+      title: 'MiMo-V2.6-Pro-RL model card and weights',
+      url: 'https://huggingface.co/XiaomiMiMo/MiMo-V2.6-Pro-RL',
+      type: '技術文件',
+    },
+    {
+      id: 10,
+      name: 'VentureBeat',
+      title: "'Better than DeepSeek': Xiaomi's MiMo-V2.6-Pro debuts as the top open weights model in the world alongside cheaper V2.6-Flash",
+      url: 'https://venturebeat.com/technology/better-than-deepseek-xiaomis-mimo-v2-6-pro-debuts-as-the-top-open-weights-model-in-the-world-alongside-cheaper-v2-6-flash',
+      type: '新聞',
+    },
+    {
+      id: 11,
+      name: 'Artificial Analysis',
+      title: 'MiMo-V2.6-Pro — Intelligence, Performance & Price Analysis',
+      url: 'https://artificialanalysis.ai/models/mimo-v2-6-pro',
+      type: '技術文件',
+    },
+    {
+      id: 12,
+      name: 'The Model Gap',
+      title: 'MiMo-V2.6-Pro benchmarks & pricing',
+      url: 'https://themodelgap.com/models/mimo-v2-6-pro',
+      type: '技術文件',
     },
   ],
 };

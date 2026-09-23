@@ -2,6 +2,42 @@
 
 此檔只保存尚未達到正式發布門檻的事件。事件取得至少三個彼此獨立、免費且能直接閱讀的來源前，不得進入首頁或每日 AI 重點。
 
+## 2026-09-23 檢查（08:38 CST）
+
+檢查範圍：2026-09-22 08:38 至 2026-09-23 08:38（台北時間）；並比對 9 月 22 日上次發布內容，避免重複刊登。
+
+本次通過門檻並發布三件事：20 國與歐盟領袖的前沿 AI 監督聲明（荷蘭政府、挪威首相府、Al Jazeera、The Next Web）、Palo Alto Networks 的 Unit 42 持續前沿 AI 攻防服務（官方、Axios、Reuters、The Next Web），以及 Xiaomi MiMo-V2.6 開放權重發布（官方模型卡、VentureBeat、Artificial Analysis、The Model Gap）。公司自述的效能、覆蓋率與個別基準均與第三方結果分開標示。
+
+### Meta Muse 測試人工客服接手部分電話
+
+- 狀態：待更多獨立來源；不發布。
+- 已有：404 Media 與 Reuters 各自查閱內部貼文，Reuters 並取得 Meta 主管回應；其餘可直接閱讀內容多為 Reuters 或 404 Media 轉述。
+- 缺口：目前實質原始採訪仍集中在兩家媒體，沒有第三個獨立來源可核對測試範圍、告知方式、資料處理與停用狀態。
+
+### 中國監管機關調查 DeepSeek、Moonshot 資料轉送指控
+
+- 狀態：待官方確認與第二個獨立採訪來源；不發布。
+- 已有：The Information 引述知情人士稱中國網信辦展開調查；Anthropic 9 月 10 日報告可核對原始指控與資料樣本。
+- 缺口：中國網信辦、DeepSeek 與 Moonshot 尚無公開回應，其他當日報導多直接依賴 The Information，不能以轉載湊成三個來源。
+
+### DigitalOcean Managed Agents 公開預覽
+
+- 狀態：待獨立使用或第三方技術分析；不發布。
+- 已有：DigitalOcean 新聞稿、產品文件與部落格完整說明 microVM、工具閘道、模型與 active-CPU 計價。
+- 缺口：目前可直接閱讀的媒體稿多由公司新聞稿改寫，尚無兩個彼此獨立的實測或客戶證據可驗證啟動速度、成本與 16,000+ 工具治理效果。
+
+### Meta Connect 2026 會前產品預測
+
+- 狀態：只列日曆，不作為已發布產品新聞。
+- 已有：Meta 開發者官網確認 9 月 23–24 日直播、主題涵蓋 AI、AI 眼鏡、Meta Horizon 與 VR；TechRadar 等媒體提供會前預測。
+- 缺口：活動尚未正式發表產品，不把預測中的裝置或 Muse 更新寫成已確認消息。
+
+### AI 日曆核對
+
+- 已以官方頁面重新核對執行日前後各 180 天的 NVIDIA Singapore／Seoul AI Day、IEEE SMC、NeurIPS 2026、IEEE AI 活動、AAAI-27、MWC Barcelona 與 Azure 2026 退役清單；既有日期未發現取消或延期。
+- 新增 Meta Connect 2026（9 月 23–24 日，已確認），來源為 Meta for Developers；會前預測不列為已確認產品。
+- 新增本次三篇正式文章對應的前沿 AI 國際監督倡議、Unit 42 持續前沿 AI 攻防服務與 MiMo-V2.6 開放權重發布三筆已確認事件。
+
 ## 2026-09-22 檢查（17:55 CST）
 
 檢查範圍：2026-09-21 17:47 至 2026-09-22 17:47（台北時間）。
