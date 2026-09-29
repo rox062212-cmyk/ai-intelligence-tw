@@ -32,6 +32,7 @@ import {
 type View =
   | 'home'
   | 'featured'
+  | 'more'
   | 'daily'
   | 'calendar'
   | 'search'
@@ -752,6 +753,7 @@ export default function SiteClient({
         <HomeView
           onArticle={openArticle}
           onFeatured={() => go('featured')}
+          onMore={() => go('more')}
           onDaily={() => go('daily')}
           onCalendar={() => go('calendar')}
           onSubscribe={() => setSubscribeOpen(true)}
@@ -760,6 +762,13 @@ export default function SiteClient({
       {view === 'featured' && (
         <FeaturedView
           articles={allFeaturedArticles}
+          onArticle={openArticle}
+          onBack={() => go('home')}
+        />
+      )}
+      {view === 'more' && (
+        <MoreView
+          articles={moreArticles}
           onArticle={openArticle}
           onBack={() => go('home')}
         />
@@ -979,12 +988,14 @@ export default function SiteClient({
 function HomeView({
   onArticle,
   onFeatured,
+  onMore,
   onDaily,
   onCalendar,
   onSubscribe,
 }: {
   onArticle: (article: Article) => void;
   onFeatured: () => void;
+  onMore: () => void;
   onDaily: () => void;
   onCalendar: () => void;
   onSubscribe: () => void;
@@ -1182,7 +1193,13 @@ function HomeView({
         className="mt-12 scroll-mt-24 flex items-end justify-between gap-4 border-b border-foreground pb-3"
       >
         <div>
-          <h2 className="text-2xl font-semibold">更多情報</h2>
+          <button
+            type="button"
+            onClick={onMore}
+            className="rounded-md text-left text-2xl font-semibold underline decoration-transparent underline-offset-4 transition hover:decoration-current focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4"
+          >
+            更多情報
+          </button>
           <p className="mt-1 text-sm text-muted-foreground">
             由新到舊持續保留，方便回看不同日期的內容
           </p>
@@ -1355,6 +1372,83 @@ function FeaturedView({
               {article.title}
             </h2>
             <p className="mt-3 flex-1 leading-7 text-muted-foreground">
+              {article.summary}
+            </p>
+          </button>
+        ))}
+      </div>
+    </main>
+  );
+}
+
+function MoreView({
+  articles,
+  onArticle,
+  onBack,
+}: {
+  articles: Article[];
+  onArticle: (article: Article) => void;
+  onBack: () => void;
+}) {
+  return (
+    <main className="mx-auto max-w-7xl px-4 py-10 lg:px-8">
+      <button
+        type="button"
+        onClick={onBack}
+        className="inline-flex items-center gap-2 text-sm font-semibold text-muted-foreground transition hover:text-foreground"
+      >
+        <ChevronLeft className="size-4" />
+        回到首頁
+      </button>
+
+      <div className="mt-8 flex flex-col gap-4 border-b border-foreground pb-6 sm:flex-row sm:items-end sm:justify-between">
+        <div>
+          <p className="text-sm font-semibold tracking-widest text-muted-foreground">
+            NEWS ARCHIVE
+          </p>
+          <h1 className="mt-3 font-serif text-4xl font-medium tracking-tight sm:text-5xl">
+            更多情報
+          </h1>
+          <p className="mt-4 max-w-3xl text-lg leading-8 text-muted-foreground">
+            由新到舊保存不同日期的 AI 情報，方便持續瀏覽與回查過去的重要變化。
+          </p>
+        </div>
+        <span className="shrink-0 text-sm text-muted-foreground">
+          共 {articles.length} 則情報
+        </span>
+      </div>
+
+      <div className="grid items-stretch gap-x-5 sm:grid-cols-2 lg:grid-cols-4">
+        {articles.map((article) => (
+          <button
+            key={article.id}
+            type="button"
+            onClick={() => onArticle(article)}
+            className="group flex h-full min-w-0 flex-col border-b border-border py-7 text-left"
+          >
+            <div className="relative mb-5 aspect-[16/9] w-full overflow-hidden bg-secondary">
+              <img
+                src={article.image}
+                alt={article.imageAlt}
+                loading="lazy"
+                onError={(event) => {
+                  event.currentTarget.onerror = null;
+                  event.currentTarget.src = '/news/ai-agent-tools.png';
+                }}
+                className="h-full w-full object-cover transition duration-500 group-hover:scale-[1.02]"
+              />
+              <span className="absolute right-3 top-3 rounded-full border border-white/40 bg-black/75 px-2.5 py-1 text-xs font-semibold tracking-wide text-white backdrop-blur-sm">
+                {compactArticleDate(article)}
+              </span>
+            </div>
+            <span className="text-sm font-semibold text-muted-foreground">
+              {article.category}・{evidenceLabel(article)}・{article.sources.length}{' '}
+              個來源
+            </span>
+            <h2 className="mt-2 text-xl font-semibold leading-8 group-hover:underline">
+              {article.title}
+            </h2>
+            <p className="mt-2 flex-1 leading-7 text-muted-foreground">
               {article.summary}
             </p>
           </button>
