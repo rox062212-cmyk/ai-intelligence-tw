@@ -2,6 +2,41 @@
 
 此檔只保存尚未達到正式發布門檻的事件。事件取得至少三個彼此獨立、免費且能直接閱讀的來源前，不得進入首頁或每日 AI 重點。
 
+## 2026-09-29 檢查（10:25 CST）
+
+檢查範圍：2026-09-28 10:09 至 2026-09-29 10:09（台北時間）；以本次執行開始時間固定 24 小時窗口，並比對 9 月 26 日已發布內容，避免把週末回顧或較晚轉載重新包裝成今日事件。
+
+本次通過門檻並發布四件事：Anthropic 發布 Claude Sonnet 5.5（官方、VentureBeat、CodeRabbit、Vals AI）、NVIDIA 發布 Open Agent Safety Platform（官方、AP、Reuters、Axios）、跨公司研究者發布 AI 研發自動化與「智能爆炸」白皮書（研究原文、Guardian、Axios、The Next Web），以及佛州在既有案件中聲請限制 OpenAI 未經第三方安全審查的新模型開發（Bloomberg Law、Axios、Ars Technica、WLRN／News Service of Florida）。模型效能、安全工具效果、風險情境與司法救濟均分開標示已確認事實、供應商主張、條件式推論與尚未裁定處。
+
+### OpenAI 延後／取消 GPT-6.1 Astra 發布
+
+- 狀態：待第三個獨立免費來源與可直接核對的官方說明；不發布。
+- 已有：Associated Press 取得 OpenAI 安全系統主管說法；Reuters 跟進 Wall Street Journal 的原始採訪；Wall Street Journal 原文受付費牆限制。
+- 缺口：AP 與 Reuters／WSJ 能確認模型未達安全門檻，但目前沒有第三條獨立、免費且可直接閱讀的採訪或 OpenAI 公開公告；不能用轉載 Reuters 或引用同一 WSJ 採訪的文章湊成三個來源。
+
+### Anthropic IPO 招股書與 2025 年財務數字
+
+- 狀態：原始文件尚未公開，主要依賴單一媒體預覽；不發布。
+- 已有：Reuters 稱看過 Anthropic IPO 招股書並報導估值、損失、基礎設施義務與風險揭露。
+- 缺口：SEC 尚未提供可直接核對的公開招股書，Anthropic 也未發布正式聲明；其他可讀內容多轉述 Reuters 或未具名社群截圖，不能把預覽數字寫成已完成上市文件。
+
+### American Infrastructure Alliance 資料中心聯盟
+
+- 狀態：待正式組織資料與兩個獨立採訪來源；不發布。
+- 已有：Axios 報導 OpenAI、SoftBank、QTS、Blackstone 與多個工會籌組跨州資料中心倡議聯盟。
+- 缺口：目前主要是 Axios 單一採訪線，尚未取得聯盟官網、成立文件、完整成員清單或其他獨立報導核對預算、治理與州級活動計畫。
+
+### Google DeepMind Institute 與 Crusoe 39 億美元融資回顧
+
+- 狀態：窗口外舊事件；不作為今日新增。
+- 原因：DeepMind Institute 原始發布日在 9 月 16 日，Crusoe Series F 原始公告日在 9 月 17 日；9 月 28 日搜尋結果是較晚收錄或回顧，沒有形成新的組織、產品或交易變更。
+
+### AI 日曆核對
+
+- 新增 9 月 28 日 Claude Sonnet 5.5、NVIDIA Open Agent Safety、AI 研發自動化白皮書與佛州暫時禁制令聲請四筆已確認歷史事件。
+- OpenAI DevDay 官方頁仍列 9 月 29 日舊金山；NVIDIA AI Day Seoul 維持 11 月 9–10 日；IEEE SMC 維持 10 月 4–7 日；NeurIPS 維持 12 月 6–13 日三地會議；AAAI-27 維持 2027 年 2 月 16–23 日；MWC Barcelona 與 Azure 2026 退役資料未見取消或延期。
+- SpaceX 官方 Transporter-18 任務頁現已列 10 月 1 日 11:18 PT 發射窗口、10 月 2 日備援；Project Suncatcher 日曆仍標示「預計」，但來源已改為 SpaceX 官方任務頁，避免把目標日期誤寫成已發射。
+
 ## 2026-09-26 檢查（17:20 CST）
 
 檢查範圍：2026-09-25 17:11 至 2026-09-26 17:11（台北時間）；以本次執行開始時間固定 24 小時窗口，並比對 9 月 25 日已發布內容，避免重複刊登。

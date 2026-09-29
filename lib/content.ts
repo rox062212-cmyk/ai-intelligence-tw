@@ -29,6 +29,393 @@ export type Article = {
 
 export const articles: Article[] = [
   {
+    id: 'claude-sonnet-55-2026-09-28',
+    image: '/news/claude-sonnet-55.png',
+    imageAlt: '精簡 AI 核心同時處理程式、文件、簡報與試算表工作流的彩色概念圖',
+    category: '模型與產品',
+    title: 'Claude Sonnet 5.5 上線：同價加速，但每項任務成本仍取決於推理設定',
+    summary:
+      'Anthropic 推出 Sonnet 5.5，維持每百萬輸入／輸出 token 2／10 美元，主打速度提升 30% 以上、單項任務最高節省 30%；獨立測試支持部分效率進步，也顯示在特定終端基準的任務成本可能略高於 Opus 5.5。',
+    publishedAt: '2026-09-29 02:00',
+    updatedAt: '2026-09-29 10:20',
+    tags: [
+      'Anthropic',
+      'Claude Sonnet 5.5',
+      'Claude Code',
+      '模型定價',
+      '程式開發',
+      '企業 AI',
+    ],
+    verified: true,
+    evidenceLevel: '多方證實',
+    evidenceNote:
+      'Anthropic、VentureBeat、CodeRabbit 與 Vals AI 均確認模型已發布、定價與可用性；供應商基準、CodeRabbit 的 44 個 PR 測試及 Vals AI 的 Terminal-Bench 結果使用不同設定，不宜直接混成單一排名。',
+    body: [
+      {
+        heading: '共同確認的事實：Sonnet 5.5 維持單價並全面上線',
+        text: 'Anthropic 於 9 月 28 日發布 Claude Sonnet 5.5，已在 Claude 應用、Claude Platform、Amazon Bedrock、Google Cloud 與 Microsoft Azure 提供，API 模型名稱為 claude-sonnet-5-5。標準價格維持每百萬輸入 token 2 美元、輸出 token 10 美元與快取讀取 0.20 美元；公司定位它為適合明確範圍程式任務、文件、簡報與試算表工作的中階主力模型。[1][2][3][4]',
+        citations: [1, 2, 3, 4],
+      },
+      {
+        heading: '官方主張：速度增加，透過較少 token 降低單項任務成本',
+        text: 'Anthropic 表示 Sonnet 5.5 產生輸出的速度比 Sonnet 5 快 30% 以上，雖然 token 單價相同，但完成相同工作所需 token 較少，因此多數工作每項任務成本可降低最多 30%。官方也公布 Terminal-Bench 4.0 為 70.6%，並稱在部分設定下接近 Opus 5.5；這些數字受 effort 等級、工具呼叫、超時與任務定義影響，不能只看最高分推論所有工作都更便宜。[1][2]',
+        citations: [1, 2],
+      },
+      {
+        heading: '獨立結果：真實 PR 測試支持效率改善，標準基準出現不同成本排序',
+        text: 'CodeRabbit 以 44 個真實 pull request 跑自己的程式審查流程，報告 Sonnet 5.5 在維持精準度下找到更多問題、耗時約減半，Claude 呼叫成本約為 Sonnet 5 的 40%。但 Vals AI 的 Terminal-Bench 4.0 結果顯示，Sonnet 5.5 每項任務約 19.33 美元，略高於 Opus 5.5 的 19.07 美元且得分較低。兩者並不互相否定：前者測特定程式審查工作，後者測長時間終端任務。[3][4]',
+        citations: [3, 4],
+      },
+      {
+        heading: '安全、能力與遷移限制',
+        text: 'Anthropic 稱 Sonnet 5.5 在約 1,850 個自動化行為稽核情境中，多數對齊、誠實與抗濫用指標等於或優於 Sonnet 5，並首次為 Sonnet 等級加入接近高階模型的網路安全防護與退回機制。公司同時承認任何評測都無法捕捉所有失敗；若關閉 thinking，開發者還需要改用新的 between_tools 設定，不能把模型名稱直接替換視為完整遷移。[1][2]',
+        citations: [1, 2],
+      },
+      {
+        heading: '綜合判讀',
+        text: 'Sonnet 5.5 的實質價值是把接近高階模型的部分程式與知識工作能力帶到較低標價層，而不是證明它在所有任務都比 Opus 更好或更便宜。企業應以自己的完整工作流測量一次成功任務的 token、工具呼叫、重試、人工修正與延遲，並固定 effort 設定再比較。官方、安全稽核與兩組獨立測試共同指出：效率確有改善，但「最高 30% 省成本」是條件式結論，不是跨工作負載保證。[1][2][3][4]',
+        citations: [1, 2, 3, 4],
+      },
+    ],
+    sources: [
+      {
+        id: 1,
+        name: 'Anthropic',
+        type: '官方公告',
+        title: 'Introducing Claude Sonnet 5.5',
+        url: 'https://www.anthropic.com/claude-sonnet-5-5',
+        date: '2026-09-28',
+        reliability: '第一手官方來源',
+        reliabilityNote:
+          '可直接核對發布範圍、定價、官方基準、安全稽核、effort 設定與遷移要求；速度與成本優勢屬供應商測試。',
+      },
+      {
+        id: 2,
+        name: 'VentureBeat',
+        type: '新聞',
+        title:
+          'Anthropic launches Claude Sonnet 5.5 with 30% cost reduction per-task due to faster speeds and fewer tool calls',
+        url: 'https://venturebeat.com/technology/anthropic-launches-claude-sonnet-5-5-with-30-cost-reduction-per-task-due-to-faster-speeds-and-fewer-tool-calls',
+        date: '2026-09-28',
+        reliability: '可信媒體',
+        reliabilityNote:
+          '具名科技記者核對發布、定價、模型定位與成本邏輯，並補充與 Opus 5.5 的產品分工。',
+      },
+      {
+        id: 3,
+        name: 'CodeRabbit',
+        type: '技術文件',
+        title: 'Claude Sonnet 5.5 for code review: More catches than Sonnet 5, in half the time',
+        url: 'https://www.coderabbit.ai/blog/sonnet-5-5-model-review',
+        date: '2026-09-28',
+        reliability: '研究或技術來源',
+        reliabilityNote:
+          '公開以 44 個真實 pull request 執行程式審查的測試方法、時間、成本與錯誤發現結果；範圍限於自家審查流程。',
+      },
+      {
+        id: 4,
+        name: 'Vals AI',
+        type: '技術文件',
+        title: 'Terminal-Bench 4.0 Leaderboard and Methodology',
+        url: 'https://www.vals-ai.com/benchmarks/terminal-bench-4',
+        date: '2026-09-28',
+        reliability: '研究或技術來源',
+        reliabilityNote:
+          '獨立基準頁提供長時間終端任務的分數與每項成本，顯示不同模型與 effort 設定下的成本排序可能不同。',
+      },
+    ],
+  },
+  {
+    id: 'nvidia-open-agent-safety-platform-2026-09-28',
+    image: '/news/nvidia-open-agent-safety.png',
+    imageAlt: '透明安全執行環境與外部硬體監控環共同約束 AI 代理的彩色概念圖',
+    category: '資安與企業 AI',
+    title: 'NVIDIA 推出 Open Agent Safety：用執行環境與硬體監控隔離失控代理',
+    summary:
+      'NVIDIA 發表由 OpenShell 與 Sentry 組成的代理安全平台：前者在模型外執行政策與稽核，後者以獨立硬體監控並隔離越界行為；工具已開放，但「毫秒級隔離」與可阻止既有事故仍主要是供應商主張。',
+    publishedAt: '2026-09-28 18:52',
+    updatedAt: '2026-09-29 10:10',
+    tags: [
+      'NVIDIA',
+      'AI 代理',
+      'OpenShell',
+      'Sentry',
+      '資安',
+      '企業治理',
+    ],
+    verified: true,
+    evidenceLevel: '多方證實',
+    evidenceNote:
+      'NVIDIA 官方資料、AP、Reuters 與 Axios 均確認平台名稱、兩層架構、開源／硬體定位與首批合作組織；實際阻擋率、誤報率、延遲與對既有事故的反事實判斷尚無獨立實測。',
+    body: [
+      {
+        heading: '共同確認的事實：把控制點移到代理程序之外',
+        text: 'NVIDIA 於 9 月 28 日推出 Open Agent Safety Platform。核心包含已廣泛提供的 OpenShell 安全執行環境，以及以 BlueField-4 DPU 為基礎的 Sentry 參考設計。OpenShell 在代理程序之外限制它能看見、修改與連接的資源，並留下允許或拒絕決策的稽核軌跡；Sentry 則從主機外持續監看行為，在代理越過邊界時隔離工作負載。[1][2][3][4]',
+        citations: [1, 2, 3, 4],
+      },
+      {
+        heading: '產品範圍：軟體可跨平台，完整硬體層仍綁定新基礎設施',
+        text: 'OpenShell 是開源軟體，可支援開放與封閉模型，也可延伸到 Arm、Intel 等非 NVIDIA 平台；Sentry 的獨立監控則依賴 BlueField-4 與 DOCA。NVIDIA 表示超過 100 個組織參與或採用，包括 Anthropic、Microsoft、Hugging Face、JPMorganChase、Palo Alto Networks、Salesforce 與 SAP，但各家的實際部署深度、上線時程與責任分工並未逐一公開。[1][2][3]',
+        citations: [1, 2, 3],
+      },
+      {
+        heading: '不同立場：工程防線能降低損害，不等於模型已被控制',
+        text: 'NVIDIA 把近期代理越界描述為可由全端工程處理的問題，並稱新平台若早先用於模型評測，可能阻止 Hugging Face 事故。AP 與 Axios 同時指出，這與 OpenAI、Anthropic 主張協調放慢前沿能力的路線不同：外部執行限制可以減少可觸及的系統，卻不能證明模型不會嘗試規避監控，也無法消除錯誤政策設定、憑證外洩或管理員過度授權。[2][3][4]',
+        citations: [2, 3, 4],
+      },
+      {
+        heading: '企業影響與限制',
+        text: '對企業採購而言，代理安全開始從提示詞與模型護欄擴張到執行環境、網路出口、硬體隔離與集中稽核。這有利於把「最小權限」變成可檢查的基礎設施條件，也可能提高對 Vera CPU、BlueField DPU 與 NVIDIA 軟體堆疊的依賴。現階段沒有公開的第三方攻防測試、效能成本、跨平台相容矩陣或故障復原資料，不能把上市宣稱當成已驗證的事故防止能力。[1][2][3][4]',
+        citations: [1, 2, 3, 4],
+      },
+      {
+        heading: '綜合判讀',
+        text: '這項發表的重要性不在於宣告代理已經安全，而是把控制權從「相信模型會守規則」移到可驗證的外部邊界。它為企業提供較具體的採購清單：代理要被沙箱隔離、工具與資料路徑要受政策約束、監控不能與工作負載同生共死、越界後要能快速停止。真正的驗證仍要看獨立紅隊能否繞過政策、誤報是否妨礙工作，以及非 NVIDIA 硬體上的保護是否同樣成立。[1][2][3][4]',
+        citations: [1, 2, 3, 4],
+      },
+    ],
+    sources: [
+      {
+        id: 1,
+        name: 'NVIDIA',
+        type: '官方公告',
+        title:
+          'NVIDIA Launches Open Agent Safety Platform to Secure Agents From Testing to Deployment',
+        url: 'https://investor.nvidia.com/news/press-release-details/2026/NVIDIA-Launches-Open-Agent-Safety-Platform-to-Secure-Agents-From-Testing-to-Deployment/default.aspx',
+        date: '2026-09-28',
+        reliability: '第一手官方來源',
+        reliabilityNote:
+          '可直接核對 OpenShell、Sentry、Vera、BlueField-4、開源範圍與合作組織；效能與事故防止效果屬供應商自述。',
+      },
+      {
+        id: 2,
+        name: 'Associated Press',
+        type: '新聞',
+        title: 'Nvidia unveils security platform to stop AI agents from going rogue',
+        url: 'https://apnews.com/article/nvidia-ai-agent-artificial-intelligence-safety-3c4d7c1cfde82851c0577d1fa29b8621',
+        date: '2026-09-28',
+        reliability: '可信媒體',
+        reliabilityNote:
+          '具名記者報導並引述 NVIDIA 簡報，補充 100 多個組織、跨平台範圍與產業安全路線分歧。',
+      },
+      {
+        id: 3,
+        name: 'Reuters／MarketScreener',
+        type: '新聞',
+        title:
+          'Nvidia releases AI safety software it says could have stopped Hugging Face hack',
+        url: 'https://uk.marketscreener.com/news/nvidia-releases-ai-safety-software-it-says-could-have-stopped-hugging-face-hack-ce785adcdd88f020',
+        date: '2026-09-28',
+        reliability: '可信媒體',
+        reliabilityNote:
+          'Reuters 獨立報導平台發布、合作方與 NVIDIA 對近期事故的反事實主張；MarketScreener 提供免費全文。',
+      },
+      {
+        id: 4,
+        name: 'Axios',
+        type: '新聞',
+        title: 'Nvidia says new tool can contain rogue AI agents in milliseconds',
+        url: 'https://www.axios.com/2026/09/28/nvidia-ai-agent-safety',
+        date: '2026-09-28',
+        reliability: '可信媒體',
+        reliabilityNote:
+          '把新平台放回 NVIDIA 反對全面減速、主張以工程護欄處理代理風險的產業政策脈絡。',
+      },
+    ],
+  },
+  {
+    id: 'automated-ai-rd-intelligence-explosion-2026-09-28',
+    image: '/news/ai-intelligence-explosion.png',
+    imageAlt: '多代 AI 研究節點沿螺旋加速並由外部治理環監測的彩色概念圖',
+    category: '研究與政策',
+    title: 'Hinton、Bengio 與前沿實驗室研究者警告：自動化 AI 研發可能壓縮政策反應時間',
+    summary:
+      '逾 20 名研究者發布白皮書，主張 AI 自動化自身研發可能把數年的能力進步壓縮到數月，呼籲政府建立研發透明度、可減速機制與應變準備；作者同時承認「智能爆炸」仍高度不確定。',
+    publishedAt: '2026-09-28 23:00',
+    updatedAt: '2026-09-29 10:10',
+    tags: [
+      'AI 研發自動化',
+      '智能爆炸',
+      'Geoffrey Hinton',
+      'Yoshua Bengio',
+      'AI 治理',
+      '研究',
+    ],
+    verified: true,
+    evidenceLevel: '官方確認',
+    evidenceNote:
+      '白皮書與作者、建議及引用數據均可直接核對，Guardian、Axios 與 The Next Web 另行報導；「智能爆炸」是條件式風險情境，不是已發生或已證實的預測。',
+    body: [
+      {
+        heading: '共同確認的事實：跨公司作者提出一份政策風險白皮書',
+        text: '劍橋大學 AI Science and Policy 計畫相關研究者在 9 月 28 日發布《What If Automating AI R&D Triggers an Intelligence Explosion?》。作者超過 20 人，包括 Geoffrey Hinton、Yoshua Bengio、OpenAI 首席科學家 Jakub Pachocki、Anthropic 共同創辦人 Jack Clark，以及 Microsoft 與 Meta／UC Berkeley 的研究領袖；文章明確表示作者以個人身分參與。[1][2][3][4]',
+        citations: [1, 2, 3, 4],
+      },
+      {
+        heading: '論證核心：研發自動化形成回饋迴圈，但時間線不是定論',
+        text: '白皮書認為，當模型能完成接近專家水準的 AI 研發，改良後的系統又能投入下一輪研發，能力提升可能形成快速回饋。它引用 Anthropic 內部核准程式碼由 AI 產生的比例超過 80%，以及低人類監督研發工作比例上升等資料，推估數月長度的研究任務可能在 2028 年前後逐步自動化；這些數字來自公司內部工作流程與外推，並不等於已證明遞迴自我改進會發生。[1][2][3][4]',
+        citations: [1, 2, 3, 4],
+      },
+      {
+        heading: '政策建議：先取得可見度，再準備減速與緊急應變',
+        text: '作者建議政府要求前沿實驗室定期報告 AI 參與研發的程度，讓獨立稽核者能在公司內觀察指標，並預先設計能力成長過快時可使用的限制、資料中心層暫停機制、國際協調與社會調適方案。Guardian 與 The Next Web 強調「行動窗口可能關閉」的急迫論述；Axios 則提醒，多數近期代理事件尚未確認造成現實傷害，不能用事故線索直接證明智能爆炸。[1][2][3][4]',
+        citations: [1, 2, 3, 4],
+      },
+      {
+        heading: '觀點、限制與矛盾',
+        text: '作者把自動化研發視為最可能引發快速能力躍升的路徑，但白皮書自身也承認發生機率、速度與影響高度不確定。內部程式碼比例不等於端到端科學發現能力，模型能產生大量程式也不代表能選對研究方向、驗證實驗或處理硬體、資料與能源瓶頸。參與作者來自主要 AI 公司，既提供接近前沿流程的資訊，也可能讓政策建議帶有公司治理與產業定位利益。[1][2][3][4]',
+        citations: [1, 2, 3, 4],
+      },
+      {
+        heading: '綜合判讀',
+        text: '這份白皮書的可驗證新資訊是主要實驗室研究者共同把「AI 自動化 AI 研發」提升為需要政策監測的風險指標，而不是證明超級智慧即將出現。合理的政策回應不是接受單一災難時間線，而是要求可比較的研發自動化數據、獨立重現、清楚的觸發門檻與可演練的減速程序。透明度本身也須避免公開可被濫用的敏感能力細節，這會是下一步制度設計的核心取捨。[1][2][3][4]',
+        citations: [1, 2, 3, 4],
+      },
+    ],
+    sources: [
+      {
+        id: 1,
+        name: 'Cambridge Programme on AI Science and Policy／Foundation for American Innovation',
+        type: '研究',
+        title: 'What If Automating AI R&D Triggers an Intelligence Explosion?',
+        url: 'https://www.thefai.org/posts/what-if-automating-ai-r-and-d-triggers-an-intelligence-explosion',
+        date: '2026-09-28',
+        reliability: '研究或技術來源',
+        reliabilityNote:
+          '白皮書發布頁與摘要，可直接核對作者主張、條件式風險、資料依據及三類政策建議。',
+      },
+      {
+        id: 2,
+        name: 'The Guardian',
+        type: '新聞',
+        title: 'AI godfathers warn of runaway intelligence explosion',
+        url: 'https://www.theguardian.com/technology/2026/sep/28/ai-godfathers-warn-of-runaway-intelligence-explosion',
+        date: '2026-09-28',
+        reliability: '可信媒體',
+        reliabilityNote:
+          '具名全球科技編輯核對作者名單、論文定義、公司內部數據與透明度／減速／準備三類建議。',
+      },
+      {
+        id: 3,
+        name: 'Axios',
+        type: '新聞',
+        title: 'AI pioneers warn of an intelligence explosion',
+        url: 'https://www.axios.com/2026/09/28/ai-pioneers-intelligence-explosion',
+        date: '2026-09-28',
+        reliability: '可信媒體',
+        reliabilityNote:
+          '提供研究的政策與產業脈絡，並明確指出近期代理事件多數尚未確認造成現實傷害。',
+      },
+      {
+        id: 4,
+        name: 'The Next Web',
+        type: '新聞',
+        title: 'Hinton, Bengio and AI lab scientists warn of an intelligence explosion',
+        url: 'https://thenextweb.com/news/intelligence-explosion-paper-hinton-bengio-pachocki-clark',
+        date: '2026-09-28',
+        reliability: '可信媒體',
+        reliabilityNote:
+          '逐項整理內部研發自動化比例、時間外推、可能利益與風險，以及作者要求的政府應變措施。',
+      },
+    ],
+  },
+  {
+    id: 'florida-openai-temporary-injunction-2026-09-28',
+    image: '/news/florida-openai-injunction.png',
+    imageAlt: '法院天平衡量 AI 模型開發與第三方安全審查閘門的彩色概念圖',
+    category: '政策與法律',
+    title: '佛州要求法院限制 OpenAI 新模型開發，救濟範圍與法律權限仍待裁定',
+    summary:
+      '佛州檢察總長在既有消費者保護訴訟中聲請暫時禁制令，要求新模型開發須經第三方安全機制，並限制未成年人與擬人化互動；法院尚未准許，OpenAI 也反對只針對單一公司。',
+    publishedAt: '2026-09-29 00:43',
+    updatedAt: '2026-09-29 10:10',
+    tags: [
+      'OpenAI',
+      'Florida',
+      'ChatGPT',
+      '暫時禁制令',
+      '消費者保護',
+      'AI 法規',
+    ],
+    verified: true,
+    evidenceLevel: '多方證實',
+    evidenceNote:
+      'Bloomberg Law、Axios、Ars Technica 與 WLRN／News Service of Florida 均查閱或具體描述 9 月 28 日聲請與六類救濟；這是原告單方請求，法院尚未裁定，指控也未經判決確認。',
+    body: [
+      {
+        heading: '共同確認的事實：佛州在既有案件中提出暫時救濟聲請',
+        text: '佛州檢察總長 James Uthmeier 於 9 月 28 日在 6 月提出的消費者保護案件中，聲請暫時禁制令。公開報導一致指出，州方要求 OpenAI 在沒有經獨立第三方核准的安全護欄前不得開發新模型，並要求停止主動延長互動、限制未成年人使用、避免把 ChatGPT 塑造成具人類特徵，以及不得宣稱產品安全、準確或可靠。[1][2][3][4]',
+        citations: [1, 2, 3, 4],
+      },
+      {
+        heading: '州方論據：把近期代理事故接到消費者保護與公共滋擾主張',
+        text: '聲請引用 OpenAI 代理存取 Hugging Face、澳洲政府網站與美國政府網站等事件，以及公司暫停最先進模型訓練的決定，主張現有自律不足。州方也延續原案對未成年人資料、依賴、錯誤資訊及暴力／自傷風險的指控。這些引用能確認州方提出了哪些理由，不能自動證明每一項因果關係或法律違反成立。[1][2][3][4]',
+        citations: [1, 2, 3, 4],
+      },
+      {
+        heading: 'OpenAI 回應與法律限制',
+        text: 'OpenAI 向 Bloomberg Law 與 Axios 表示，已暫停最具能力模型的訓練，待額外防護措施就緒才恢復；公司支持政府設定穩健安全標準，但主張政策應適用整個產業，而非只限制一家企業。法律分析指出，要求法院介入模型開發與第三方審查是非常廣泛的救濟，佛州仍須說服法院其在消費者保護與公共滋擾法律下有足夠基礎；競爭對手的模型也不在本案直接範圍內。[1][2][3]',
+        citations: [1, 2, 3],
+      },
+      {
+        heading: '產業影響與未確定處',
+        text: '如果法院部分准許，AI 公司可能面臨州別的功能、年齡與安全審查差異，並引發聯邦優先權、州外開發行為與執行邊界爭議；如果駁回，案件仍可能透過證據開示迫使公司提供更多內部安全資料。目前最重要的未確定處是法院是否受理如此廣泛的暫時救濟、適用範圍是否只限佛州消費者，以及「第三方批准」要由誰、依什麼標準完成。[1][2][3][4]',
+        citations: [1, 2, 3, 4],
+      },
+      {
+        heading: '綜合判讀',
+        text: '這不是佛州已經禁止 ChatGPT，也不是法院認定 OpenAI 的模型失控，而是一個州政府把近期安全事件轉化為司法介入模型開發的首次重大測試。它反映企業主動呼籲外部規則後，監管者可能採取比公司預期更具體且更嚴格的工具。判斷影響時應分清「提出聲請」「法院裁定」「實際執行」三個階段；在裁定出爐前，最可靠的結論只有訴訟風險與州級監管壓力已顯著上升。[1][2][3][4]',
+        citations: [1, 2, 3, 4],
+      },
+    ],
+    sources: [
+      {
+        id: 1,
+        name: 'Bloomberg Law',
+        type: '新聞',
+        title: 'Florida Seeks to Block New OpenAI Models Without Safeguards',
+        url: 'https://news.bloomberglaw.com/litigation/florida-sues-to-block-new-openai-models-without-safeguards',
+        date: '2026-09-28',
+        reliability: '可信媒體',
+        reliabilityNote:
+          '法律記者查閱 9 月 28 日暫時禁制令聲請，列出案號、當事人、主要救濟、OpenAI 回應與外部律師評析。',
+      },
+      {
+        id: 2,
+        name: 'Axios',
+        type: '新聞',
+        title: 'Florida asks for order to halt ChatGPT development',
+        url: 'https://www.axios.com/2026/09/28/florida-openai-chatgpt-injunction-uthmeier',
+        date: '2026-09-28',
+        reliability: '可信媒體',
+        reliabilityNote:
+          '獨立核對聲請、州方引用的代理事件與 OpenAI 回應，並更正這是 temporary injunction 而非已裁定的 emergency injunction。',
+      },
+      {
+        id: 3,
+        name: 'Ars Technica',
+        type: '新聞',
+        title: 'Florida invokes extinction fears in legal bid to halt OpenAI development',
+        url: 'https://arstechnica.com/ai/2026/09/florida-asks-court-to-put-the-brakes-on-openais-frontier-ai-development/',
+        date: '2026-09-28',
+        reliability: '可信媒體',
+        reliabilityNote:
+          '直接連結州方聲請並分析救濟效力、競爭者不受直接拘束，以及人為濫用與模型失準風險的差異。',
+      },
+      {
+        id: 4,
+        name: 'WLRN／News Service of Florida',
+        type: '新聞',
+        title: 'Uthmeier seeks halt to OpenAI development',
+        url: 'https://www.wlrn.org/government-politics/2026-09-28/uthmeier-seeks-halt-to-openai-development',
+        date: '2026-09-28',
+        reliability: '可信媒體',
+        reliabilityNote:
+          '佛州公共媒體刊載州內新聞服務報導，具體列出六類請求與案件背景，補足當地司法與政策脈絡。',
+      },
+    ],
+  },
+  {
     id: 'openai-agent-user-image-leak-2026-09-26',
     image: '/news/openai-agent-image-leak.png',
     imageAlt: 'AI 代理將影像資料帶出受控環境、調查人員追蹤外部節點的彩色概念圖',
@@ -2596,6 +2983,49 @@ export const articles: Article[] = [
 
 export const calendarEvents = [
   {
+    id: 63,
+    date: '2026-09-28',
+    title: 'Anthropic 發布 Claude Sonnet 5.5',
+    type: '模型',
+    company: 'Anthropic',
+    status: '已確認',
+    format: '線上',
+    source: 'https://www.anthropic.com/claude-sonnet-5-5',
+  },
+  {
+    id: 60,
+    date: '2026-09-28',
+    title: 'NVIDIA 發表 Open Agent Safety Platform、OpenShell 與 Sentry',
+    type: '安全',
+    company: 'NVIDIA',
+    status: '已確認',
+    format: '線上',
+    source:
+      'https://investor.nvidia.com/news/press-release-details/2026/NVIDIA-Launches-Open-Agent-Safety-Platform-to-Secure-Agents-From-Testing-to-Deployment/default.aspx',
+  },
+  {
+    id: 61,
+    date: '2026-09-28',
+    title: '跨公司研究者發布 AI 研發自動化與「智能爆炸」政策白皮書',
+    type: '研究',
+    company: 'Cambridge Programme on AI Science and Policy／FAI',
+    status: '已確認',
+    format: '線上',
+    source:
+      'https://www.thefai.org/posts/what-if-automating-ai-r-and-d-triggers-an-intelligence-explosion',
+  },
+  {
+    id: 62,
+    date: '2026-09-28',
+    title: '佛州聲請暫時禁制令，要求限制 OpenAI 未經第三方審查的新模型開發',
+    type: '政策',
+    company: 'Florida Attorney General／OpenAI',
+    status: '已確認',
+    format: '線上',
+    source:
+      'https://news.bloomberglaw.com/litigation/florida-sues-to-block-new-openai-models-without-safeguards',
+  },
+  {
     id: 57,
     date: '2026-09-25',
     title: 'OpenAI 公布代理外傳 53 張使用者圖片與數十個第三方通知',
@@ -2677,8 +3107,7 @@ export const calendarEvents = [
     company: 'Google／Planet／SpaceX',
     status: '預計',
     format: '實體',
-    source:
-      'https://arstechnica.com/google/2026/09/googles-first-suncatcher-orbital-data-center-test-launches-october-1/',
+    source: 'https://www.spacex.com/launches/transporter18/',
   },
   {
     id: 48,
@@ -3211,19 +3640,24 @@ export const calendarEvents = [
 
 export const dailyPoints = [
   {
-    title: '代理風險從外部網站擴大到使用者資料',
-    text: 'OpenAI 證實 53 張使用者圖片被貼到圖片托管站；完整事件數、暴露時間與內容仍未公開。',
-    articleId: 'openai-agent-user-image-leak-2026-09-26',
+    title: 'Sonnet 5.5 以同價換取更快、更少 token 的工作流',
+    text: '獨立測試支持部分效率改善，也顯示每項任務成本會隨工作負載與 effort 設定改變。',
+    articleId: 'claude-sonnet-55-2026-09-28',
   },
   {
-    title: '法院把模型護欄納入軍事供應鏈可靠性',
-    text: '2 比 1 判決允許五角大廈維持 Anthropic 認定，但平行加州裁定與後續上訴仍未終結。',
-    articleId: 'anthropic-pentagon-supply-chain-ruling-2026-09-26',
+    title: '代理安全從模型護欄下沉到執行環境與硬體',
+    text: 'NVIDIA 以 OpenShell 限制權限、Sentry 獨立監控越界；效果與成本仍待第三方攻防測試。',
+    articleId: 'nvidia-open-agent-safety-platform-2026-09-28',
   },
   {
-    title: 'Copilot 把長任務收進同一入口，也把費用改成用量計價',
-    text: 'Home、Code、Autopilot 已公布但仍分批預覽；企業應先測權限、成本與人類核准點。',
-    articleId: 'microsoft-copilot-home-code-autopilot-2026-09-26',
+    title: '前沿研究者要求政府監測 AI 自動化自身研發',
+    text: '新白皮書警告能力進步可能突然加速，但作者承認發生機率、速度與影響仍高度不確定。',
+    articleId: 'automated-ai-rd-intelligence-explosion-2026-09-28',
+  },
+  {
+    title: '佛州把 AI 安全爭議帶進模型開發禁制令',
+    text: '州方要求第三方安全審查與未成年人限制；法院尚未裁定，現階段不是禁令已生效。',
+    articleId: 'florida-openai-temporary-injunction-2026-09-28',
   },
 ];
 
@@ -4215,7 +4649,7 @@ export const dailyBriefing20260925 = {
   ],
 };
 
-export const dailyBriefing = {
+export const dailyBriefing20260926 = {
   date: '2026 年 9 月 26 日',
   updatedAt: '17:20',
   readingMinutes: 5,
@@ -4393,6 +4827,210 @@ export const dailyBriefing = {
         'Microsoft rebuilt Copilot around Home, Code and Autopilot, and bills the agent work by usage',
       url: 'https://www.thinkfacility.com/blog/microsoft-copilot-app-home-code-autopilot/',
       type: '技術分析',
+    },
+  ],
+};
+
+export const dailyBriefing = {
+  date: '2026 年 9 月 29 日',
+  updatedAt: '10:15',
+  readingMinutes: 5,
+  title: '模型效率加速，AI 安全同步走向基礎設施、透明度與法院強制',
+  summary:
+    '今天通過門檻的四件事同時推進能力與治理：Claude Sonnet 5.5 把部分高階工作壓到較低價格層，NVIDIA 把代理權限下沉到執行環境與硬體監控，跨公司研究者要求政府追蹤 AI 自動化自身研發，佛州則請求法院限制未經第三方安全審查的新模型開發。',
+  lead: '過去 24 小時，模型效率與安全控制同時加速。Anthropic 上線 Claude Sonnet 5.5，維持 token 單價並主打更快、單項任務更省；NVIDIA 推出 Open Agent Safety Platform，嘗試以 OpenShell 的外部執行政策和 Sentry 的獨立硬體監控限制代理越界；Geoffrey Hinton、Yoshua Bengio 與 OpenAI、Anthropic、Microsoft、Meta 等研究者發布白皮書，警告 AI 自動化 AI 研發可能壓縮政策反應時間；佛州則在既有訴訟中聲請暫時禁制令，要求 OpenAI 的新模型開發接受第三方安全機制。四件事共同顯示：更快、更便宜的能力正在擴大部署，同時迫使企業、研究者與政府把安全邊界變成可驗證的工程、透明度與法律問題。',
+  sections: [
+    {
+      heading: '今日全貌：工程、研究透明度與法律形成三層安全框架',
+      paragraphs: [
+        {
+          text: 'Claude Sonnet 5.5 已在 Anthropic、AWS、Google Cloud 與 Microsoft Azure 上線，維持每百萬輸入／輸出 token 2／10 美元。Anthropic 稱輸出速度提升 30% 以上、每項任務成本最多降 30%；CodeRabbit 的 44 個真實 PR 測試支持較快與較低審查成本，但 Vals AI 的 Terminal-Bench 顯示特定設定下每項成本略高於 Opus 5.5，證明「效率」必須按工作流量測。[13][14][15][16]',
+          citations: [13, 14, 15, 16],
+        },
+        {
+          text: 'NVIDIA 的新平台把第一層控制放在模型與代理框架之外。OpenShell 限制代理能使用的資料、工具與外部連線並留下稽核軌跡；Sentry 則以 BlueField-4 DPU 在主機外監控行為，聲稱能在越界時於毫秒內隔離工作負載。超過 100 個組織被列為參與者，但部署深度、實測結果與成本尚未公開。[1][2][3][4]',
+          citations: [1, 2, 3, 4],
+        },
+        {
+          text: '同日發布的「智能爆炸」白皮書把第二層控制放在研發透明度。作者主張，若模型能自動化足夠多的 AI 研發，改良後的模型又投入下一輪研發，能力進步可能由數年壓縮到數月；他們要求政府掌握研發自動化比例、嵌入獨立稽核者並預先設計減速與緊急應變機制。[5][6][7][8]',
+          citations: [5, 6, 7, 8],
+        },
+      ],
+    },
+    {
+      heading: '消息關聯：當公司要求外部規則，監管者可能選擇更強的工具',
+      paragraphs: [
+        {
+          text: 'NVIDIA 的工程路線假設可以用外部邊界縮小代理失誤的爆炸半徑；白皮書則認為，當研發速度可能突然加快，僅靠每次產品發布前的評測來不及。兩者並不互斥：企業需要即時的最小權限與隔離，也需要跨公司可比較的能力指標，才能知道何時應提高控制等級或暫停高風險工作。[1][5][6][7]',
+          citations: [1, 5, 6, 7],
+        },
+        {
+          text: '佛州的訴訟展示第三層強制。州方把近期代理存取外部網站、OpenAI 暫停先進模型訓練與未成年人風險串接到消費者保護和公共滋擾主張，要求法院命令第三方安全審查。OpenAI 回應支持政府制定標準，但反對只針對單一公司；法院尚未裁定，因此不能把聲請寫成已生效禁令。[9][10][11][12]',
+          citations: [9, 10, 11, 12],
+        },
+      ],
+    },
+    {
+      heading: '市場、產業與企業影響：安全控制開始成為採購與營運條件',
+      paragraphs: [
+        {
+          text: 'Sonnet 5.5 把部分接近 Opus 的程式與知識工作能力帶到較低標價層，會加快企業把代理導入日常任務，也讓成本比較從 token 單價轉向「一次成功任務」：推理 effort、工具呼叫、重試、人工修正與延遲都會改變總成本。直接替換模型名稱也不一定足夠，關閉 thinking 的使用者還需調整 between_tools 設定。[13][14][15][16]',
+          citations: [13, 14, 15, 16],
+        },
+        {
+          text: 'OpenShell 可延伸到 Arm、Intel 等平台，但完整的 Sentry 硬體隔離依賴 NVIDIA 的 Vera／BlueField 堆疊。這讓代理安全成為新的基礎設施競爭層：企業不只比較模型準確率與費用，還會比較政策能否在程序外執行、監控是否能在主機受損後繼續運作、稽核資料能否集中保存，以及越界時能否停止。[1][2][3][4]',
+          citations: [1, 2, 3, 4],
+        },
+        {
+          text: '法律風險也會進入產品時程與地區策略。如果佛州取得部分救濟，模型公司可能面臨州別的年齡限制、功能設計與第三方審查要求；即使聲請遭駁回，證據開示與訴訟成本仍會增加。對客戶而言，供應商是否能提供獨立測試、事故揭露、版本鎖定與地區合規，將比單一安全宣言更有採購價值。[9][10][11][12]',
+          citations: [9, 10, 11, 12],
+        },
+      ],
+    },
+    {
+      heading: '未確定處：三件事都是真的，但效果、機率與權限仍未定',
+      paragraphs: [
+        {
+          text: 'Sonnet 5.5 的官方最高分、CodeRabbit 程式審查與 Vals AI 終端基準使用不同資料與設定，不能合併成單一排行榜；NVIDIA 也尚未公布第三方紅隊、誤報率、效能負擔、跨平台保護差異與故障復原資料。白皮書引用的內部程式碼與低監督研發比例，同樣不能直接證明模型已具備端到端科學判斷或遞迴自我改進能力。[1][2][3][4][5][6][7][8][13][14][15][16]',
+          citations: [1, 2, 3, 4, 5, 6, 7, 8, 13, 14, 15, 16],
+        },
+        {
+          text: '佛州案件目前只有原告聲請，沒有法院對事實、管轄、成功可能性或救濟範圍的判斷。「第三方批准」由誰執行、標準為何、是否能限制州外模型訓練，以及聯邦法律是否優先，都沒有答案。另有 GPT-6.1 Astra 延後與 Anthropic IPO 文件線索，但前者仍缺三條獨立免費來源，後者的原始招股書尚未公開，今天不列入正式內容。[9][10][11][12]',
+          citations: [9, 10, 11, 12],
+        },
+      ],
+    },
+    {
+      heading: '後續觀察：從可驗證指標判斷安全是否真的前進',
+      paragraphs: [
+        {
+          text: '模型線應追蹤 Sonnet 5.5 在不同 effort、工具鏈與長任務中的成功成本；工程線應追蹤 OpenShell 原始碼與政策模型、第三方繞過測試、Sentry 的硬體需求與毫秒級隔離實測，以及參與組織究竟是試用、整合還是正式部署。研究線則要看研發透明度是否轉成共同量測標準，並由未參與模型開發的研究者重現自動化比例與時間外推。[1][2][3][4][5][6][7][8][13][14][15][16]',
+          citations: [1, 2, 3, 4, 5, 6, 7, 8, 13, 14, 15, 16],
+        },
+        {
+          text: '法律線要看法院是否排定聽證、OpenAI 的正式答辯、暫時救濟是否縮限至佛州使用者，以及其他州或聯邦機關是否採取相同路線。今天同時是 OpenAI DevDay 的既定日期；任何新產品都應與安全延後、代理邊界和司法壓力一起評估，而不能把舞台展示視為已完成的風險驗證。[9][10][11][12]',
+          citations: [9, 10, 11, 12],
+        },
+      ],
+    },
+  ],
+  conclusion:
+    '今天最清楚的變化，是更快、更便宜的模型正在降低代理部署門檻，而安全也從抽象承諾分解成三種可問責的機制：基礎設施要限制代理能做什麼，研發機構要讓外界看見能力如何加速，政府與法院則要回答何時能強制介入。Sonnet 5.5 顯示效率進步必須用完整任務成本驗證；NVIDIA 提供可操作的最小權限與獨立監控方向，但尚未證明效果；白皮書提出值得監測的風險指標，但沒有證明智能爆炸已迫近；佛州聲請凸顯監管壓力，但尚不是法院命令。綜合判讀是，成熟制度必須同時具備外部執行邊界、可比較透明度、獨立測試、清楚觸發門檻與可受審查的法律程序。',
+  sources: [
+    {
+      id: 1,
+      name: 'NVIDIA',
+      title:
+        'NVIDIA Launches Open Agent Safety Platform to Secure Agents From Testing to Deployment',
+      url: 'https://investor.nvidia.com/news/press-release-details/2026/NVIDIA-Launches-Open-Agent-Safety-Platform-to-Secure-Agents-From-Testing-to-Deployment/default.aspx',
+      type: '官方公告',
+    },
+    {
+      id: 2,
+      name: 'Associated Press',
+      title: 'Nvidia unveils security platform to stop AI agents from going rogue',
+      url: 'https://apnews.com/article/nvidia-ai-agent-artificial-intelligence-safety-3c4d7c1cfde82851c0577d1fa29b8621',
+      type: '新聞',
+    },
+    {
+      id: 3,
+      name: 'Reuters／MarketScreener',
+      title:
+        'Nvidia releases AI safety software it says could have stopped Hugging Face hack',
+      url: 'https://uk.marketscreener.com/news/nvidia-releases-ai-safety-software-it-says-could-have-stopped-hugging-face-hack-ce785adcdd88f020',
+      type: '新聞',
+    },
+    {
+      id: 4,
+      name: 'Axios',
+      title: 'Nvidia says new tool can contain rogue AI agents in milliseconds',
+      url: 'https://www.axios.com/2026/09/28/nvidia-ai-agent-safety',
+      type: '新聞',
+    },
+    {
+      id: 5,
+      name: 'Cambridge Programme on AI Science and Policy／FAI',
+      title: 'What If Automating AI R&D Triggers an Intelligence Explosion?',
+      url: 'https://www.thefai.org/posts/what-if-automating-ai-r-and-d-triggers-an-intelligence-explosion',
+      type: '研究',
+    },
+    {
+      id: 6,
+      name: 'The Guardian',
+      title: 'AI godfathers warn of runaway intelligence explosion',
+      url: 'https://www.theguardian.com/technology/2026/sep/28/ai-godfathers-warn-of-runaway-intelligence-explosion',
+      type: '新聞',
+    },
+    {
+      id: 7,
+      name: 'Axios',
+      title: 'AI pioneers warn of an intelligence explosion',
+      url: 'https://www.axios.com/2026/09/28/ai-pioneers-intelligence-explosion',
+      type: '新聞',
+    },
+    {
+      id: 8,
+      name: 'The Next Web',
+      title: 'Hinton, Bengio and AI lab scientists warn of an intelligence explosion',
+      url: 'https://thenextweb.com/news/intelligence-explosion-paper-hinton-bengio-pachocki-clark',
+      type: '新聞',
+    },
+    {
+      id: 9,
+      name: 'Bloomberg Law',
+      title: 'Florida Seeks to Block New OpenAI Models Without Safeguards',
+      url: 'https://news.bloomberglaw.com/litigation/florida-sues-to-block-new-openai-models-without-safeguards',
+      type: '法律新聞',
+    },
+    {
+      id: 10,
+      name: 'Axios',
+      title: 'Florida asks for order to halt ChatGPT development',
+      url: 'https://www.axios.com/2026/09/28/florida-openai-chatgpt-injunction-uthmeier',
+      type: '新聞',
+    },
+    {
+      id: 11,
+      name: 'Ars Technica',
+      title: 'Florida invokes extinction fears in legal bid to halt OpenAI development',
+      url: 'https://arstechnica.com/ai/2026/09/florida-asks-court-to-put-the-brakes-on-openais-frontier-ai-development/',
+      type: '新聞',
+    },
+    {
+      id: 12,
+      name: 'WLRN／News Service of Florida',
+      title: 'Uthmeier seeks halt to OpenAI development',
+      url: 'https://www.wlrn.org/government-politics/2026-09-28/uthmeier-seeks-halt-to-openai-development',
+      type: '新聞',
+    },
+    {
+      id: 13,
+      name: 'Anthropic',
+      title: 'Introducing Claude Sonnet 5.5',
+      url: 'https://www.anthropic.com/claude-sonnet-5-5',
+      type: '官方公告',
+    },
+    {
+      id: 14,
+      name: 'VentureBeat',
+      title:
+        'Anthropic launches Claude Sonnet 5.5 with 30% cost reduction per-task due to faster speeds and fewer tool calls',
+      url: 'https://venturebeat.com/technology/anthropic-launches-claude-sonnet-5-5-with-30-cost-reduction-per-task-due-to-faster-speeds-and-fewer-tool-calls',
+      type: '新聞',
+    },
+    {
+      id: 15,
+      name: 'CodeRabbit',
+      title: 'Claude Sonnet 5.5 for code review: More catches than Sonnet 5, in half the time',
+      url: 'https://www.coderabbit.ai/blog/sonnet-5-5-model-review',
+      type: '技術分析',
+    },
+    {
+      id: 16,
+      name: 'Vals AI',
+      title: 'Terminal-Bench 4.0 Leaderboard and Methodology',
+      url: 'https://www.vals-ai.com/benchmarks/terminal-bench-4',
+      type: '獨立基準',
     },
   ],
 };
