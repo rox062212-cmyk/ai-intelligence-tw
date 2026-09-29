@@ -325,14 +325,11 @@ async function sendOne(
       | { id?: string; message?: string }
       | null;
     if (!response.ok) {
-      const retryable = response.status === 429 || response.status >= 500;
       await env.DB.prepare(
         `UPDATE email_deliveries
-           SET status = 'failed', attempts = CASE WHEN ? THEN attempts ELSE 3 END,
-               last_error = ?, updated_at = ? WHERE id = ?`,
+           SET status = 'failed', last_error = ?, updated_at = ? WHERE id = ?`,
       )
         .bind(
-          retryable ? 1 : 0,
           `${response.status}: ${result?.message ?? 'Resend request failed'}`.slice(
             0,
             500,
@@ -515,12 +512,12 @@ export async function dispatchDueDailyEmails(env: RuntimeEnv, now = new Date()) 
       await advanceSchedule();
       continue;
     }
-    const outcome = await sendOne(
-      env,
-      subscription,
-      digestDate,
-      delivery,
-    );
+    let outcome: 'sent' | 'failed' | 'skipped' = 'skipped';
+    for (let attempt = delivery.attempts; attempt < 3; attempt += 1) {
+      outcome = await sendOne(env, subscription, digestDate, delivery);
+      if (outcome !== 'failed' || attempt === 2) break;
+      await new Promise((resolve) => setTimeout(resolve, 1000 * 2 ** attempt));
+    }
     if (outcome === 'sent') summary.sent += 1;
     if (outcome === 'failed') summary.failed += 1;
     if (outcome === 'sent') {
