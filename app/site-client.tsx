@@ -238,6 +238,11 @@ for (const article of chronologicallySorted
   if (earlierFeatured.length === 3) break;
 }
 const featuredArticles = [...recentFeatured, ...earlierFeatured];
+const allFeaturedArticles = [...publishableArticles].sort(
+  (a, b) =>
+    b.sources.length - a.sources.length ||
+    b.publishedAt.localeCompare(a.publishedAt),
+);
 const featuredIds = new Set(featuredArticles.map((article) => article.id));
 // 「更多情報」同時是歷史資料庫入口；保留早期尚未補齊三方來源的文章，
 // 避免它們因新版刊登門檻而從首頁消失。三方來源門檻仍用於焦點推薦與新文章。
@@ -754,7 +759,7 @@ export default function SiteClient({
       )}
       {view === 'featured' && (
         <FeaturedView
-          articles={featuredArticles}
+          articles={allFeaturedArticles}
           onArticle={openArticle}
           onBack={() => go('home')}
         />
@@ -1302,7 +1307,8 @@ function FeaturedView({
         回到首頁
       </button>
 
-      <div className="mt-8 border-b border-foreground pb-6">
+      <div className="mt-8 flex flex-col gap-4 border-b border-foreground pb-6 sm:flex-row sm:items-end sm:justify-between">
+        <div>
         <p className="text-sm font-semibold tracking-widest text-muted-foreground">
           EDITOR'S PICKS
         </p>
@@ -1312,6 +1318,10 @@ function FeaturedView({
         <p className="mt-4 max-w-3xl text-lg leading-8 text-muted-foreground">
           依近期影響、讀者關注度與來源廣度整理的重要 AI 新聞，點選任一則即可閱讀完整內容與原始資料。
         </p>
+        </div>
+        <span className="shrink-0 text-sm text-muted-foreground">
+          共 {articles.length} 則熱門焦點
+        </span>
       </div>
 
       <div className="grid gap-x-6 sm:grid-cols-2 lg:grid-cols-3">
