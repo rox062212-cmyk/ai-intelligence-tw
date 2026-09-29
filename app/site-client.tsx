@@ -454,7 +454,7 @@ export default function SiteClient({
     const normalizedQuery = query.trim().toLowerCase();
     const articleResults: SearchResult[] = articles
       .filter((article) => {
-        const articleDate = article.publishedAt.slice(0, 10);
+        const articleMonth = article.publishedAt.slice(0, 7);
         const text = [
           article.title,
           article.summary,
@@ -468,8 +468,8 @@ export default function SiteClient({
           (category === '全部' || article.category === category) &&
           (searchCompany === '全部公司' ||
             text.includes(searchCompany.toLowerCase())) &&
-          (!searchDateFrom || articleDate >= searchDateFrom) &&
-          (!searchDateTo || articleDate <= searchDateTo) &&
+          (!searchDateFrom || articleMonth >= searchDateFrom) &&
+          (!searchDateTo || articleMonth <= searchDateTo) &&
           (!normalizedQuery || text.includes(normalizedQuery))
         );
       })
@@ -494,8 +494,8 @@ export default function SiteClient({
           (category === '全部' || event.type === category) &&
           (searchCompany === '全部公司' ||
             text.includes(searchCompany.toLowerCase())) &&
-          (!searchDateFrom || event.date >= searchDateFrom) &&
-          (!searchDateTo || event.date <= searchDateTo) &&
+          (!searchDateFrom || event.date.slice(0, 7) >= searchDateFrom) &&
+          (!searchDateTo || event.date.slice(0, 7) <= searchDateTo) &&
           (!normalizedQuery || text.includes(normalizedQuery))
         );
       })
@@ -1783,22 +1783,22 @@ function SearchView({
       </h1>
       <div className="mt-8 grid gap-4 border-y border-border py-5 md:grid-cols-[1.4fr_1fr_1.3fr_auto] md:items-end">
         <label className="grid gap-2 text-sm font-semibold">
-          日期
+          月份
           <span className="grid grid-cols-[1fr_auto_1fr] items-center gap-2">
             <input
-              type="date"
+              type="month"
               value={dateFrom}
               onChange={(event) => setDateFrom(event.target.value)}
-              aria-label="起始日期"
+              aria-label="起始月份"
               className="min-w-0 rounded-xl border border-border bg-background px-3 py-2.5 font-normal"
             />
             <span className="text-muted-foreground">至</span>
             <input
-              type="date"
+              type="month"
               value={dateTo}
               min={dateFrom || undefined}
               onChange={(event) => setDateTo(event.target.value)}
-              aria-label="結束日期"
+              aria-label="結束月份"
               className="min-w-0 rounded-xl border border-border bg-background px-3 py-2.5 font-normal"
             />
           </span>
