@@ -31,6 +31,7 @@ import {
 
 type View =
   | 'home'
+  | 'featured'
   | 'daily'
   | 'calendar'
   | 'search'
@@ -745,9 +746,17 @@ export default function SiteClient({
       {view === 'home' && (
         <HomeView
           onArticle={openArticle}
+          onFeatured={() => go('featured')}
           onDaily={() => go('daily')}
           onCalendar={() => go('calendar')}
           onSubscribe={() => setSubscribeOpen(true)}
+        />
+      )}
+      {view === 'featured' && (
+        <FeaturedView
+          articles={featuredArticles}
+          onArticle={openArticle}
+          onBack={() => go('home')}
         />
       )}
       {view === 'daily' && <DailyView onBack={() => go('home')} />}
@@ -964,11 +973,13 @@ export default function SiteClient({
 
 function HomeView({
   onArticle,
+  onFeatured,
   onDaily,
   onCalendar,
   onSubscribe,
 }: {
   onArticle: (article: Article) => void;
+  onFeatured: () => void;
   onDaily: () => void;
   onCalendar: () => void;
   onSubscribe: () => void;
@@ -1091,7 +1102,13 @@ function HomeView({
       </div>
       <div className="mt-12 flex items-end justify-between gap-4 border-b border-foreground pb-3">
         <div>
-          <h2 className="text-2xl font-semibold">熱門焦點</h2>
+          <button
+            type="button"
+            onClick={onFeatured}
+            className="rounded-md text-left text-2xl font-semibold underline decoration-transparent underline-offset-4 transition hover:decoration-current focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4"
+          >
+            熱門焦點
+          </button>
           <p className="mt-1 text-sm text-muted-foreground">
             綜合近期影響與來源廣度，混合不同日期的重要情報
           </p>
@@ -1261,6 +1278,78 @@ function HomeView({
           訂閱每日情報
         </button>
       </section>
+    </main>
+  );
+}
+
+function FeaturedView({
+  articles,
+  onArticle,
+  onBack,
+}: {
+  articles: Article[];
+  onArticle: (article: Article) => void;
+  onBack: () => void;
+}) {
+  return (
+    <main className="mx-auto max-w-7xl px-4 py-10 lg:px-8">
+      <button
+        type="button"
+        onClick={onBack}
+        className="inline-flex items-center gap-2 text-sm font-semibold text-muted-foreground transition hover:text-foreground"
+      >
+        <ChevronLeft className="size-4" />
+        回到首頁
+      </button>
+
+      <div className="mt-8 border-b border-foreground pb-6">
+        <p className="text-sm font-semibold tracking-widest text-muted-foreground">
+          EDITOR'S PICKS
+        </p>
+        <h1 className="mt-3 font-serif text-4xl font-medium tracking-tight sm:text-5xl">
+          熱門焦點
+        </h1>
+        <p className="mt-4 max-w-3xl text-lg leading-8 text-muted-foreground">
+          依近期影響、讀者關注度與來源廣度整理的重要 AI 新聞，點選任一則即可閱讀完整內容與原始資料。
+        </p>
+      </div>
+
+      <div className="grid gap-x-6 sm:grid-cols-2 lg:grid-cols-3">
+        {articles.map((article) => (
+          <button
+            key={article.id}
+            type="button"
+            onClick={() => onArticle(article)}
+            className="group flex h-full min-w-0 flex-col border-b border-border py-8 text-left"
+          >
+            <div className="relative mb-5 aspect-[16/9] w-full overflow-hidden bg-secondary">
+              <img
+                src={article.image}
+                alt={article.imageAlt}
+                loading="lazy"
+                onError={(event) => {
+                  event.currentTarget.onerror = null;
+                  event.currentTarget.src = '/news/ai-agent-tools.png';
+                }}
+                className="h-full w-full object-cover transition duration-500 group-hover:scale-[1.02]"
+              />
+              <span className="absolute right-3 top-3 rounded-full border border-white/40 bg-black/75 px-2.5 py-1 text-xs font-semibold tracking-wide text-white backdrop-blur-sm">
+                {compactArticleDate(article)}
+              </span>
+            </div>
+            <span className="text-sm font-semibold text-muted-foreground">
+              {article.category}・{evidenceLabel(article)}・{article.sources.length}{' '}
+              個來源
+            </span>
+            <h2 className="mt-2 text-2xl font-semibold leading-9 group-hover:underline">
+              {article.title}
+            </h2>
+            <p className="mt-3 flex-1 leading-7 text-muted-foreground">
+              {article.summary}
+            </p>
+          </button>
+        ))}
+      </div>
     </main>
   );
 }
