@@ -28,6 +28,11 @@ import {
   type Article,
   type Source,
 } from '@/lib/content';
+import {
+  glossaryCategories,
+  glossaryTerms,
+  type GlossaryTerm,
+} from '@/lib/glossary';
 
 type View =
   | 'home'
@@ -35,6 +40,7 @@ type View =
   | 'more'
   | 'daily'
   | 'calendar'
+  | 'glossary'
   | 'search'
   | 'article'
   | 'admin';
@@ -67,6 +73,7 @@ type AdminComment = {
 const nav: { id: View; label: string }[] = [
   { id: 'home', label: '首頁' },
   { id: 'calendar', label: 'AI 日曆' },
+  { id: 'glossary', label: 'AI 名詞庫' },
 ];
 
 function calendarEventImage(event: CalendarEvent) {
@@ -329,6 +336,8 @@ export default function SiteClient({
   const [comments, setComments] = useState<Comment[]>([]);
   const [commentText, setCommentText] = useState('');
   const [commentError, setCommentError] = useState('');
+  const [selectedGlossaryTerm, setSelectedGlossaryTerm] =
+    useState<GlossaryTerm | null>(null);
 
   useEffect(() => {
     const saved = localStorage.getItem('ai-info-theme') as Theme | null;
@@ -801,10 +810,14 @@ export default function SiteClient({
           onCalendarArticle={openCalendarArticle}
         />
       )}
+      {view === 'glossary' && (
+        <GlossaryView onTerm={setSelectedGlossaryTerm} />
+      )}
       {view === 'article' && (
         <ArticleView
           article={selected}
           onArticle={openArticle}
+          onTerm={setSelectedGlossaryTerm}
           comments={comments}
           commentError={commentError}
           user={user}
@@ -856,6 +869,14 @@ export default function SiteClient({
               </label>
             ))}
           </fieldset>
+        </Modal>
+      )}
+      {selectedGlossaryTerm && (
+        <Modal
+          title={selectedGlossaryTerm.name}
+          onClose={() => setSelectedGlossaryTerm(null)}
+        >
+          <GlossaryTermDetail term={selectedGlossaryTerm} />
         </Modal>
       )}
       {accountOpen && user && (
@@ -1942,9 +1963,184 @@ function SearchView({
   );
 }
 
+function GlossaryText({
+  text,
+  onTerm,
+}: {
+  text: string;
+  onTerm: (term: GlossaryTerm) => void;
+}) {
+  const aliases = glossaryTerms
+    .flatMap((term) => [term.name, term.english ?? '', ...term.aliases])
+    .filter((value) => value.length >= 3)
+    .sort((a, b) => b.length - a.length);
+  const pattern = new RegExp(
+    `(${aliases.map((value) => value.replace(/[.*+?^${}()|[\]\\]/g, (match) => `\\${match}`)).join('|')})`,
+    'gi',
+  );
+  const lookup = new Map<string, GlossaryTerm>();
+  glossaryTerms.forEach((term) => {
+    [term.name, term.english ?? '', ...term.aliases].forEach((alias) => {
+      if (alias) lookup.set(alias.toLowerCase(), term);
+    });
+  });
+
+  return (
+    <>
+      {text.split(pattern).map((part, index) => {
+        const term = lookup.get(part.toLowerCase());
+        if (!term) return <span key={`${part}-${index}`}>{part}</span>;
+        return (
+          <button
+            key={`${part}-${index}`}
+            type="button"
+            onClick={() => onTerm(term)}
+            className="rounded-sm border-b border-dashed border-current bg-secondary/60 px-0.5 font-inherit text-inherit transition hover:bg-secondary focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
+            title={`查看「${term.name}」的解釋`}
+          >
+            {part}
+          </button>
+        );
+      })}
+    </>
+  );
+}
+
+function GlossaryTermDetail({ term }: { term: GlossaryTerm }) {
+  return (
+    <div>
+      {term.english && (
+        <p className="text-sm font-semibold text-muted-foreground">
+          {term.english}
+        </p>
+      )}
+      <span className="mt-3 inline-flex rounded-full border border-border px-2.5 py-1 text-xs font-semibold">
+        {term.category}
+      </span>
+      <p className="mt-4 text-lg font-semibold leading-8">{term.short}</p>
+      <p className="mt-3 leading-7 text-muted-foreground">{term.detail}</p>
+      {term.aliases.length > 0 && (
+        <p className="mt-4 text-sm leading-6 text-muted-foreground">
+          <strong className="text-foreground">其他名稱：</strong>
+          {term.aliases.join('、')}
+        </p>
+      )}
+      <a
+        href={term.sourceUrl}
+        target="_blank"
+        rel="noreferrer"
+        className="mt-6 inline-flex items-center gap-2 font-semibold underline underline-offset-4"
+      >
+        查看資料來源
+        <ExternalLink className="size-4" />
+      </a>
+      <p className="mt-2 text-xs text-muted-foreground">
+        {term.sourceName}・最後更新 {term.updatedAt}
+      </p>
+    </div>
+  );
+}
+
+function GlossaryView({
+  onTerm,
+}: {
+  onTerm: (term: GlossaryTerm) => void;
+}) {
+  const [query, setQuery] = useState('');
+  const [category, setCategory] = useState<(typeof glossaryCategories)[number]>(
+    '全部',
+  );
+  const normalizedQuery = query.trim().toLowerCase();
+  const filteredTerms = glossaryTerms.filter((term) => {
+    const text = [term.name, term.english, ...term.aliases, term.short]
+      .filter(Boolean)
+      .join(' ')
+      .toLowerCase();
+    return (
+      (category === '全部' || term.category === category) &&
+      (!normalizedQuery || text.includes(normalizedQuery))
+    );
+  });
+
+  return (
+    <main className="mx-auto max-w-7xl px-4 py-10 lg:px-8">
+      <div className="border-b border-foreground pb-8">
+        <p className="text-sm font-semibold tracking-widest text-muted-foreground">
+          AI GLOSSARY
+        </p>
+        <h1 className="mt-3 font-serif text-4xl font-medium sm:text-5xl">
+          AI 名詞庫
+        </h1>
+        <p className="mt-4 max-w-3xl text-lg leading-8 text-muted-foreground">
+          搜尋文章裡常見的模型、技術、產品與治理名詞；每個解釋都附上可核對來源。
+        </p>
+        <div className="relative mt-7 max-w-xl">
+          <Search className="pointer-events-none absolute left-4 top-1/2 size-5 -translate-y-1/2 text-muted-foreground" />
+          <input
+            value={query}
+            onChange={(event) => setQuery(event.target.value)}
+            placeholder="搜尋中文、英文或縮寫"
+            aria-label="搜尋 AI 名詞"
+            className="h-12 w-full rounded-full border border-input bg-transparent pl-12 pr-4 text-base outline-none focus:ring-2 focus:ring-ring"
+          />
+        </div>
+      </div>
+      <div className="mt-6 flex flex-wrap gap-2">
+        {glossaryCategories.map((item) => (
+          <button
+            key={item}
+            type="button"
+            onClick={() => setCategory(item)}
+            className={`rounded-full border px-4 py-2 text-sm font-semibold ${
+              category === item
+                ? 'border-foreground bg-foreground text-background'
+                : 'border-border hover:bg-secondary'
+            }`}
+          >
+            {item}
+          </button>
+        ))}
+      </div>
+      <div className="mt-6 flex items-center justify-between border-b border-border pb-3 text-sm text-muted-foreground">
+        <span>共 {filteredTerms.length} 個名詞</span>
+        <span>點擊查看完整解釋</span>
+      </div>
+      <div className="grid gap-x-6 sm:grid-cols-2 lg:grid-cols-3">
+        {filteredTerms.map((term) => (
+          <button
+            key={term.id}
+            type="button"
+            onClick={() => onTerm(term)}
+            className="group border-b border-border py-6 text-left"
+          >
+            <span className="text-sm font-semibold text-muted-foreground">
+              {term.category}
+            </span>
+            <h2 className="mt-2 text-2xl font-semibold group-hover:underline">
+              {term.name}
+            </h2>
+            {term.english && (
+              <span className="mt-1 block text-sm text-muted-foreground">
+                {term.english}
+              </span>
+            )}
+            <p className="mt-3 leading-7 text-muted-foreground">{term.short}</p>
+          </button>
+        ))}
+      </div>
+      {filteredTerms.length === 0 && (
+        <p className="py-16 text-center text-muted-foreground">
+          找不到符合條件的名詞。
+        </p>
+      )}
+    </main>
+  );
+}
+
 function ArticleView({
   article,
   onArticle,
+  onTerm,
   comments,
   commentError,
   user,
@@ -1955,6 +2151,7 @@ function ArticleView({
 }: {
   article: Article;
   onArticle: (article: Article) => void;
+  onTerm: (term: GlossaryTerm) => void;
   comments: Comment[];
   commentError: string;
   user: ChatGPTUser | null;
@@ -2005,10 +2202,10 @@ function ArticleView({
           <span>{article.sources.length} 個來源</span>
         </div>
         <h1 className="mt-4 font-serif text-4xl font-medium leading-tight tracking-tight sm:text-5xl">
-          {article.title}
+          <GlossaryText text={article.title} onTerm={onTerm} />
         </h1>
         <p className="mt-5 text-xl leading-9 text-muted-foreground">
-          {article.summary}
+          <GlossaryText text={article.summary} onTerm={onTerm} />
         </p>
         <p className="mt-4 text-sm text-muted-foreground">
           發布 {article.publishedAt}・最後更新 {article.updatedAt}
@@ -2114,9 +2311,14 @@ function ArticleView({
           </div>
           {article.body.map((section) => (
             <section key={section.heading} className="py-8">
-              <h2 className="text-2xl font-semibold">{section.heading}</h2>
+              <h2 className="text-2xl font-semibold">
+                <GlossaryText text={section.heading} onTerm={onTerm} />
+              </h2>
               <p className="mt-4 text-lg leading-9">
-                {section.text.replace(/(?:\s*\[\d+\])+\s*$/, '')}{' '}
+                <GlossaryText
+                  text={section.text.replace(/(?:\s*\[\d+\])+\s*$/, '')}
+                  onTerm={onTerm}
+                />{' '}
                 <span className="whitespace-nowrap text-sm font-semibold text-muted-foreground">
                   {section.citations.map((citation) => {
                     const source = article.sources.find(
