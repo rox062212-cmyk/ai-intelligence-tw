@@ -1,5 +1,7 @@
 import { NextResponse } from 'next/server';
 import { env } from 'cloudflare:workers';
+import { eq } from 'drizzle-orm';
+import { getChatGPTUser } from '@/app/chatgpt-auth';
 import { getDb } from '@/db';
 import { subscriptions } from '@/db/schema';
 
@@ -11,6 +13,40 @@ function getMailConfig() {
     apiKey: runtime.RESEND_API_KEY,
     from: runtime.EMAIL_FROM,
   };
+}
+
+function readCookie(request: Request, name: string) {
+  const prefix = `${name}=`;
+  return request.headers
+    .get('cookie')
+    ?.split(';')
+    .map((item) => item.trim())
+    .find((item) => item.startsWith(prefix))
+    ?.slice(prefix.length);
+}
+
+export async function GET(request: Request) {
+  const user = await getChatGPTUser();
+  const token = readCookie(request, 'ai_info_subscription');
+  const db = getDb();
+  const record = user?.email
+    ? await db
+        .select({ status: subscriptions.status })
+        .from(subscriptions)
+        .where(eq(subscriptions.email, user.email.toLowerCase()))
+        .get()
+    : token
+      ? await db
+          .select({ status: subscriptions.status })
+          .from(subscriptions)
+          .where(eq(subscriptions.verificationToken, decodeURIComponent(token)))
+          .get()
+      : null;
+
+  return NextResponse.json(
+    { active: record?.status === 'active' },
+    { headers: { 'cache-control': 'private, no-store' } },
+  );
 }
 
 export async function POST(request: Request) {

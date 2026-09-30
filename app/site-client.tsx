@@ -331,6 +331,9 @@ export default function SiteClient({
   const [subscribeState, setSubscribeState] = useState<
     'idle' | 'loading' | 'done' | 'error'
   >('idle');
+  const [subscriptionStatus, setSubscriptionStatus] = useState<
+    'loading' | 'active' | 'inactive'
+  >('loading');
   const [comments, setComments] = useState<Comment[]>([]);
   const [commentText, setCommentText] = useState('');
   const [commentError, setCommentError] = useState('');
@@ -343,6 +346,15 @@ export default function SiteClient({
     const browserZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
     if (browserZone) setTimeZone(browserZone);
   }, []);
+
+  useEffect(() => {
+    fetch('/api/subscriptions', { cache: 'no-store' })
+      .then((response) => (response.ok ? response.json() : Promise.reject()))
+      .then((data: { active: boolean }) =>
+        setSubscriptionStatus(data.active ? 'active' : 'inactive'),
+      )
+      .catch(() => setSubscriptionStatus('inactive'));
+  }, [user?.email]);
 
   useEffect(() => {
     if (view !== 'article') return;
@@ -643,12 +655,14 @@ export default function SiteClient({
               aria-label="搜尋情報"
             />
           </form>
-          <button
-            onClick={() => setSubscribeOpen(true)}
-            className="hidden whitespace-nowrap rounded-full bg-foreground px-4 py-2 text-sm font-semibold text-background lg:block"
-          >
-            訂閱每日情報
-          </button>
+          {subscriptionStatus === 'inactive' && (
+            <button
+              onClick={() => setSubscribeOpen(true)}
+              className="hidden whitespace-nowrap rounded-full bg-foreground px-4 py-2 text-sm font-semibold text-background lg:block"
+            >
+              訂閱每日情報
+            </button>
+          )}
           {user ? (
             <button
               type="button"
@@ -725,12 +739,14 @@ export default function SiteClient({
                   管理後台
                 </button>
               )}
-              <button
-                onClick={() => setSubscribeOpen(true)}
-                className="py-3 text-left"
-              >
-                訂閱每日情報
-              </button>
+              {subscriptionStatus === 'inactive' && (
+                <button
+                  onClick={() => setSubscribeOpen(true)}
+                  className="py-3 text-left"
+                >
+                  訂閱每日情報
+                </button>
+              )}
               {user ? (
                 <button
                   type="button"
@@ -764,6 +780,7 @@ export default function SiteClient({
           onDaily={() => go('daily')}
           onCalendar={() => go('calendar')}
           onSubscribe={() => setSubscribeOpen(true)}
+          showSubscription={subscriptionStatus === 'inactive'}
         />
       )}
       {view === 'featured' && (
@@ -1014,6 +1031,7 @@ function HomeView({
   onDaily,
   onCalendar,
   onSubscribe,
+  showSubscription,
 }: {
   onArticle: (article: Article) => void;
   onFeatured: () => void;
@@ -1021,6 +1039,7 @@ function HomeView({
   onDaily: () => void;
   onCalendar: () => void;
   onSubscribe: () => void;
+  showSubscription: boolean;
 }) {
   const latestRail = useRef<HTMLDivElement>(null);
   const moreSection = useRef<HTMLDivElement>(null);
@@ -1305,23 +1324,25 @@ function HomeView({
           </button>
         </nav>
       )}
-      <section className="mt-14 flex flex-col items-start justify-between gap-6 border-y border-border py-8 sm:flex-row sm:items-center">
-        <div>
-          <h2 className="text-2xl font-semibold">
-            在你指定的時間，直接收到每日重點
-          </h2>
-          <p className="mt-2 text-muted-foreground">
-            可設定關鍵字與領域；正式寄送前需要驗證 Email。
-          </p>
-        </div>
-        <button
-          onClick={onSubscribe}
-          className="rounded-full bg-foreground px-6 py-3 font-semibold text-background"
-        >
-          <Mail className="mr-2 inline size-4" />
-          訂閱每日情報
-        </button>
-      </section>
+      {showSubscription && (
+        <section className="mt-14 flex flex-col items-start justify-between gap-6 border-y border-border py-8 sm:flex-row sm:items-center">
+          <div>
+            <h2 className="text-2xl font-semibold">
+              在你指定的時間，直接收到每日重點
+            </h2>
+            <p className="mt-2 text-muted-foreground">
+              可設定關鍵字與領域；正式寄送前需要驗證 Email。
+            </p>
+          </div>
+          <button
+            onClick={onSubscribe}
+            className="rounded-full bg-foreground px-6 py-3 font-semibold text-background"
+          >
+            <Mail className="mr-2 inline size-4" />
+            訂閱每日情報
+          </button>
+        </section>
+      )}
     </main>
   );
 }
