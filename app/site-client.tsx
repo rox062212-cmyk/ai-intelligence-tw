@@ -2438,6 +2438,9 @@ function AdminView({
 }) {
   const [subscriptions, setSubscriptions] = useState<AdminSubscription[]>([]);
   const [adminComments, setAdminComments] = useState<AdminComment[]>([]);
+  const [manualSendState, setManualSendState] = useState<
+    Record<number, 'sending' | 'sent' | 'error'>
+  >({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [tab, setTab] = useState<
@@ -2492,6 +2495,24 @@ function AdminView({
     });
     if (response.ok)
       setSubscriptions((items) => items.filter((row) => row.id !== item.id));
+  };
+
+  const sendSubscriptionNow = async (item: AdminSubscription) => {
+    setManualSendState((state) => ({ ...state, [item.id]: 'sending' }));
+    try {
+      const response = await fetch('/api/admin/email-resend', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({
+          subscriptionId: item.id,
+          resendKey: crypto.randomUUID(),
+        }),
+      });
+      if (!response.ok) throw new Error('send');
+      setManualSendState((state) => ({ ...state, [item.id]: 'sent' }));
+    } catch {
+      setManualSendState((state) => ({ ...state, [item.id]: 'error' }));
+    }
   };
 
   const updateComment = async (id: number, status: string) => {
@@ -2631,6 +2652,23 @@ function AdminView({
                   </td>
                   <td className="p-4">
                     <div className="flex gap-2">
+                      <button
+                        type="button"
+                        onClick={() => void sendSubscriptionNow(item)}
+                        disabled={
+                          item.status !== 'active' ||
+                          manualSendState[item.id] === 'sending'
+                        }
+                        className="rounded-full border border-border px-3 py-1.5 font-semibold disabled:cursor-not-allowed disabled:opacity-40"
+                      >
+                        {manualSendState[item.id] === 'sending'
+                          ? '寄送中…'
+                          : manualSendState[item.id] === 'sent'
+                            ? '已寄出'
+                            : manualSendState[item.id] === 'error'
+                              ? '重試寄送'
+                              : '立即寄送'}
+                      </button>
                       <button
                         onClick={() =>
                           void updateSubscription(
