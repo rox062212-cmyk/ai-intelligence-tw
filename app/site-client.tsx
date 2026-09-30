@@ -2116,9 +2116,27 @@ function ArticleView({
             <section key={section.heading} className="py-8">
               <h2 className="text-2xl font-semibold">{section.heading}</h2>
               <p className="mt-4 text-lg leading-9">
-                {section.text}{' '}
+                {section.text.replace(/(?:\s*\[\d+\])+\s*$/, '')}{' '}
                 <span className="whitespace-nowrap text-sm font-semibold text-muted-foreground">
-                  [{section.citations.join('、')}]
+                  {section.citations.map((citation) => {
+                    const source = article.sources.find(
+                      (item) => item.id === citation,
+                    );
+                    if (!source) return <span key={citation}>[{citation}]</span>;
+                    return (
+                      <a
+                        key={citation}
+                        href={source.url}
+                        target="_blank"
+                        rel="noreferrer"
+                        aria-label={`開啟來源 ${citation}：${source.name}`}
+                        title={`${source.name}：${source.title}`}
+                        className="mx-0.5 underline decoration-muted-foreground/50 underline-offset-4 transition hover:text-foreground hover:decoration-foreground"
+                      >
+                        [{citation}]
+                      </a>
+                    );
+                  })}
                 </span>
               </p>
             </section>
