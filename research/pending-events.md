@@ -2,6 +2,38 @@
 
 此檔只保存尚未達到正式發布門檻的事件。事件取得至少三個彼此獨立、免費且能直接閱讀的來源前，不得進入首頁或每日 AI 重點。
 
+## 2026-09-30 檢查（10:05 CST）
+
+檢查範圍：2026-09-29 10:30 至 2026-09-30 09:58（台北時間）；比對既有文章、9 月 29 日待查事件與來源發布時間，避免把窗口外公告或同一通訊社轉載重新包裝成今日新增。
+
+本次通過門檻並發布四件事：OpenAI DevDay 的 Dots、ChatGPT Space、GPT‑6.1 Sol、Decisions API 與雲端 Codex（OpenAI 安全部署資料、AP、Axios、The Next Web）；白宮與 Google、Anthropic、Meta、OpenAI、SpaceXAI、NVIDIA 的四層自願安全協議（Reuters、AP、Guardian、Axios）；OpenAI 取消原訂十月發布的 GPT‑6.1 Astra（AP、英國 AISI、Ars Technica、The Next Web）；Meta 擴大 Muse for Small Business（Meta、Reuters、Axios、The Next Web）。產品展示、供應商效能、安全模擬、人工核准與自願協議的法律效力均分開標示。
+
+9 月 29 日待查的 GPT‑6.1 Astra 事件已取得第三、第四個獨立免費來源並升格發布；AISI 資料只用作前代 Astra 的風險背景，沒有冒充未發布模型的內部評測。
+
+### 聯準會 Michael Barr 談 AI 投資、通膨與利率風險
+
+- 狀態：待第三個獨立、直接討論同一場演說的來源；不發布。
+- 已有：聯準會官方演說全文與 Reuters 報導，可核對 Barr 對 AI 投資、電力與資料中心需求可能推高通膨、進而影響利率路徑的分析。
+- 缺口：其他當日可讀內容多轉述 Reuters，或討論 Lisa Cook 的另一場演說，不能以不同官員、不同事件或同一通訊社轉載湊成第三個來源。
+
+### American Infrastructure Alliance 資料中心聯盟
+
+- 狀態：仍待正式組織資料與兩個獨立採訪來源；不發布。
+- 已有：Axios 報導 OpenAI、SoftBank、QTS、Blackstone 與多個工會籌組跨州資料中心倡議聯盟。
+- 缺口：尚未取得聯盟官網、成立文件、完整成員清單或其他獨立報導核對預算、治理與州級活動計畫。
+
+### 窗口外與來源不足的其他線索
+
+- AMD／World Labs、Meta Enterprise Platform、SpaceXAI 團隊機器人與 Grok 4.7 的主要公告在 9 月 28 日，早於本次固定窗口；較晚回顧未形成新的產品變更，不重複刊登。
+- 紐約市議會 AI 傳票／聽證公告的原始日期為 9 月 28 日，窗口內報導沒有形成新的正式處置；不以晚發報導改寫成今日事件。
+- 未具名社群傳聞、單一消息人士與無法直接閱讀原文的摘要均排除，沒有以熱度替代三來源門檻。
+
+### AI 日曆核對
+
+- 新增 9 月 29 日 Meta Muse for Small Business、OpenAI DevDay 產品組合、GPT‑6.1 Astra 取消發布與白宮四層自願安全協議四筆已確認歷史事件。
+- 已核對執行日前後各 180 天：SpaceX Transporter-18 仍列 10 月 1 日 11:18 PT、10 月 2 日備援；NVIDIA AI Day Seoul 維持 11 月 9–10 日；IEEE SMC 維持 10 月 4–7 日；NeurIPS 維持雪梨 12 月 6–12 日、亞特蘭大／巴黎 12 月 9–13 日；AAAI-27 維持 2027 年 2 月 16–23 日；MWC Barcelona 維持 2027 年 3 月 1–4 日。
+- Microsoft Anomaly Detector、Metrics Advisor 與 Personalizer 的 10 月 1 日退役日期未見變更；Project Suncatcher M1 維持「預計」，沒有把發射窗口誤寫成已發射。未發現既有事件取消或延期。
+
 ## 2026-09-29 檢查（10:25 CST）
 
 檢查範圍：2026-09-28 10:09 至 2026-09-29 10:09（台北時間）；以本次執行開始時間固定 24 小時窗口，並比對 9 月 26 日已發布內容，避免把週末回顧或較晚轉載重新包裝成今日事件。
