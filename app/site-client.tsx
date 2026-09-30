@@ -40,7 +40,6 @@ type View =
   | 'more'
   | 'daily'
   | 'calendar'
-  | 'glossary'
   | 'search'
   | 'article'
   | 'admin';
@@ -73,7 +72,6 @@ type AdminComment = {
 const nav: { id: View; label: string }[] = [
   { id: 'home', label: '首頁' },
   { id: 'calendar', label: 'AI 日曆' },
-  { id: 'glossary', label: 'AI 名詞庫' },
 ];
 
 function calendarEventImage(event: CalendarEvent) {
@@ -810,9 +808,6 @@ export default function SiteClient({
           onCalendarArticle={openCalendarArticle}
         />
       )}
-      {view === 'glossary' && (
-        <GlossaryView onTerm={setSelectedGlossaryTerm} />
-      )}
       {view === 'article' && (
         <ArticleView
           article={selected}
@@ -827,7 +822,12 @@ export default function SiteClient({
           onBack={() => go('home')}
         />
       )}
-      {view === 'admin' && isAdmin && <AdminView adminEmail={user.email} />}
+      {view === 'admin' && isAdmin && (
+        <AdminView
+          adminEmail={user.email}
+          onTerm={setSelectedGlossaryTerm}
+        />
+      )}
 
       <footer className="mt-16 border-t border-border">
         <div className="mx-auto flex max-w-7xl flex-col justify-between gap-4 px-4 py-8 text-sm text-muted-foreground sm:flex-row lg:px-8">
@@ -2041,7 +2041,7 @@ function GlossaryTermDetail({ term }: { term: GlossaryTerm }) {
   );
 }
 
-function GlossaryView({
+function AdminGlossaryPanel({
   onTerm,
 }: {
   onTerm: (term: GlossaryTerm) => void;
@@ -2063,16 +2063,11 @@ function GlossaryView({
   });
 
   return (
-    <main className="mx-auto max-w-7xl px-4 py-10 lg:px-8">
-      <div className="border-b border-foreground pb-8">
-        <p className="text-sm font-semibold tracking-widest text-muted-foreground">
-          AI GLOSSARY
-        </p>
-        <h1 className="mt-3 font-serif text-4xl font-medium sm:text-5xl">
-          AI 名詞庫
-        </h1>
-        <p className="mt-4 max-w-3xl text-lg leading-8 text-muted-foreground">
-          搜尋文章裡常見的模型、技術、產品與治理名詞；每個解釋都附上可核對來源。
+    <div className="mt-6">
+      <div className="border-b border-border pb-6">
+        <h2 className="text-2xl font-semibold">AI 名詞庫</h2>
+        <p className="mt-2 max-w-3xl leading-7 text-muted-foreground">
+          管理文章內可辨識的模型、技術、產品與治理名詞；一般使用者不會看到完整清單。
         </p>
         <div className="relative mt-7 max-w-xl">
           <Search className="pointer-events-none absolute left-4 top-1/2 size-5 -translate-y-1/2 text-muted-foreground" />
@@ -2133,7 +2128,7 @@ function GlossaryView({
           找不到符合條件的名詞。
         </p>
       )}
-    </main>
+    </div>
   );
 }
 
@@ -2434,12 +2429,20 @@ function ArticleView({
   );
 }
 
-function AdminView({ adminEmail }: { adminEmail: string }) {
+function AdminView({
+  adminEmail,
+  onTerm,
+}: {
+  adminEmail: string;
+  onTerm: (term: GlossaryTerm) => void;
+}) {
   const [subscriptions, setSubscriptions] = useState<AdminSubscription[]>([]);
   const [adminComments, setAdminComments] = useState<AdminComment[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
-  const [tab, setTab] = useState<'subscriptions' | 'comments'>('subscriptions');
+  const [tab, setTab] = useState<
+    'subscriptions' | 'comments' | 'glossary'
+  >('subscriptions');
 
   const load = async () => {
     setLoading(true);
@@ -2572,6 +2575,12 @@ function AdminView({ adminEmail }: { adminEmail: string }) {
         >
           留言管理
         </button>
+        <button
+          onClick={() => setTab('glossary')}
+          className={`px-4 py-3 font-semibold ${tab === 'glossary' ? 'border-b-2 border-foreground' : 'text-muted-foreground'}`}
+        >
+          AI 名詞庫
+        </button>
       </div>
 
       {loading && (
@@ -2695,6 +2704,9 @@ function AdminView({ adminEmail }: { adminEmail: string }) {
             </article>
           ))}
         </div>
+      )}
+      {!loading && !error && tab === 'glossary' && (
+        <AdminGlossaryPanel onTerm={onTerm} />
       )}
     </main>
   );
