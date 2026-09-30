@@ -804,6 +804,7 @@ export default function SiteClient({
       {view === 'article' && (
         <ArticleView
           article={selected}
+          onArticle={openArticle}
           comments={comments}
           commentError={commentError}
           user={user}
@@ -1943,6 +1944,7 @@ function SearchView({
 
 function ArticleView({
   article,
+  onArticle,
   comments,
   commentError,
   user,
@@ -1952,6 +1954,7 @@ function ArticleView({
   onBack,
 }: {
   article: Article;
+  onArticle: (article: Article) => void;
   comments: Comment[];
   commentError: string;
   user: ChatGPTUser | null;
@@ -1960,6 +1963,31 @@ function ArticleView({
   addComment: (event: React.FormEvent) => void;
   onBack: () => void;
 }) {
+  const relatedTimelineArticles = [...articles]
+    .filter((candidate) => {
+      if (candidate.id === article.id) return false;
+      const sharedTags = candidate.tags.filter((tag) =>
+        article.tags.includes(tag),
+      );
+      return sharedTags.length >= 2;
+    })
+    .sort((a, b) => b.publishedAt.localeCompare(a.publishedAt))
+    .slice(0, 5);
+  const timelineArticles = [...relatedTimelineArticles, article].sort((a, b) =>
+    a.publishedAt.localeCompare(b.publishedAt),
+  );
+  const sourceRole: Record<Source['type'], string> = {
+    官方公告: '事件當事方或官方公布的第一手說法',
+    新聞: '媒體採訪、交叉查證或外部觀察',
+    技術文件: '產品規格、實作方式或技術限制',
+    影片: '公開發表、訪談或現場影音紀錄',
+    研究: '研究方法、數據或學術證據',
+  };
+  const hasUnconfirmedMaterial =
+    article.evidenceLevel === '可信報導' ||
+    article.evidenceLevel === '傳聞追蹤' ||
+    !article.verified;
+
   return (
     <main className="mx-auto max-w-7xl px-4 py-10 lg:px-8">
       <button
@@ -1994,9 +2022,90 @@ function ArticleView({
                 : '目前證據仍不完整，僅作為市場線索追蹤，不代表事件已發生。')}
           </p>
         </div>
+
+        <section className="mt-8 border-y border-border py-6">
+          <h2 className="text-xl font-semibold">文章更新紀錄</h2>
+          <div className="mt-5 grid gap-4 sm:grid-cols-2">
+            <div className="border-l-2 border-foreground pl-4">
+              <span className="text-sm text-muted-foreground">首次發布</span>
+              <strong className="mt-1 block">{article.publishedAt}</strong>
+              <p className="mt-1 text-sm leading-6 text-muted-foreground">
+                建立事件摘要、來源清單與初步可信度判定。
+              </p>
+            </div>
+            <div className="border-l-2 border-foreground pl-4">
+              <span className="text-sm text-muted-foreground">最後更新</span>
+              <strong className="mt-1 block">{article.updatedAt}</strong>
+              <p className="mt-1 text-sm leading-6 text-muted-foreground">
+                重新核對可讀來源，更新內文、引用或證據狀態。
+              </p>
+            </div>
+          </div>
+        </section>
       </div>
       <div className="mt-10 grid gap-10 lg:grid-cols-[minmax(0,1fr)_320px]">
         <article>
+          <section className="border-b border-foreground pb-8">
+            <h2 className="text-2xl font-semibold">事件時間線</h2>
+            <p className="mt-2 leading-7 text-muted-foreground">
+              依共同標籤串連同一主題的歷次發展，方便查看事件如何演變。
+            </p>
+            <div className="mt-6 border-l border-border pl-5">
+              {timelineArticles.map((item) => (
+                <button
+                  key={item.id}
+                  type="button"
+                  onClick={() => onArticle(item)}
+                  className="group relative block w-full border-b border-border py-4 text-left last:border-b-0"
+                >
+                  <span className="absolute -left-[1.44rem] top-6 size-2 rounded-full bg-foreground" />
+                  <span className="text-sm text-muted-foreground">
+                    {item.publishedAt}
+                  </span>
+                  <strong className="mt-1 block leading-7 group-hover:underline">
+                    {item.title}
+                    {item.id === article.id && (
+                      <span className="ml-2 rounded-full border border-border px-2 py-0.5 text-xs font-medium">
+                        本篇
+                      </span>
+                    )}
+                  </strong>
+                </button>
+              ))}
+            </div>
+          </section>
+
+          <section className="border-b border-foreground py-8">
+            <h2 className="text-2xl font-semibold">來源比較</h2>
+            <p className="mt-2 leading-7 text-muted-foreground">
+              分開查看官方、媒體與技術資料各自提供的證據，以及目前仍未確定的部分。
+            </p>
+            <div className="mt-6 grid gap-3 sm:grid-cols-2">
+              {article.sources.map((source) => (
+                <div key={source.id} className="rounded-xl border border-border p-4">
+                  <div className="flex flex-wrap items-center gap-2 text-sm">
+                    <strong>{source.type}</strong>
+                    <span className="rounded-full border border-border px-2 py-0.5 text-xs text-muted-foreground">
+                      {sourceReliability(source)}
+                    </span>
+                  </div>
+                  <p className="mt-2 text-sm leading-6">{sourceRole[source.type]}</p>
+                  <p className="mt-2 text-sm leading-6 text-muted-foreground">
+                    {source.note ?? source.reliabilityNote ?? source.title}
+                  </p>
+                </div>
+              ))}
+            </div>
+            <div className="mt-5 rounded-xl bg-secondary p-4">
+              <strong>目前一致與分歧</strong>
+              <p className="mt-2 leading-7 text-muted-foreground">
+                {hasUnconfirmedMaterial
+                  ? '各來源可共同支持部分事件脈絡，但仍有內容尚未取得官方或第一手資料確認；未證實部分不應視為既定事實。'
+                  : '目前來源對核心事實的描述大致一致；細節、影響範圍與後續結果仍可能因來源立場不同而有差異。'}
+              </p>
+            </div>
+          </section>
+
           <div className="border-y border-foreground py-6">
             <strong>閱讀方式</strong>
             <p className="mt-2 leading-7 text-muted-foreground">
